@@ -64,7 +64,7 @@ We use labels to keep track of which branches a commit should land on:
   * (for example semver-minor changes that need or should go into an LTS
     release)
 * `v?.x`
-  * Automatically applied to changes that do not target `master` but rather the
+  * Automatically applied to changes that do not target `queen` but rather the
     `v?.x-staging` branch
 
 Once a release line enters maintenance mode, the corresponding labels do not

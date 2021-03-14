@@ -133,7 +133,7 @@ assertFalse("abc".endsWith("bc", -Infinity));
 assertFalse("abc".endsWith("bc", NaN));
 
 // Test cases taken from
-// https://github.com/mathiasbynens/String.prototype.endsWith/blob/master/tests/tests.js
+// https://github.com/mathiasbynens/String.prototype.endsWith/blob/queen/tests/tests.js
 Object.prototype[1] = 2; // try to break `arguments[1]`
 
 assertEquals(String.prototype.endsWith.length, 1);

@@ -214,13 +214,13 @@ class VCInterface(object):
   def GetBranches(self):
     raise NotImplementedError()
 
-  def MasterBranch(self):
+  def QueenBranch(self):
     raise NotImplementedError()
 
   def CandidateBranch(self):
     raise NotImplementedError()
 
-  def RemoteMasterBranch(self):
+  def RemoteQueenBranch(self):
     raise NotImplementedError()
 
   def RemoteCandidateBranch(self):
@@ -258,14 +258,14 @@ class GitInterface(VCInterface):
     # Remove 'branch-heads/' prefix.
     return map(lambda s: s[13:], branches)
 
-  def MasterBranch(self):
-    return "master"
+  def QueenBranch(self):
+    return "queen"
 
   def CandidateBranch(self):
     return "candidates"
 
-  def RemoteMasterBranch(self):
-    return "origin/master"
+  def RemoteQueenBranch(self):
+    return "origin/queen"
 
   def RemoteCandidateBranch(self):
     return "origin/candidates"
@@ -275,7 +275,7 @@ class GitInterface(VCInterface):
     # want.
     if name.startswith('refs/'):
       return name
-    if name in ["candidates", "master"]:
+    if name in ["candidates", "queen"]:
       return "refs/remotes/origin/%s" % name
     try:
       # Check if branch is in heads.
@@ -474,8 +474,8 @@ class Step(GitRecipesMixin):
     if not self.GitIsWorkdirClean():  # pragma: no cover
       self.Die("Workspace is not clean. Please commit or undo your changes.")
 
-    # Checkout master in case the script was left on a work branch.
-    self.GitCheckout('origin/master')
+    # Checkout queen in case the script was left on a work branch.
+    self.GitCheckout('origin/queen')
 
     # Fetch unfetched revisions.
     self.vc.Fetch()
@@ -485,7 +485,7 @@ class Step(GitRecipesMixin):
     self.DeleteBranch(self._config["BRANCHNAME"])
 
   def CommonCleanup(self):
-    self.GitCheckout('origin/master')
+    self.GitCheckout('origin/queen')
     self.GitDeleteBranch(self._config["BRANCHNAME"])
 
     # Clean up all temporary files.
@@ -605,13 +605,13 @@ class Step(GitRecipesMixin):
     if match:
       # Legacy: In the old process there's one level of indirection. The
       # version is on the candidates branch and points to the real release
-      # base on master through the commit message.
+      # base on queen through the commit message.
       return match.group("git_rev")
     match = PUSH_MSG_NEW_RE.match(title)
     if match:
-      # This is a new-style v8 version branched from master. The commit
+      # This is a new-style v8 version branched from queen. The commit
       # "latest_hash" is the version-file change. Its parent is the release
-      # base on master.
+      # base on queen.
       return self.GitLog(n=1, format="%H", git_hash="%s^" % latest_hash)
 
     self.Die("Unknown latest release: %s" % latest_hash)

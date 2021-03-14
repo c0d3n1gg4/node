@@ -98,8 +98,8 @@ int ERR_load_SSL_strings(void);
 # define SSL_F_PROCESS_KEY_SHARE_EXT                      439
 # define SSL_F_READ_STATE_MACHINE                         352
 # define SSL_F_SET_CLIENT_CIPHERSUITE                     540
-# define SSL_F_SRP_GENERATE_CLIENT_MASTER_SECRET          595
-# define SSL_F_SRP_GENERATE_SERVER_MASTER_SECRET          589
+# define SSL_F_SRP_GENERATE_CLIENT_QUEEN_SECRET          595
+# define SSL_F_SRP_GENERATE_SERVER_QUEEN_SECRET          589
 # define SSL_F_SRP_VERIFY_SERVER_PARAM                    596
 # define SSL_F_SSL3_CHANGE_CIPHER_STATE                   129
 # define SSL_F_SSL3_CHECK_CERT_AND_ALGORITHM              130
@@ -111,7 +111,7 @@ int ERR_load_SSL_strings(void);
 # define SSL_F_SSL3_FINAL_FINISH_MAC                      285
 # define SSL_F_SSL3_FINISH_MAC                            587
 # define SSL_F_SSL3_GENERATE_KEY_BLOCK                    238
-# define SSL_F_SSL3_GENERATE_MASTER_SECRET                388
+# define SSL_F_SSL3_GENERATE_QUEEN_SECRET                388
 # define SSL_F_SSL3_GET_RECORD                            143
 # define SSL_F_SSL3_INIT_FINISHED_MAC                     397
 # define SSL_F_SSL3_OUTPUT_CERT_CHAIN                     147
@@ -197,7 +197,7 @@ int ERR_load_SSL_strings(void);
 # define SSL_F_SSL_INIT_WBIO_BUFFER                       184
 # define SSL_F_SSL_KEY_UPDATE                             515
 # define SSL_F_SSL_LOAD_CLIENT_CA_FILE                    185
-# define SSL_F_SSL_LOG_MASTER_SECRET                      498
+# define SSL_F_SSL_LOG_QUEEN_SECRET                      498
 # define SSL_F_SSL_LOG_RSA_CLIENT_KEY_EXCHANGE            499
 # define SSL_F_SSL_MODULE_INIT                            392
 # define SSL_F_SSL_NEW                                    186

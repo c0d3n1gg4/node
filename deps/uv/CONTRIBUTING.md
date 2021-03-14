@@ -15,9 +15,9 @@ $ cd libuv
 $ git remote add upstream https://github.com/libuv/libuv.git
 ```
 
-Now decide if you want your feature or bug fix to go into the master branch
+Now decide if you want your feature or bug fix to go into the queen branch
 or the stable branch.  As a rule of thumb, bug fixes go into the stable branch
-while new features go into the master branch.
+while new features go into the queen branch.
 
 The stable branch is effectively frozen; patches that change the libuv
 API/ABI or affect the run-time behavior of applications get rejected.
@@ -130,7 +130,7 @@ Use `git rebase` (not `git merge`) to sync your work from time to time.
 
 ```
 $ git fetch upstream
-$ git rebase upstream/v1.x  # or upstream/master
+$ git rebase upstream/v1.x  # or upstream/queen
 ```
 
 
@@ -168,4 +168,4 @@ not send out notifications when you add commits.
 [libuv mailing list]: http://groups.google.com/group/libuv
 [IRC]: http://webchat.freenode.net/?channels=libuv
 [Google C/C++ style guide]: https://google.github.io/styleguide/cppguide.html
-[project maintainers]: https://github.com/libuv/libuv/blob/master/MAINTAINERS.md
+[project maintainers]: https://github.com/libuv/libuv/blob/queen/MAINTAINERS.md

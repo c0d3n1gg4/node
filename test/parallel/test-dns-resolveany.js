@@ -16,7 +16,7 @@ const answers = [
   {
     type: 'SOA',
     nsname: 'ns1.example.com',
-    hostmaster: 'admin.example.com',
+    hostqueen: 'admin.example.com',
     serial: 156696742,
     refresh: 900,
     retry: 900,

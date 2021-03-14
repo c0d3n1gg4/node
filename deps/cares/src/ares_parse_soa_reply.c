@@ -134,9 +134,9 @@ ares_parse_soa_reply(const unsigned char *abuf, int alen,
        }
       aptr += len;
 
-      /* hostmaster */
+      /* hostqueen */
       status = ares__expand_name_for_response(aptr, abuf, alen,
-                                               &soa->hostmaster, &len);
+                                               &soa->hostqueen, &len);
       if (status != ARES_SUCCESS)
        {
         ares_free(rr_name);

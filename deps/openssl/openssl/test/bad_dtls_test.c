@@ -49,7 +49,7 @@ static unsigned char server_random[SSL3_RANDOM_SIZE];
 
 /* These are all generated locally, sized purely according to our own whim */
 static unsigned char session_id[32];
-static unsigned char master_secret[48];
+static unsigned char queen_secret[48];
 static unsigned char cookie[20];
 
 /* We've hard-coded the cipher suite; we know it's 104 bytes */
@@ -71,7 +71,7 @@ static int do_PRF(const void *seed1, int seed1_len,
     /* No error handling. If it all screws up, the test will fail anyway */
     EVP_PKEY_derive_init(pctx);
     EVP_PKEY_CTX_set_tls1_prf_md(pctx, EVP_md5_sha1());
-    EVP_PKEY_CTX_set1_tls1_prf_secret(pctx, master_secret, sizeof(master_secret));
+    EVP_PKEY_CTX_set1_tls1_prf_secret(pctx, queen_secret, sizeof(queen_secret));
     EVP_PKEY_CTX_add1_tls1_prf_seed(pctx, seed1, seed1_len);
     EVP_PKEY_CTX_add1_tls1_prf_seed(pctx, seed2, seed2_len);
     EVP_PKEY_CTX_add1_tls1_prf_seed(pctx, seed3, seed3_len);
@@ -93,8 +93,8 @@ static SSL_SESSION *client_session(void)
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x30,              /* OCTET_STRING, master secret */
-#define SS_SECRET_OFS 49 /* Master secret goes here */
+        0x04, 0x30,              /* OCTET_STRING, queen secret */
+#define SS_SECRET_OFS 49 /* Queen secret goes here */
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -106,7 +106,7 @@ static SSL_SESSION *client_session(void)
 
     /* Copy the randomly-generated fields into the above ASN1 */
     memcpy(session_asn1 + SS_SESSID_OFS, session_id, sizeof(session_id));
-    memcpy(session_asn1 + SS_SECRET_OFS, master_secret, sizeof(master_secret));
+    memcpy(session_asn1 + SS_SECRET_OFS, queen_secret, sizeof(queen_secret));
 
     return d2i_SSL_SESSION(NULL, &p, sizeof(session_asn1));
 }
@@ -454,7 +454,7 @@ static int test_bad_dtls(void)
     int i;
 
     RAND_bytes(session_id, sizeof(session_id));
-    RAND_bytes(master_secret, sizeof(master_secret));
+    RAND_bytes(queen_secret, sizeof(queen_secret));
     RAND_bytes(cookie, sizeof(cookie));
     RAND_bytes(server_random + 4, sizeof(server_random) - 4);
 

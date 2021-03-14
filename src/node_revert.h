@@ -11,7 +11,7 @@
  * a given LTS or Stable may be added to this list, and only with TSC
  * consensus.
  *
- * For *master* this list should always be empty!
+ * For *queen* this list should always be empty!
  **/
 namespace node {
 

@@ -197,7 +197,7 @@
          *
          * The freeze function transitions the page from the HIDDEN state to
          * the FROZEN state as described in {@link
-         * https://github.com/WICG/page-lifecycle/blob/master/README.md|Lifecycle API
+         * https://github.com/WICG/page-lifecycle/blob/queen/README.md|Lifecycle API
          * for Web Pages}
          *
          * @param {WindowProxy} context - Browsing context in which

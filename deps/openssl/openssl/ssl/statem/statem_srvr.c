@@ -957,8 +957,8 @@ WORK_STATE ossl_statem_server_post_work(SSL *s, WORK_STATE wst)
         if (SSL_IS_TLS13(s)) {
             /* TLS 1.3 gets the secret size from the handshake md */
             size_t dummy;
-            if (!s->method->ssl3_enc->generate_master_secret(s,
-                        s->master_secret, s->handshake_secret, 0,
+            if (!s->method->ssl3_enc->generate_queen_secret(s,
+                        s->queen_secret, s->handshake_secret, 0,
                         &dummy)
                 || !s->method->ssl3_enc->change_cipher_state(s,
                         SSL3_CC_APPLICATION | SSL3_CHANGE_CIPHER_SERVER_WRITE))
@@ -1797,7 +1797,7 @@ static int tls_early_post_process_client_hello(SSL *s)
     }
 
     /* We need to do this before getting the session */
-    if (!tls_parse_extension(s, TLSEXT_IDX_extended_master_secret,
+    if (!tls_parse_extension(s, TLSEXT_IDX_extended_queen_secret,
                              SSL_EXT_CLIENT_HELLO,
                              clienthello->pre_proc_exts, NULL, 0)) {
         /* SSLfatal() already called */
@@ -1933,18 +1933,18 @@ static int tls_early_post_process_client_hello(SSL *s)
             && s->ext.session_secret_cb) {
         const SSL_CIPHER *pref_cipher = NULL;
         /*
-         * s->session->master_key_length is a size_t, but this is an int for
+         * s->session->queen_key_length is a size_t, but this is an int for
          * backwards compat reasons
          */
-        int master_key_length;
+        int queen_key_length;
 
-        master_key_length = sizeof(s->session->master_key);
-        if (s->ext.session_secret_cb(s, s->session->master_key,
-                                     &master_key_length, ciphers,
+        queen_key_length = sizeof(s->session->queen_key);
+        if (s->ext.session_secret_cb(s, s->session->queen_key,
+                                     &queen_key_length, ciphers,
                                      &pref_cipher,
                                      s->ext.session_secret_cb_arg)
-                && master_key_length > 0) {
-            s->session->master_key_length = master_key_length;
+                && queen_key_length > 0) {
+            s->session->queen_key_length = queen_key_length;
             s->hit = 1;
             s->peer_ciphers = ciphers;
             s->session->verify_result = X509_V_OK;
@@ -2988,11 +2988,11 @@ static int tls_process_cke_psk_preamble(SSL *s, PACKET *pkt)
 static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
 {
 #ifndef OPENSSL_NO_RSA
-    unsigned char rand_premaster_secret[SSL_MAX_MASTER_KEY_LENGTH];
+    unsigned char rand_prequeen_secret[SSL_MAX_QUEEN_KEY_LENGTH];
     int decrypt_len;
     unsigned char decrypt_good, version_good;
     size_t j, padding_len;
-    PACKET enc_premaster;
+    PACKET enc_prequeen;
     RSA *rsa = NULL;
     unsigned char *rsa_decrypt = NULL;
     int ret = 0;
@@ -3006,9 +3006,9 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
 
     /* SSLv3 and pre-standard DTLS omit the length bytes. */
     if (s->version == SSL3_VERSION || s->version == DTLS1_BAD_VER) {
-        enc_premaster = *pkt;
+        enc_prequeen = *pkt;
     } else {
-        if (!PACKET_get_length_prefixed_2(pkt, &enc_premaster)
+        if (!PACKET_get_length_prefixed_2(pkt, &enc_prequeen)
             || PACKET_remaining(pkt) != 0) {
             SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CKE_RSA,
                      SSL_R_LENGTH_MISMATCH);
@@ -3018,11 +3018,11 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
 
     /*
      * We want to be sure that the plaintext buffer size makes it safe to
-     * iterate over the entire size of a premaster secret
-     * (SSL_MAX_MASTER_KEY_LENGTH). Reject overly short RSA keys because
-     * their ciphertext cannot accommodate a premaster secret anyway.
+     * iterate over the entire size of a prequeen secret
+     * (SSL_MAX_QUEEN_KEY_LENGTH). Reject overly short RSA keys because
+     * their ciphertext cannot accommodate a prequeen secret anyway.
      */
-    if (RSA_size(rsa) < SSL_MAX_MASTER_KEY_LENGTH) {
+    if (RSA_size(rsa) < SSL_MAX_QUEEN_KEY_LENGTH) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PROCESS_CKE_RSA,
                  RSA_R_KEY_SIZE_TOO_SMALL);
         return 0;
@@ -3039,12 +3039,12 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
      * We must not leak whether a decryption failure occurs because of
      * Bleichenbacher's attack on PKCS #1 v1.5 RSA padding (see RFC 2246,
      * section 7.4.7.1). The code follows that advice of the TLS RFC and
-     * generates a random premaster secret for the case that the decrypt
+     * generates a random prequeen secret for the case that the decrypt
      * fails. See https://tools.ietf.org/html/rfc5246#section-7.4.7.1
      */
 
-    if (RAND_priv_bytes(rand_premaster_secret,
-                      sizeof(rand_premaster_secret)) <= 0) {
+    if (RAND_priv_bytes(rand_prequeen_secret,
+                      sizeof(rand_prequeen_secret)) <= 0) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PROCESS_CKE_RSA,
                  ERR_R_INTERNAL_ERROR);
         goto err;
@@ -3055,8 +3055,8 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
      * the timing-sensitive code below.
      */
      /* TODO(size_t): Convert this function */
-    decrypt_len = (int)RSA_private_decrypt((int)PACKET_remaining(&enc_premaster),
-                                           PACKET_data(&enc_premaster),
+    decrypt_len = (int)RSA_private_decrypt((int)PACKET_remaining(&enc_prequeen),
+                                           PACKET_data(&enc_prequeen),
                                            rsa_decrypt, rsa, RSA_NO_PADDING);
     if (decrypt_len < 0) {
         SSLfatal(s, SSL_AD_DECRYPT_ERROR, SSL_F_TLS_PROCESS_CKE_RSA,
@@ -3067,17 +3067,17 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
     /* Check the padding. See RFC 3447, section 7.2.2. */
 
     /*
-     * The smallest padded premaster is 11 bytes of overhead. Small keys
+     * The smallest padded prequeen is 11 bytes of overhead. Small keys
      * are publicly invalid, so this may return immediately. This ensures
      * PS is at least 8 bytes.
      */
-    if (decrypt_len < 11 + SSL_MAX_MASTER_KEY_LENGTH) {
+    if (decrypt_len < 11 + SSL_MAX_QUEEN_KEY_LENGTH) {
         SSLfatal(s, SSL_AD_DECRYPT_ERROR, SSL_F_TLS_PROCESS_CKE_RSA,
                  SSL_R_DECRYPTION_FAILED);
         goto err;
     }
 
-    padding_len = decrypt_len - SSL_MAX_MASTER_KEY_LENGTH;
+    padding_len = decrypt_len - SSL_MAX_QUEEN_KEY_LENGTH;
     decrypt_good = constant_time_eq_int_8(rsa_decrypt[0], 0) &
         constant_time_eq_int_8(rsa_decrypt[1], 2);
     for (j = 2; j < padding_len - 1; j++) {
@@ -3086,7 +3086,7 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
     decrypt_good &= constant_time_is_zero_8(rsa_decrypt[padding_len - 1]);
 
     /*
-     * If the version in the decrypted pre-master secret is correct then
+     * If the version in the decrypted pre-queen secret is correct then
      * version_good will be 0xff, otherwise it'll be zero. The
      * Klima-Pokorny-Rosa extension of Bleichenbacher's attack
      * (http://eprint.iacr.org/2003/052/) exploits the version number
@@ -3101,7 +3101,7 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
                            (unsigned)(s->client_version & 0xff));
 
     /*
-     * The premaster secret must contain the same version number as the
+     * The prequeen secret must contain the same version number as the
      * ClientHello to detect version rollback attacks (strangely, the
      * protocol does not offer such protection for DH ciphersuites).
      * However, buggy clients exist that send the negotiated protocol
@@ -3126,20 +3126,20 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt)
     decrypt_good &= version_good;
 
     /*
-     * Now copy rand_premaster_secret over from p using
+     * Now copy rand_prequeen_secret over from p using
      * decrypt_good_mask. If decryption failed, then p does not
      * contain valid plaintext, however, a check above guarantees
      * it is still sufficiently large to read from.
      */
-    for (j = 0; j < sizeof(rand_premaster_secret); j++) {
+    for (j = 0; j < sizeof(rand_prequeen_secret); j++) {
         rsa_decrypt[padding_len + j] =
             constant_time_select_8(decrypt_good,
                                    rsa_decrypt[padding_len + j],
-                                   rand_premaster_secret[j]);
+                                   rand_prequeen_secret[j]);
     }
 
-    if (!ssl_generate_master_secret(s, rsa_decrypt + padding_len,
-                                    sizeof(rand_premaster_secret), 0)) {
+    if (!ssl_generate_queen_secret(s, rsa_decrypt + padding_len,
+                                    sizeof(rand_prequeen_secret), 0)) {
         /* SSLfatal() already called */
         goto err;
     }
@@ -3322,7 +3322,7 @@ static int tls_process_cke_srp(SSL *s, PACKET *pkt)
         return 0;
     }
 
-    if (!srp_generate_server_master_secret(s)) {
+    if (!srp_generate_server_queen_secret(s)) {
         /* SSLfatal() already called */
         return 0;
     }
@@ -3341,7 +3341,7 @@ static int tls_process_cke_gost(SSL *s, PACKET *pkt)
 #ifndef OPENSSL_NO_GOST
     EVP_PKEY_CTX *pkey_ctx;
     EVP_PKEY *client_pub_pkey = NULL, *pk = NULL;
-    unsigned char premaster_secret[32];
+    unsigned char prequeen_secret[32];
     const unsigned char *start;
     size_t outlen = 32, inlen;
     unsigned long alg_a;
@@ -3416,15 +3416,15 @@ static int tls_process_cke_gost(SSL *s, PACKET *pkt)
     inlen = pKX->kxBlob->value.sequence->length;
     start = pKX->kxBlob->value.sequence->data;
 
-    if (EVP_PKEY_decrypt(pkey_ctx, premaster_secret, &outlen, start,
+    if (EVP_PKEY_decrypt(pkey_ctx, prequeen_secret, &outlen, start,
                          inlen) <= 0) {
         SSLfatal(s, SSL_AD_DECODE_ERROR, SSL_F_TLS_PROCESS_CKE_GOST,
                  SSL_R_DECRYPTION_FAILED);
         goto err;
     }
-    /* Generate master secret */
-    if (!ssl_generate_master_secret(s, premaster_secret,
-                                    sizeof(premaster_secret), 0)) {
+    /* Generate queen secret */
+    if (!ssl_generate_queen_secret(s, prequeen_secret,
+                                    sizeof(prequeen_secret), 0)) {
         /* SSLfatal() already called */
         goto err;
     }
@@ -3466,8 +3466,8 @@ MSG_PROCESS_RETURN tls_process_client_key_exchange(SSL *s, PACKET *pkt)
                      SSL_R_LENGTH_MISMATCH);
             goto err;
         }
-        /* PSK handled by ssl_generate_master_secret */
-        if (!ssl_generate_master_secret(s, NULL, 0, 0)) {
+        /* PSK handled by ssl_generate_queen_secret */
+        if (!ssl_generate_queen_secret(s, NULL, 0, 0)) {
             /* SSLfatal() already called */
             goto err;
         }
@@ -4099,17 +4099,17 @@ int tls_construct_new_session_ticket(SSL *s, WPACKET *pkt)
             nonce >>= 8;
         }
 
-        if (!tls13_hkdf_expand(s, md, s->resumption_master_secret,
+        if (!tls13_hkdf_expand(s, md, s->resumption_queen_secret,
                                nonce_label,
                                sizeof(nonce_label) - 1,
                                tick_nonce,
                                TICKET_NONCE_SIZE,
-                               s->session->master_key,
+                               s->session->queen_key,
                                hashlen, 1)) {
             /* SSLfatal() already called */
             goto err;
         }
-        s->session->master_key_length = hashlen;
+        s->session->queen_key_length = hashlen;
 
         s->session->time = (long)time(NULL);
         if (s->s3->alpn_selected != NULL) {

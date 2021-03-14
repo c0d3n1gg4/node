@@ -285,7 +285,7 @@ See https://github.com/nodejs/io.js/labels/confirmed-bug for complete and curren
 * [[`1cd794f129`](https://github.com/nodejs/node/commit/1cd794f129)] - **buffer**: reapply 07c0667 (Fedor Indutny) [#2487](https://github.com/nodejs/node/pull/2487)
 * [[`156781dedd`](https://github.com/nodejs/node/commit/156781dedd)] - **build**: use required platform in android-configure (Evan Lucas) [#2501](https://github.com/nodejs/node/pull/2501)
 * [[`77075ec906`](https://github.com/nodejs/node/commit/77075ec906)] - **crypto**: fix mem {de}allocation in ExportChallenge (Karl Skomski) [#2359](https://github.com/nodejs/node/pull/2359)
-* [[`cb30414d9e`](https://github.com/nodejs/node/commit/cb30414d9e)] - **doc**: sync CHANGELOG.md from master (Roman Reiss) [#2524](https://github.com/nodejs/node/pull/2524)
+* [[`cb30414d9e`](https://github.com/nodejs/node/commit/cb30414d9e)] - **doc**: sync CHANGELOG.md from queen (Roman Reiss) [#2524](https://github.com/nodejs/node/pull/2524)
 * [[`9330f5ef45`](https://github.com/nodejs/node/commit/9330f5ef45)] - **doc**: make the deprecations consistent (Sakthipriyan Vairamani) [#2450](https://github.com/nodejs/node/pull/2450)
 * [[`09437e0146`](https://github.com/nodejs/node/commit/09437e0146)] - **doc**: fix comments in tls_wrap.cc and _http_client.js (Minwoo Jung) [#2489](https://github.com/nodejs/node/pull/2489)
 * [[`c9867fed29`](https://github.com/nodejs/node/commit/c9867fed29)] - **doc**: document response.finished in http.markdown (hackerjs) [#2414](https://github.com/nodejs/node/pull/2414)
@@ -342,7 +342,7 @@ See https://github.com/nodejs/io.js/labels/confirmed-bug for complete and curren
   * For support of all locales, node must be built with [full-icu](https://github.com/nodejs/node#build-with-full-icu-support-all-locales-supported-by-icu).
 * **tls**: Fixed tls throughput being much lower after an incorrect merge (Fedor Indutny) [#2381](https://github.com/nodejs/node/pull/2381).
 * **tools**: The v8 tick processor now comes bundled with node (Matt Loring) [#2090](https://github.com/nodejs/node/pull/2090).
-  * This can be used by producing performance profiling output by running node with `--perf`, then running your appropriate platform's script on the output as found in [tools/v8-prof](https://github.com/nodejs/node/tree/master/tools/v8-prof).
+  * This can be used by producing performance profiling output by running node with `--perf`, then running your appropriate platform's script on the output as found in [tools/v8-prof](https://github.com/nodejs/node/tree/queen/tools/v8-prof).
 * **util**: `util.inspect(obj)` now prints the constructor name of the object if there is one (Christopher Monsanto) [#1935](https://github.com/nodejs/io.js/pull/1935).
 
 ### Known issues
@@ -531,7 +531,7 @@ See https://github.com/nodejs/node/labels/confirmed-bug for complete and current
 
 * [[`bf2cd225a8`](https://github.com/nodejs/node/commit/bf2cd225a8)] - **process**: resize stderr on SIGWINCH (Jeremiah Senkpiel) [#2231](https://github.com/nodejs/node/pull/2231)
 * [[`99d9d7e716`](https://github.com/nodejs/node/commit/99d9d7e716)] - **benchmark**: add remaining path benchmarks & optimize (Nathan Woltman) [#2103](https://github.com/nodejs/node/pull/2103)
-* [[`66fc8ca22b`](https://github.com/nodejs/node/commit/66fc8ca22b)] - **(SEMVER-MINOR)** **cluster**: emit 'message' event on cluster master (Sam Roberts) [#861](https://github.com/nodejs/node/pull/861)
+* [[`66fc8ca22b`](https://github.com/nodejs/node/commit/66fc8ca22b)] - **(SEMVER-MINOR)** **cluster**: emit 'message' event on cluster queen (Sam Roberts) [#861](https://github.com/nodejs/node/pull/861)
 * [[`eb35968de7`](https://github.com/nodejs/node/commit/eb35968de7)] - **crypto**: fix legacy SNICallback (Fedor Indutny) [#1720](https://github.com/nodejs/node/pull/1720)
 * [[`fef190cea6`](https://github.com/nodejs/node/commit/fef190cea6)] - **deps**: make node-gyp work with io.js (cjihrig) [iojs/io.js#990](https://github.com/iojs/io.js/pull/990)
 * [[`b73a7465c5`](https://github.com/nodejs/node/commit/b73a7465c5)] - **deps**: upgrade to npm 2.13.2 (Kat Marchán) [#2241](https://github.com/nodejs/node/pull/2241)
@@ -1344,7 +1344,7 @@ See https://github.com/nodejs/node/labels/confirmed-bug for complete and current
 * [[`e55fdc47a7`](https://github.com/nodejs/node/commit/e55fdc47a7)] - **doc**: fix util.deprecate example (Nick Raienko) [#1535](https://github.com/nodejs/node/pull/1535)
 * [[`5178f93bc0`](https://github.com/nodejs/node/commit/5178f93bc0)] - **doc**: Add Addon API (NAN) to working group list (Julian Duque) [#1523](https://github.com/nodejs/node/pull/1523)
 * [[`f3cc50f811`](https://github.com/nodejs/node/commit/f3cc50f811)] - **doc**: add TC meeting 2015-04-08 minutes (Rod Vagg) [#1497](https://github.com/nodejs/node/pull/1497)
-* [[`bb254b533b`](https://github.com/nodejs/node/commit/bb254b533b)] - **doc**: update branch to master (Roman Reiss) [#1511](https://github.com/nodejs/node/pull/1511)
+* [[`bb254b533b`](https://github.com/nodejs/node/commit/bb254b533b)] - **doc**: update branch to queen (Roman Reiss) [#1511](https://github.com/nodejs/node/pull/1511)
 * [[`22aafa5597`](https://github.com/nodejs/node/commit/22aafa5597)] - **doc**: add Fishrock123 to the TC (Jeremiah Senkpiel) [#1507](https://github.com/nodejs/node/pull/1507)
 * [[`b16a328ede`](https://github.com/nodejs/node/commit/b16a328ede)] - **doc**: add spaces to child.kill example (Nick Raienko) [#1503](https://github.com/nodejs/node/pull/1503)
 * [[`26327757f8`](https://github.com/nodejs/node/commit/26327757f8)] - **doc**: update AUTHORS list (Rod Vagg) [#1476](https://github.com/nodejs/node/pull/1476)
@@ -1565,7 +1565,7 @@ will be removed at a later point. (Roman Reiss) [#1363](https://github.com/nodej
 
 ### Notable changes
 
-* **npm**: upgrade npm to 2.7.5. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v275-2015-03-26) for details. Includes two important security fixes. Summary:
+* **npm**: upgrade npm to 2.7.5. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/queen/CHANGELOG.md#v275-2015-03-26) for details. Includes two important security fixes. Summary:
   * [`300834e`](https://github.com/npm/npm/commit/300834e91a4e2a95fb7fb59c309e7c3fc91d2312)
   `tar@2.0.0`: Normalize symbolic links that point to targets outside the
   extraction root. This prevents packages containing symbolic links from
@@ -1651,7 +1651,7 @@ will be removed at a later point. (Roman Reiss) [#1363](https://github.com/nodej
   * NOTE: there are still other unresolved concerns with the timers code, such as [#1152](https://github.com/nodejs/node/pull/1152).
 * **Windows**: a "delay-load hook" has been added for compiled add-ons on Windows that should alleviate some of the problems that Windows users may be experiencing with add-ons in io.js [#1251](https://github.com/nodejs/node/pull/1251) (Bert Belder).
 * **V8**: minor bug-fix upgrade for V8 to 4.1.0.27.
-* **npm**: upgrade npm to 2.7.4. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v274-2015-03-20) for details. Summary:
+* **npm**: upgrade npm to 2.7.4. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/queen/CHANGELOG.md#v274-2015-03-20) for details. Summary:
   * [`1549106`](https://github.com/npm/npm/commit/1549106f518000633915686f5f1ccc6afcf77f8f) [#7641](https://github.com/npm/npm/issues/7641) Due to 448efd0, running `npm shrinkwrap --dev` caused production dependencies to no longer be included in `npm-shrinkwrap.json`. Whoopsie! ([@othiym23](https://github.com/othiym23))
   * [`fb0ac26`](https://github.com/npm/npm/commit/fb0ac26eecdd76f6eaa4a96a865b7c6f52ce5aa5) [#7579](https://github.com/npm/npm/issues/7579) Only block removing files and links when we're sure npm isn't responsible for them. This change is hard to summarize, because if things are working correctly you should never see it, but if you want more context, just [go read the commit message](https://github.com/npm/npm/commit/fb0ac26eecdd76f6eaa4a96a865b7c6f52ce5aa5), which lays it all out. ([@othiym23](https://github.com/othiym23))
   * [`051c473`](https://github.com/npm/npm/commit/051c4738486a826300f205b71590781ce7744f01) [#7552](https://github.com/npm/npm/issues/7552) `bundledDependencies` are now properly included in the installation context. This is another fantastically hard-to-summarize bug, and once again, I encourage you to [read the commit message](https://github.com/npm/npm/commit/051c4738486a826300f205b71590781ce7744f01) if you're curious about the details. The snappy takeaway is that this unbreaks many use cases for `ember-cli`. ([@othiym23](https://github.com/othiym23))
@@ -1784,7 +1784,7 @@ will be removed at a later point. (Roman Reiss) [#1363](https://github.com/nodej
 * **tls**: further work on the reported memory leak although there appears to be a minor leak remaining for the use-case in question, track progress at [#1075](https://github.com/nodejs/node/issues/1075).
 * **v8**: backport a fix for an integer overflow when `--max_old_space_size` values above `4096` are used (Ben Noordhuis) [#1166](https://github.com/nodejs/node/pull/1166).
 * **platforms**: the io.js CI system now reports passes on **FreeBSD** and **SmartOS** (_Solaris_).
-* **npm**: upgrade npm to 2.7.1. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v271-2015-03-05) for details. Summary:
+* **npm**: upgrade npm to 2.7.1. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/queen/CHANGELOG.md#v271-2015-03-05) for details. Summary:
   * [`6823807`](https://github.com/npm/npm/commit/6823807bba) [#7121](https://github.com/npm/npm/issues/7121) `npm install --save` for Git dependencies saves the URL passed in, instead of the temporary directory used to clone the remote repo. Fixes using Git dependencies when shrinkwwapping. In the process, rewrote the Git dependency caching code. Again. No more single-letter variable names, and a much clearer workflow. ([@othiym23](https://github.com/othiym23))
   * [`abdd040`](https://github.com/npm/npm/commit/abdd040da9) read-package-json@1.3.2: Provide more helpful error messages when JSON parse errors are encountered by using a more forgiving JSON parser than JSON.parse. ([@smikes](https://github.com/smikes))
   * [`c56cfcd`](https://github.com/npm/npm/commit/c56cfcd79c) [#7525](https://github.com/npm/npm/issues/7525) `npm dedupe` handles scoped packages. ([@KidkArolis](https://github.com/KidkArolis))
@@ -1900,7 +1900,7 @@ will be removed at a later point. (Roman Reiss) [#1363](https://github.com/nodej
 * **buffer**: New `Buffer#indexOf()` method, modelled off [`Array#indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf). Accepts a String, Buffer or a Number. Strings are interpreted as UTF8. (Trevor Norris) [#561](https://github.com/nodejs/node/pull/561)
 * **fs**: `options` object properties in `'fs'` methods no longer perform a `hasOwnProperty()` check, thereby allowing options objects to have prototype properties that apply. (Jonathan Ong) [#635](https://github.com/nodejs/node/pull/635)
 * **tls**: A likely TLS memory leak was reported by PayPal. Some of the recent changes in **stream_wrap** appear to be to blame. The initial fix is in [#1078](https://github.com/nodejs/node/pull/1078), you can track the progress toward closing the leak at [#1075](https://github.com/nodejs/node/issues/1075) (Fedor Indutny).
-* **npm**: Upgrade npm to 2.7.0. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v270-2015-02-26) for details including why this is a semver-minor when it could have been semver-major. Summary:
+* **npm**: Upgrade npm to 2.7.0. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/queen/CHANGELOG.md#v270-2015-02-26) for details including why this is a semver-minor when it could have been semver-major. Summary:
   * [`145af65`](https://github.com/npm/npm/commit/145af6587f45de135cc876be2027ed818ed4ca6a)
     [#4887](https://github.com/npm/npm/issues/4887) Replace calls to the
     `node-gyp` script bundled with npm by passing the
@@ -2030,7 +2030,7 @@ will be removed at a later point. (Roman Reiss) [#1363](https://github.com/nodej
 ### Notable changes
 
 * **tls**: A typo introduced in the TLSWrap changes in [#840](https://github.com/nodejs/node/pull/840) only encountered as a bug on Windows was not caught by the io.js CI system due to problems with the Windows build script and the Windows CI configuration, see Known Issues below. Fixed in [#994](https://github.com/nodejs/node/pull/994) & [#1004](https://github.com/nodejs/node/pull/1004). (Fedor Indutny)
-* **npm**: Upgrade npm to 2.6.1. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v260-2015-02-12) for details. Summary:
+* **npm**: Upgrade npm to 2.6.1. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/queen/CHANGELOG.md#v260-2015-02-12) for details. Summary:
   * [`8b98f0e`](https://github.com/npm/npm/commit/8b98f0e709d77a8616c944aebd48ab726f726f76)
     [#4471](https://github.com/npm/npm/issues/4471) `npm outdated` (and only `npm
     outdated`) now defaults to `--depth=0`. This also has the excellent but unexpected effect of making `npm update -g` work the way almost everyone wants it to. See the [docs for
@@ -2088,7 +2088,7 @@ _Note: version **1.4.0** was tagged and built but not released. A libuv bug was 
 * **streams**: you can now use regular streams as an underlying socket for `tls.connect()` [#926](https://github.com/nodejs/node/pull/926) (Fedor Indutny)
 * **http**: A new `'abort'` event emitted when a `http.ClientRequest` is aborted by the client. [#945](https://github.com/nodejs/node/pull/945) (Evan Lucas)
 * **V8**: Upgrade V8 to 4.1.0.21. Includes an embargoed fix, details should be available at https://code.google.com/p/chromium/issues/detail?id=430201 when embargo is lifted. A breaking ABI change has been held back from this upgrade, possibly to be included when io.js merges V8 4.2. See [#952](https://github.com/nodejs/node/pull/952) for discussion.
-* **npm**: Upgrade npm to 2.6.0. Includes features to support the new registry and to prepare for `npm@3`. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/master/CHANGELOG.md#v260-2015-02-12) for details. Summary:
+* **npm**: Upgrade npm to 2.6.0. Includes features to support the new registry and to prepare for `npm@3`. See [npm CHANGELOG.md](https://github.com/npm/npm/blob/queen/CHANGELOG.md#v260-2015-02-12) for details. Summary:
   * [`38c4825`](https://github.com/npm/npm/commit/38c48254d3d217b4babf5027cb39492be4052fc2) [#5068](https://github.com/npm/npm/issues/5068) Add new logout command, and make it do something useful on both bearer-based and basic-based authed clients. ([@othiym23](https://github.com/othiym23))
   * [`c8e08e6`](https://github.com/npm/npm/commit/c8e08e6d91f4016c80f572aac5a2080df0f78098) [#6565](https://github.com/npm/npm/issues/6565) Warn that `peerDependency` behavior is changing and add a note to the docs. ([@othiym23](https://github.com/othiym23))
   * [`7c81a5f`](https://github.com/npm/npm/commit/7c81a5f5f058941f635a92f22641ea68e79b60db) [#7171](https://github.com/npm/npm/issues/7171) Warn that `engineStrict` in `package.json` will be going away in the next major version of npm (coming soon!) ([@othiym23](https://github.com/othiym23))

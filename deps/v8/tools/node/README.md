@@ -9,4 +9,4 @@ bump the necessary V8 version numbers depending on the specific branch.
 See the [Node.js documentation][2] on V8 backports for a guide.
 
 [1]: https://github.com/nodejs/node-core-utils
-[2]: https://github.com/nodejs/node/blob/master/doc/guides/maintaining-V8.md
+[2]: https://github.com/nodejs/node/blob/queen/doc/guides/maintaining-V8.md

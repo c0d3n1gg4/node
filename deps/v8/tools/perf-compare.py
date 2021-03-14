@@ -7,8 +7,8 @@ python %prog
 
 Compare perf trybot JSON files and output the results into a pleasing HTML page.
 Examples:
-  %prog -t "ia32 results" Result,../result.json Master,/path-to/master.json -o results.html
-  %prog -t "x64 results" ../result.json master.json -o results.html
+  %prog -t "ia32 results" Result,../result.json Queen,/path-to/queen.json -o results.html
+  %prog -t "x64 results" ../result.json queen.json -o results.html
 '''
 
 # for py2/py3 compatibility

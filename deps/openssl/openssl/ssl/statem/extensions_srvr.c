@@ -1129,7 +1129,7 @@ int tls_parse_ctos_psk(SSL *s, PACKET *pkt, unsigned int context, X509 *x,
 
                 sess = SSL_SESSION_new();
                 if (sess == NULL
-                        || !SSL_SESSION_set1_master_key(sess, pskdata,
+                        || !SSL_SESSION_set1_queen_key(sess, pskdata,
                                                         pskdatalen)
                         || !SSL_SESSION_set_cipher(sess, cipher)
                         || !SSL_SESSION_set_protocol_version(sess,
@@ -1644,7 +1644,7 @@ EXT_RETURN tls_construct_stoc_ems(SSL *s, WPACKET *pkt, unsigned int context,
     if ((s->s3->flags & TLS1_FLAGS_RECEIVED_EXTMS) == 0)
         return EXT_RETURN_NOT_SENT;
 
-    if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_extended_master_secret)
+    if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_extended_queen_secret)
             || !WPACKET_put_bytes_u16(pkt, 0)) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_STOC_EMS,
                  ERR_R_INTERNAL_ERROR);

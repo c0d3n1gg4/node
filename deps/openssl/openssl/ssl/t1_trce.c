@@ -474,7 +474,7 @@ static const ssl_trace_tbl ssl_exts_tbl[] = {
     {TLSEXT_TYPE_signed_certificate_timestamp, "signed_certificate_timestamps"},
     {TLSEXT_TYPE_padding, "padding"},
     {TLSEXT_TYPE_encrypt_then_mac, "encrypt_then_mac"},
-    {TLSEXT_TYPE_extended_master_secret, "extended_master_secret"},
+    {TLSEXT_TYPE_extended_queen_secret, "extended_queen_secret"},
     {TLSEXT_TYPE_session_ticket, "session_ticket"},
     {TLSEXT_TYPE_psk, "psk"},
     {TLSEXT_TYPE_early_data, "early_data"},
@@ -1100,10 +1100,10 @@ static int ssl_print_client_keyex(BIO *bio, int indent, const SSL *ssl,
     case SSL_kRSAPSK:
         if (TLS1_get_version(ssl) == SSL3_VERSION) {
             ssl_print_hex(bio, indent + 2,
-                          "EncryptedPreMasterSecret", msg, msglen);
+                          "EncryptedPreQueenSecret", msg, msglen);
         } else {
             if (!ssl_print_hexbuf(bio, indent + 2,
-                                  "EncryptedPreMasterSecret", 2, &msg, &msglen))
+                                  "EncryptedPreQueenSecret", 2, &msg, &msglen))
                 return 0;
         }
         break;

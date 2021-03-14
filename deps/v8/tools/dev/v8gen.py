@@ -77,8 +77,8 @@ class GenerateGnArgs(object):
 
     def add_common_options(p):
       p.add_argument(
-          '-m', '--master', default='developer_default',
-          help='config group or master from mb_config.pyl - default: '
+          '-m', '--queen', default='developer_default',
+          help='config group or queen from mb_config.pyl - default: '
                'developer_default')
       p.add_argument(
           '-v', '--verbosity', action='count',
@@ -146,9 +146,9 @@ class GenerateGnArgs(object):
       self._options.builder = self._options.outdir
 
     # Check for builder/config in mb config.
-    if self._options.builder not in self._mbw.masters[self._options.master]:
+    if self._options.builder not in self._mbw.queens[self._options.queen]:
       print('%s does not exist in %s for %s' % (
-          self._options.builder, CONFIG, self._options.master))
+          self._options.builder, CONFIG, self._options.queen))
       return 1
 
     # TODO(machenbach): Check if the requested configurations has switched to
@@ -164,7 +164,7 @@ class GenerateGnArgs(object):
       '-u', os.path.join('tools', 'mb', 'mb.py'),
       'gen',
       '-f', CONFIG,
-      '-m', self._options.master,
+      '-m', self._options.queen,
       '-b', self._options.builder,
       gn_outdir,
     ])
@@ -189,7 +189,7 @@ class GenerateGnArgs(object):
     return 0
 
   def cmd_list(self):
-    print('\n'.join(sorted(self._mbw.masters[self._options.master])))
+    print('\n'.join(sorted(self._mbw.queens[self._options.queen])))
     return 0
 
   def verbose_print_1(self, text):
@@ -292,10 +292,10 @@ class GenerateGnArgs(object):
     self._mbw.ParseArgs(['lookup', '-f', CONFIG])
     self._mbw.ReadConfigFile()
 
-    if not self._options.master in self._mbw.masters:
-      print('%s not found in %s\n' % (self._options.master, CONFIG))
+    if not self._options.queen in self._mbw.queens:
+      print('%s not found in %s\n' % (self._options.queen, CONFIG))
       print('Choose one of:\n%s\n' % (
-          '\n'.join(sorted(self._mbw.masters.keys()))))
+          '\n'.join(sorted(self._mbw.queens.keys()))))
       return 1
 
     return self._options.func()

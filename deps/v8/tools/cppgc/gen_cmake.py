@@ -11,7 +11,7 @@ from contextlib import suppress
 from collections import namedtuple
 from datetime import datetime
 
-# GN grammar from https://gn.googlesource.com/gn/+/master/src/gn/parser.cc.
+# GN grammar from https://gn.googlesource.com/gn/+/queen/src/gn/parser.cc.
 GN_GRAMMAR = """
     ?file : statement_list
 

@@ -19,7 +19,7 @@ const random = require('./random.js');
 
 const globalIdentifiers = new Set(Object.keys(globals.builtin));
 const propertyNames = new Set([
-    // Parsed from https://github.com/tc39/ecma262/blob/master/spec.html
+    // Parsed from https://github.com/tc39/ecma262/blob/queen/spec.html
     'add',
     'anchor',
     'apply',

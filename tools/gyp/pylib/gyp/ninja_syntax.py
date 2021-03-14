@@ -1,5 +1,5 @@
 # This file comes from
-#   https://github.com/martine/ninja/blob/master/misc/ninja_syntax.py
+#   https://github.com/martine/ninja/blob/queen/misc/ninja_syntax.py
 # Do not edit!  Edit the upstream one instead.
 
 """Python module for generating .ninja files.

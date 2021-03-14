@@ -48,11 +48,11 @@ def CheckRepoIsClean(path, suffix):
     raise Exception('%s does not end with /%s' % (path, suffix))
 
 
-def CheckRepoIsNotAtMasterBranch(path):
+def CheckRepoIsNotAtQueenBranch(path):
   os.chdir(path)
   stdout = RunCmd(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-  if stdout == 'master':
-    raise Exception('%s is at master branch - refusing to copy there.' % path)
+  if stdout == 'queen':
+    raise Exception('%s is at queen branch - refusing to copy there.' % path)
 
 
 def CheckRepoIsV8Checkout(path):
@@ -111,10 +111,10 @@ def main(argv):
   CheckRepoIsClean(downstream, '/v8')
   CheckRepoIsInspectorProtocolCheckout(upstream)
   CheckRepoIsV8Checkout(downstream)
-  # Check that the destination Git repo isn't at the master branch - it's
-  # generally a bad idea to check into the master branch, so we catch this
+  # Check that the destination Git repo isn't at the queen branch - it's
+  # generally a bad idea to check into the queen branch, so we catch this
   # common pilot error here early.
-  CheckRepoIsNotAtMasterBranch(downstream)
+  CheckRepoIsNotAtQueenBranch(downstream)
   src_dir = upstream
   dest_dir = os.path.join(downstream, 'third_party/inspector_protocol')
   print('Rolling %s into %s ...' % (src_dir, dest_dir))

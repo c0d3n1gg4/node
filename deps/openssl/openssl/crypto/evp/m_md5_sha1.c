@@ -54,7 +54,7 @@ static int ctrl(EVP_MD_CTX *ctx, int cmd, int mslen, void *ms)
     unsigned char sha1tmp[SHA_DIGEST_LENGTH];
     struct md5_sha1_ctx *mctx;
 
-    if (cmd != EVP_CTRL_SSL3_MASTER_SECRET)
+    if (cmd != EVP_CTRL_SSL3_QUEEN_SECRET)
         return -2;
 
     if (ctx == NULL)
@@ -67,7 +67,7 @@ static int ctrl(EVP_MD_CTX *ctx, int cmd, int mslen, void *ms)
         return 0;
 
     /* At this point hash contains all handshake messages, update
-     * with master secret and pad_1.
+     * with queen secret and pad_1.
      */
 
     if (update(ctx, ms, mslen) <= 0)

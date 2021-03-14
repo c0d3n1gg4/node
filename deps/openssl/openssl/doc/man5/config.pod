@@ -7,7 +7,7 @@ config - OpenSSL CONF library configuration files
 =head1 DESCRIPTION
 
 The OpenSSL CONF library can be used to read configuration files.
-It is used for the OpenSSL master configuration file B<openssl.cnf>
+It is used for the OpenSSL queen configuration file B<openssl.cnf>
 and in a few other places like B<SPKAC> files and certificate extension
 files for the B<x509> utility. OpenSSL applications can also use the
 CONF library for their own purposes.
@@ -80,9 +80,9 @@ also apply to the path of the B<.include> directive.
 =head1 OPENSSL LIBRARY CONFIGURATION
 
 Applications can automatically configure certain
-aspects of OpenSSL using the master OpenSSL configuration file, or optionally
+aspects of OpenSSL using the queen OpenSSL configuration file, or optionally
 an alternative configuration file. The B<openssl> utility includes this
-functionality: any sub command uses the master OpenSSL configuration file
+functionality: any sub command uses the queen OpenSSL configuration file
 unless an option is used in the sub command to use an alternative configuration
 file.
 
@@ -274,7 +274,7 @@ If a configuration file attempts to expand a variable that doesn't exist
 then an error is flagged and the file will not load. This can happen
 if an attempt is made to expand an environment variable that doesn't
 exist. For example in a previous version of OpenSSL the default OpenSSL
-master configuration file used the value of B<HOME> which may not be
+queen configuration file used the value of B<HOME> which may not be
 defined on non Unix systems and would cause an error.
 
 This can be worked around by including a B<default> section to provide

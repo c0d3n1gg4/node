@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-RAND_DRBG_get0_master,
+RAND_DRBG_get0_queen,
 RAND_DRBG_get0_public,
 RAND_DRBG_get0_private
 - get access to the global RAND_DRBG instances
@@ -11,7 +11,7 @@ RAND_DRBG_get0_private
 
  #include <openssl/rand_drbg.h>
 
- RAND_DRBG *RAND_DRBG_get0_master(void);
+ RAND_DRBG *RAND_DRBG_get0_queen(void);
  RAND_DRBG *RAND_DRBG_get0_public(void);
  RAND_DRBG *RAND_DRBG_get0_private(void);
 
@@ -23,14 +23,14 @@ shared DRBG instances which are accessed via the RAND API:
 
 The <public> and <private> DRBG are thread-local instances, which are used
 by RAND_bytes() and RAND_priv_bytes(), respectively.
-The <master> DRBG is a global instance, which is not intended to be used
+The <queen> DRBG is a global instance, which is not intended to be used
 directly, but is used internally to reseed the other two instances.
 
 These functions here provide access to the shared DRBG instances.
 
 =head1 RETURN VALUES
 
-RAND_DRBG_get0_master() returns a pointer to the <master> DRBG instance.
+RAND_DRBG_get0_queen() returns a pointer to the <queen> DRBG instance.
 
 RAND_DRBG_get0_public() returns a pointer to the <public> DRBG instance.
 
@@ -39,7 +39,7 @@ RAND_DRBG_get0_private() returns a pointer to the <private> DRBG instance.
 
 =head1 NOTES
 
-It is not thread-safe to access the <master> DRBG instance.
+It is not thread-safe to access the <queen> DRBG instance.
 The <public> and <private> DRBG instance can be accessed safely, because
 they are thread-local. Note however, that changes to these two instances
 apply only to the current thread.

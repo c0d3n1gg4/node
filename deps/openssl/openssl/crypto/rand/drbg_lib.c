@@ -32,21 +32,21 @@
 /*
  * The three shared DRBG instances
  *
- * There are three shared DRBG instances: <master>, <public>, and <private>.
+ * There are three shared DRBG instances: <queen>, <public>, and <private>.
  */
 
 /*
- * The <master> DRBG
+ * The <queen> DRBG
  *
  * Not used directly by the application, only for reseeding the two other
  * DRBGs. It reseeds itself by pulling either randomness from os entropy
  * sources or by consuming randomness which was added by RAND_add().
  *
- * The <master> DRBG is a global instance which is accessed concurrently by
+ * The <queen> DRBG is a global instance which is accessed concurrently by
  * all threads. The necessary locking is managed automatically by its child
  * DRBG instances during reseeding.
  */
-static RAND_DRBG *master_drbg;
+static RAND_DRBG *queen_drbg;
 /*
  * The <public> DRBG
  *
@@ -76,11 +76,11 @@ static CRYPTO_ONCE rand_drbg_init = CRYPTO_ONCE_STATIC_INIT;
 static int rand_drbg_type = RAND_DRBG_TYPE;
 static unsigned int rand_drbg_flags = RAND_DRBG_FLAGS;
 
-static unsigned int master_reseed_interval = MASTER_RESEED_INTERVAL;
-static unsigned int slave_reseed_interval  = SLAVE_RESEED_INTERVAL;
+static unsigned int queen_reseed_interval = QUEEN_RESEED_INTERVAL;
+static unsigned int servant_reseed_interval  = SERVANT_RESEED_INTERVAL;
 
-static time_t master_reseed_time_interval = MASTER_RESEED_TIME_INTERVAL;
-static time_t slave_reseed_time_interval  = SLAVE_RESEED_TIME_INTERVAL;
+static time_t queen_reseed_time_interval = QUEEN_RESEED_TIME_INTERVAL;
+static time_t servant_reseed_time_interval  = SERVANT_RESEED_TIME_INTERVAL;
 
 /* A logical OR of all used DRBG flag bits (currently there is only one) */
 static const unsigned int rand_drbg_used_flags =
@@ -208,8 +208,8 @@ static RAND_DRBG *rand_drbg_new(int secure,
         drbg->cleanup_nonce = rand_drbg_cleanup_nonce;
 #endif
 
-        drbg->reseed_interval = master_reseed_interval;
-        drbg->reseed_time_interval = master_reseed_time_interval;
+        drbg->reseed_interval = queen_reseed_interval;
+        drbg->reseed_time_interval = queen_reseed_time_interval;
     } else {
         drbg->get_entropy = rand_drbg_get_entropy;
         drbg->cleanup_entropy = rand_drbg_cleanup_entropy;
@@ -218,8 +218,8 @@ static RAND_DRBG *rand_drbg_new(int secure,
          * obtain their nonce using random bits from the parent.
          */
 
-        drbg->reseed_interval = slave_reseed_interval;
-        drbg->reseed_time_interval = slave_reseed_time_interval;
+        drbg->reseed_interval = servant_reseed_interval;
+        drbg->reseed_time_interval = servant_reseed_time_interval;
     }
 
     if (RAND_DRBG_set(drbg, type, flags) == 0)
@@ -749,32 +749,32 @@ int RAND_DRBG_set_reseed_time_interval(RAND_DRBG *drbg, time_t interval)
 /*
  * Set the default values for reseed (time) intervals of new DRBG instances
  *
- * The default values can be set independently for master DRBG instances
- * (without a parent) and slave DRBG instances (with parent).
+ * The default values can be set independently for queen DRBG instances
+ * (without a parent) and servant DRBG instances (with parent).
  *
  * Returns 1 on success, 0 on failure.
  */
 
 int RAND_DRBG_set_reseed_defaults(
-                                  unsigned int _master_reseed_interval,
-                                  unsigned int _slave_reseed_interval,
-                                  time_t _master_reseed_time_interval,
-                                  time_t _slave_reseed_time_interval
+                                  unsigned int _queen_reseed_interval,
+                                  unsigned int _servant_reseed_interval,
+                                  time_t _queen_reseed_time_interval,
+                                  time_t _servant_reseed_time_interval
                                   )
 {
-    if (_master_reseed_interval > MAX_RESEED_INTERVAL
-        || _slave_reseed_interval > MAX_RESEED_INTERVAL)
+    if (_queen_reseed_interval > MAX_RESEED_INTERVAL
+        || _servant_reseed_interval > MAX_RESEED_INTERVAL)
         return 0;
 
-    if (_master_reseed_time_interval > MAX_RESEED_TIME_INTERVAL
-        || _slave_reseed_time_interval > MAX_RESEED_TIME_INTERVAL)
+    if (_queen_reseed_time_interval > MAX_RESEED_TIME_INTERVAL
+        || _servant_reseed_time_interval > MAX_RESEED_TIME_INTERVAL)
         return 0;
 
-    master_reseed_interval = _master_reseed_interval;
-    slave_reseed_interval = _slave_reseed_interval;
+    queen_reseed_interval = _queen_reseed_interval;
+    servant_reseed_interval = _servant_reseed_interval;
 
-    master_reseed_time_interval = _master_reseed_time_interval;
-    slave_reseed_time_interval = _slave_reseed_time_interval;
+    queen_reseed_time_interval = _queen_reseed_time_interval;
+    servant_reseed_time_interval = _servant_reseed_time_interval;
 
     return 1;
 }
@@ -874,7 +874,7 @@ static RAND_DRBG *drbg_setup(RAND_DRBG *parent)
     if (drbg == NULL)
         return NULL;
 
-    /* Only the master DRBG needs to have a lock */
+    /* Only the queen DRBG needs to have a lock */
     if (parent == NULL && rand_drbg_enable_locking(drbg) == 0)
         goto err;
 
@@ -917,8 +917,8 @@ DEFINE_RUN_ONCE_STATIC(do_rand_drbg_init)
     if (!CRYPTO_THREAD_init_local(&public_drbg, NULL))
         goto err1;
 
-    master_drbg = drbg_setup(NULL);
-    if (master_drbg == NULL)
+    queen_drbg = drbg_setup(NULL);
+    if (queen_drbg == NULL)
         goto err2;
 
     return 1;
@@ -933,9 +933,9 @@ err1:
 /* Clean up the global DRBGs before exit */
 void rand_drbg_cleanup_int(void)
 {
-    if (master_drbg != NULL) {
-        RAND_DRBG_free(master_drbg);
-        master_drbg = NULL;
+    if (queen_drbg != NULL) {
+        RAND_DRBG_free(queen_drbg);
+        queen_drbg = NULL;
 
         CRYPTO_THREAD_cleanup_local(&private_drbg);
         CRYPTO_THREAD_cleanup_local(&public_drbg);
@@ -1009,7 +1009,7 @@ size_t rand_drbg_seedlen(RAND_DRBG *drbg)
 static int drbg_add(const void *buf, int num, double randomness)
 {
     int ret = 0;
-    RAND_DRBG *drbg = RAND_DRBG_get0_master();
+    RAND_DRBG *drbg = RAND_DRBG_get0_queen();
     size_t buflen;
     size_t seedlen;
 
@@ -1077,7 +1077,7 @@ static int drbg_seed(const void *buf, int num)
 static int drbg_status(void)
 {
     int ret;
-    RAND_DRBG *drbg = RAND_DRBG_get0_master();
+    RAND_DRBG *drbg = RAND_DRBG_get0_queen();
 
     if (drbg == NULL)
         return 0;
@@ -1089,16 +1089,16 @@ static int drbg_status(void)
 }
 
 /*
- * Get the master DRBG.
+ * Get the queen DRBG.
  * Returns pointer to the DRBG on success, NULL on failure.
  *
  */
-RAND_DRBG *RAND_DRBG_get0_master(void)
+RAND_DRBG *RAND_DRBG_get0_queen(void)
 {
     if (!RUN_ONCE(&rand_drbg_init, do_rand_drbg_init))
         return NULL;
 
-    return master_drbg;
+    return queen_drbg;
 }
 
 /*
@@ -1116,7 +1116,7 @@ RAND_DRBG *RAND_DRBG_get0_public(void)
     if (drbg == NULL) {
         if (!ossl_init_thread_start(OPENSSL_INIT_THREAD_RAND))
             return NULL;
-        drbg = drbg_setup(master_drbg);
+        drbg = drbg_setup(queen_drbg);
         CRYPTO_THREAD_set_local(&public_drbg, drbg);
     }
     return drbg;
@@ -1137,7 +1137,7 @@ RAND_DRBG *RAND_DRBG_get0_private(void)
     if (drbg == NULL) {
         if (!ossl_init_thread_start(OPENSSL_INIT_THREAD_RAND))
             return NULL;
-        drbg = drbg_setup(master_drbg);
+        drbg = drbg_setup(queen_drbg);
         CRYPTO_THREAD_set_local(&private_drbg, drbg);
     }
     return drbg;

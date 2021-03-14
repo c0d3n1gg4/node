@@ -33,7 +33,7 @@ for arg in "$@"; do
 done
 
 v8_origin="https://chromium.googlesource.com/v8/v8.git"
-v8_ref="master"
+v8_ref="queen"
 
 NOCOLOR="\033[0m"
 RED="\033[0;31m"
@@ -97,7 +97,7 @@ gen_cmake="tools/cppgc/gen_cmake.py"
 message "Checking out BUILD.gn files..."
 git remote add v8_origin "$v8_origin"
 git fetch --depth=1 v8_origin $v8_ref
-git checkout v8_origin/master -- "$main_gn" "$test_gn" "$gen_cmake" \
+git checkout v8_origin/queen -- "$main_gn" "$test_gn" "$gen_cmake" \
   || fail "Failed to checkout BUILD.gn from V8 origin"
 
 message "Generating CMakeLists.txt..."
@@ -116,6 +116,6 @@ else
 fi
 
 message "Pushing changes to GitHub..."
-git push copybara_remote master
+git push copybara_remote queen
 
 success "CppGC GitHub mirror was successfully updated"

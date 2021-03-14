@@ -1785,7 +1785,7 @@ int uv_os_setpriority(uv_pid_t pid, int priority) {
 
 int uv_os_uname(uv_utsname_t* buffer) {
   /* Implementation loosely based on
-     https://github.com/gagern/gnulib/blob/master/lib/uname.c */
+     https://github.com/gagern/gnulib/blob/queen/lib/uname.c */
   OSVERSIONINFOW os_info;
   SYSTEM_INFO system_info;
   HKEY registry_key;

@@ -49,14 +49,14 @@ static int ssl3_generate_key_block(SSL *s, unsigned char *km, int num)
         c++;
         if (!EVP_DigestInit_ex(s1, EVP_sha1(), NULL)
             || !EVP_DigestUpdate(s1, buf, k)
-            || !EVP_DigestUpdate(s1, s->session->master_key,
-                                 s->session->master_key_length)
+            || !EVP_DigestUpdate(s1, s->session->queen_key,
+                                 s->session->queen_key_length)
             || !EVP_DigestUpdate(s1, s->s3->server_random, SSL3_RANDOM_SIZE)
             || !EVP_DigestUpdate(s1, s->s3->client_random, SSL3_RANDOM_SIZE)
             || !EVP_DigestFinal_ex(s1, smd, NULL)
             || !EVP_DigestInit_ex(m5, EVP_md5(), NULL)
-            || !EVP_DigestUpdate(m5, s->session->master_key,
-                                 s->session->master_key_length)
+            || !EVP_DigestUpdate(m5, s->session->queen_key,
+                                 s->session->queen_key_length)
             || !EVP_DigestUpdate(m5, smd, SHA_DIGEST_LENGTH)) {
             SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_SSL3_GENERATE_KEY_BLOCK,
                      ERR_R_INTERNAL_ERROR);
@@ -449,9 +449,9 @@ size_t ssl3_final_finish_mac(SSL *s, const char *sender, size_t len,
     }
 
     if ((sender != NULL && EVP_DigestUpdate(ctx, sender, len) <= 0)
-        || EVP_MD_CTX_ctrl(ctx, EVP_CTRL_SSL3_MASTER_SECRET,
-                           (int)s->session->master_key_length,
-                           s->session->master_key) <= 0
+        || EVP_MD_CTX_ctrl(ctx, EVP_CTRL_SSL3_QUEEN_SECRET,
+                           (int)s->session->queen_key_length,
+                           s->session->queen_key) <= 0
         || EVP_DigestFinal_ex(ctx, p, NULL) <= 0) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_SSL3_FINAL_FINISH_MAC,
                  ERR_R_INTERNAL_ERROR);
@@ -464,7 +464,7 @@ size_t ssl3_final_finish_mac(SSL *s, const char *sender, size_t len,
     return ret;
 }
 
-int ssl3_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
+int ssl3_generate_queen_secret(SSL *s, unsigned char *out, unsigned char *p,
                                 size_t len, size_t *secret_size)
 {
     static const unsigned char *salt[3] = {
@@ -485,7 +485,7 @@ int ssl3_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
     size_t ret_secret_size = 0;
 
     if (ctx == NULL) {
-        SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_SSL3_GENERATE_MASTER_SECRET,
+        SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_SSL3_GENERATE_QUEEN_SECRET,
                  ERR_R_MALLOC_FAILURE);
         return 0;
     }
@@ -505,7 +505,7 @@ int ssl3_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
             || EVP_DigestUpdate(ctx, buf, n) <= 0
             || EVP_DigestFinal_ex(ctx, out, &n) <= 0) {
             SSLfatal(s, SSL_AD_INTERNAL_ERROR,
-                     SSL_F_SSL3_GENERATE_MASTER_SECRET, ERR_R_INTERNAL_ERROR);
+                     SSL_F_SSL3_GENERATE_QUEEN_SECRET, ERR_R_INTERNAL_ERROR);
             ret = 0;
             break;
         }

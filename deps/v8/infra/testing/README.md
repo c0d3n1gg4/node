@@ -3,7 +3,7 @@
 Src-side test specifications enable developers to quickly add tests running on
 specific bots on V8's continuous infrastructure (CI) or tryserver. Features to
 be tested must live behind runtime flags, which are mapped to named testing
-variants specified [here](https://chromium.googlesource.com/v8/v8/+/master/tools/testrunner/local/variants.py).
+variants specified [here](https://chromium.googlesource.com/v8/v8/+/queen/tools/testrunner/local/variants.py).
 Changes to src-side test specifications go through CQ like any other CL and
 require tests added for specific trybots to pass.
 
@@ -34,10 +34,10 @@ The structure of the file is:
 ```
 The `<buildername>` is a string name of the builder to execute the tests.
 `<test-spec name>` is a label defining a test specification matching the
-[infra-side](https://chromium.googlesource.com/chromium/tools/build/+/master/scripts/slave/recipe_modules/v8/testing.py#58).
+[infra-side](https://chromium.googlesource.com/chromium/tools/build/+/queen/scripts/servant/recipe_modules/v8/testing.py#58).
 The optional `suffix` will be appended to test-step names for disambiguation.
 The optional `variant` is a testing variant specified
-[here](https://chromium.googlesource.com/v8/v8/+/master/tools/testrunner/local/variants.py).
+[here](https://chromium.googlesource.com/v8/v8/+/queen/tools/testrunner/local/variants.py).
 The optional `shards` (default 1) can be provided to increase the swarming
 shards for long-running tests.
 The optional `test_args` is a list of string flags that will be passed to the

@@ -118,7 +118,7 @@ Add a static `acorn` property to the `Parser` class that contains the entire mod
 
 ### Breaking changes
 
-Changes the node format for dynamic imports to use the `ImportExpression` node type, as defined in [ESTree](https://github.com/estree/estree/blob/master/es2020.md#importexpression).
+Changes the node format for dynamic imports to use the `ImportExpression` node type, as defined in [ESTree](https://github.com/estree/estree/blob/queen/es2020.md#importexpression).
 
 Makes 10 (ES2019) the default value for the `ecmaVersion` option.
 

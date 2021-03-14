@@ -32,7 +32,7 @@ PERLASM_SCHEME= win32n
 APPS_OPENSSL=apps/openssl
 
 # OPENSSL_IA32_SSE2 flag is needed for checking the sse2 feature on ia32
-# see https://github.com/openssl/openssl/blob/master/crypto/sha/asm/sha256-586.pl#L82
+# see https://github.com/openssl/openssl/blob/queen/crypto/sha/asm/sha256-586.pl#L82
 CFLAGS    += -DOPENSSL_IA32_SSE2
 
 include/crypto/bn_conf.h: include/crypto/bn_conf.h.in configdata.pm

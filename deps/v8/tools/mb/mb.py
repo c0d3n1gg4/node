@@ -62,7 +62,7 @@ class MetaBuildWrapper(object):
     self.args = argparse.Namespace()
     self.configs = {}
     self.luci_tryservers = {}
-    self.masters = {}
+    self.queens = {}
     self.mixins = {}
     self.isolate_exe = 'isolate.exe' if self.platform.startswith(
         'win') else 'isolate'
@@ -88,8 +88,8 @@ class MetaBuildWrapper(object):
     def AddCommonOptions(subp):
       subp.add_argument('-b', '--builder',
                         help='builder name to look up config from')
-      subp.add_argument('-m', '--master',
-                        help='master name to look up config from')
+      subp.add_argument('-m', '--queen',
+                        help='queen name to look up config from')
       subp.add_argument('-c', '--config',
                         help='configuration to analyze')
       subp.add_argument('--phase',
@@ -276,10 +276,10 @@ class MetaBuildWrapper(object):
   def CmdExport(self):
     self.ReadConfigFile()
     obj = {}
-    for master, builders in self.masters.items():
-      obj[master] = {}
+    for queen, builders in self.queens.items():
+      obj[queen] = {}
       for builder in builders:
-        config = self.masters[master][builder]
+        config = self.queens[queen][builder]
         if not config:
           continue
 
@@ -293,7 +293,7 @@ class MetaBuildWrapper(object):
           if 'error' in args:
             continue
 
-        obj[master][builder] = args
+        obj[queen][builder] = args
 
     # Dump object and trim trailing whitespace.
     s = '\n'.join(l.rstrip() for l in
@@ -450,10 +450,10 @@ class MetaBuildWrapper(object):
       for bot in sorted(self.luci_tryservers[luci_tryserver]):
         self.Print('\tbuilder = %s' % bot)
 
-    for master in sorted(self.masters):
-      if master.startswith('tryserver.'):
-        self.Print('[bucket "master.%s"]' % master)
-        for bot in sorted(self.masters[master]):
+    for queen in sorted(self.queens):
+      if queen.startswith('tryserver.'):
+        self.Print('[bucket "queen.%s"]' % queen)
+        for bot in sorted(self.queens[queen]):
           self.Print('\tbuilder = %s' % bot)
 
     return 0
@@ -466,13 +466,13 @@ class MetaBuildWrapper(object):
 
     # Build a list of all of the configs referenced by builders.
     all_configs = {}
-    for master in self.masters:
-      for config in self.masters[master].values():
+    for queen in self.queens:
+      for config in self.queens[queen].values():
         if isinstance(config, dict):
           for c in config.values():
-            all_configs[c] = master
+            all_configs[c] = queen
         else:
-          all_configs[config] = master
+          all_configs[config] = queen
 
     # Check that every referenced args file or config actually exists.
     for config, loc in all_configs.items():
@@ -523,7 +523,7 @@ class MetaBuildWrapper(object):
     build_dir = self.args.path[0]
 
     vals = self.DefaultVals()
-    if self.args.builder or self.args.master or self.args.config:
+    if self.args.builder or self.args.queen or self.args.config:
       vals = self.Lookup()
       # Re-run gn gen in order to ensure the config is consistent with the
       # build dir.
@@ -573,10 +573,10 @@ class MetaBuildWrapper(object):
     return vals
 
   def ReadIOSBotConfig(self):
-    if not self.args.master or not self.args.builder:
+    if not self.args.queen or not self.args.builder:
       return {}
     path = self.PathJoin(self.chromium_src_dir, 'ios', 'build', 'bots',
-                         self.args.master, self.args.builder + '.json')
+                         self.args.queen, self.args.builder + '.json')
     if not self.Exists(path):
       return {}
 
@@ -599,7 +599,7 @@ class MetaBuildWrapper(object):
 
     self.configs = contents['configs']
     self.luci_tryservers = contents.get('luci_tryservers', {})
-    self.masters = contents['masters']
+    self.queens = contents['queens']
     self.mixins = contents['mixins']
 
   def ReadIsolateMap(self):
@@ -626,38 +626,38 @@ class MetaBuildWrapper(object):
 
   def ConfigFromArgs(self):
     if self.args.config:
-      if self.args.master or self.args.builder:
-        raise MBErr('Can not specific both -c/--config and -m/--master or '
+      if self.args.queen or self.args.builder:
+        raise MBErr('Can not specific both -c/--config and -m/--queen or '
                     '-b/--builder')
 
       return self.args.config
 
-    if not self.args.master or not self.args.builder:
+    if not self.args.queen or not self.args.builder:
       raise MBErr('Must specify either -c/--config or '
-                  '(-m/--master and -b/--builder)')
+                  '(-m/--queen and -b/--builder)')
 
-    if not self.args.master in self.masters:
-      raise MBErr('Master name "%s" not found in "%s"' %
-                  (self.args.master, self.args.config_file))
+    if not self.args.queen in self.queens:
+      raise MBErr('Queen name "%s" not found in "%s"' %
+                  (self.args.queen, self.args.config_file))
 
-    if not self.args.builder in self.masters[self.args.master]:
-      raise MBErr('Builder name "%s"  not found under masters[%s] in "%s"' %
-                  (self.args.builder, self.args.master, self.args.config_file))
+    if not self.args.builder in self.queens[self.args.queen]:
+      raise MBErr('Builder name "%s"  not found under queens[%s] in "%s"' %
+                  (self.args.builder, self.args.queen, self.args.config_file))
 
-    config = self.masters[self.args.master][self.args.builder]
+    config = self.queens[self.args.queen][self.args.builder]
     if isinstance(config, dict):
       if self.args.phase is None:
         raise MBErr('Must specify a build --phase for %s on %s' %
-                    (self.args.builder, self.args.master))
+                    (self.args.builder, self.args.queen))
       phase = str(self.args.phase)
       if phase not in config:
         raise MBErr('Phase %s doesn\'t exist for %s on %s' %
-                    (phase, self.args.builder, self.args.master))
+                    (phase, self.args.builder, self.args.queen))
       return config[phase]
 
     if self.args.phase is not None:
       raise MBErr('Must not specify a build --phase for %s on %s' %
-                  (self.args.builder, self.args.master))
+                  (self.args.builder, self.args.queen))
     return config
 
   def FlattenConfig(self, config):
@@ -689,7 +689,7 @@ class MetaBuildWrapper(object):
       if 'args_file' in mixin_vals:
         if vals['args_file']:
             raise MBErr('args_file specified multiple times in mixins '
-                        'for %s on %s' % (self.args.builder, self.args.master))
+                        'for %s on %s' % (self.args.builder, self.args.queen))
         vals['args_file'] = mixin_vals['args_file']
       if 'gn_args' in mixin_vals:
         if vals['gn_args']:
@@ -1103,9 +1103,9 @@ class MetaBuildWrapper(object):
       raise MBErr('Error %s writing to the output path "%s"' %
                  (e, path))
 
-  def CheckCompile(self, master, builder):
+  def CheckCompile(self, queen, builder):
     url_template = self.args.url_template + '/{builder}/builds/_all?as_text=1'
-    url = urllib2.quote(url_template.format(master=master, builder=builder),
+    url = urllib2.quote(url_template.format(queen=queen, builder=builder),
                         safe=':/()?=')
     try:
       builds = json.loads(self.Fetch(url))

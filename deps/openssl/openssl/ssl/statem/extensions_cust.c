@@ -519,7 +519,7 @@ int SSL_extension_supported(unsigned int ext_type)
 #endif
     case TLSEXT_TYPE_encrypt_then_mac:
     case TLSEXT_TYPE_supported_versions:
-    case TLSEXT_TYPE_extended_master_secret:
+    case TLSEXT_TYPE_extended_queen_secret:
     case TLSEXT_TYPE_psk_kex_modes:
     case TLSEXT_TYPE_cookie:
     case TLSEXT_TYPE_early_data:

@@ -2155,7 +2155,7 @@ class U_I18N_API NumberFormatterSettings {
      * @param usage A `usage` parameter from the units resource. See the
      * unitPreferenceData in *source/data/misc/units.txt*, generated from
      * `unitPreferenceData` in [CLDR's
-     * supplemental/units.xml](https://github.com/unicode-org/cldr/blob/master/common/supplemental/units.xml).
+     * supplemental/units.xml](https://github.com/unicode-org/cldr/blob/queen/common/supplemental/units.xml).
      * @return The fluent chain.
      * @draft ICU 68
      */

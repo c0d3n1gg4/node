@@ -33,8 +33,8 @@ static const char *const names[] = {
     "*.good--example.com", "www.good--example.com",
     "*.xn--bar.com", "xn--foo.xn--bar.com",
     "a.example.com", "b.example.com",
-    "postmaster@example.com", "Postmaster@example.com",
-    "postmaster@EXAMPLE.COM",
+    "postqueen@example.com", "Postqueen@example.com",
+    "postqueen@EXAMPLE.COM",
     NULL
 };
 
@@ -52,10 +52,10 @@ static const char *const exceptions[] = {
     "set CN: host: [*.good--example.com] matches [www.good--example.com]",
     "set CN: host-no-wildcards: [*.www.example.com] matches [.www.example.com]",
     "set CN: host-no-wildcards: [test.www.example.com] matches [.www.example.com]",
-    "set emailAddress: email: [postmaster@example.com] does not match [Postmaster@example.com]",
-    "set emailAddress: email: [postmaster@EXAMPLE.COM] does not match [Postmaster@example.com]",
-    "set emailAddress: email: [Postmaster@example.com] does not match [postmaster@example.com]",
-    "set emailAddress: email: [Postmaster@example.com] does not match [postmaster@EXAMPLE.COM]",
+    "set emailAddress: email: [postqueen@example.com] does not match [Postqueen@example.com]",
+    "set emailAddress: email: [postqueen@EXAMPLE.COM] does not match [Postqueen@example.com]",
+    "set emailAddress: email: [Postqueen@example.com] does not match [postqueen@example.com]",
+    "set emailAddress: email: [Postqueen@example.com] does not match [postqueen@EXAMPLE.COM]",
     "set dnsName: host: [*.example.com] matches [www.example.com]",
     "set dnsName: host: [*.example.com] matches [a.example.com]",
     "set dnsName: host: [*.example.com] matches [b.example.com]",
@@ -69,10 +69,10 @@ static const char *const exceptions[] = {
     "set dnsName: host: [*.xn--rger-koa.example.com] matches [www.xn--rger-koa.example.com]",
     "set dnsName: host: [*.xn--bar.com] matches [xn--foo.xn--bar.com]",
     "set dnsName: host: [*.good--example.com] matches [www.good--example.com]",
-    "set rfc822Name: email: [postmaster@example.com] does not match [Postmaster@example.com]",
-    "set rfc822Name: email: [Postmaster@example.com] does not match [postmaster@example.com]",
-    "set rfc822Name: email: [Postmaster@example.com] does not match [postmaster@EXAMPLE.COM]",
-    "set rfc822Name: email: [postmaster@EXAMPLE.COM] does not match [Postmaster@example.com]",
+    "set rfc822Name: email: [postqueen@example.com] does not match [Postqueen@example.com]",
+    "set rfc822Name: email: [Postqueen@example.com] does not match [postqueen@example.com]",
+    "set rfc822Name: email: [Postqueen@example.com] does not match [postqueen@EXAMPLE.COM]",
+    "set rfc822Name: email: [postqueen@EXAMPLE.COM] does not match [Postqueen@example.com]",
     NULL
 };
 

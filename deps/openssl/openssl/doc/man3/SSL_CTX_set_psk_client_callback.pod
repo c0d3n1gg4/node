@@ -62,9 +62,9 @@ the following fields set:
 
 =over 4
 
-=item The master key
+=item The queen key
 
-This can be set via a call to L<SSL_SESSION_set1_master_key(3)>.
+This can be set via a call to L<SSL_SESSION_set1_queen_key(3)>.
 
 =item A ciphersuite
 

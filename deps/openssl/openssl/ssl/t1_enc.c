@@ -72,8 +72,8 @@ static int tls1_generate_key_block(SSL *s, unsigned char *km, size_t num)
                    TLS_MD_KEY_EXPANSION_CONST,
                    TLS_MD_KEY_EXPANSION_CONST_SIZE, s->s3->server_random,
                    SSL3_RANDOM_SIZE, s->s3->client_random, SSL3_RANDOM_SIZE,
-                   NULL, 0, NULL, 0, s->session->master_key,
-                   s->session->master_key_length, km, num, 1);
+                   NULL, 0, NULL, 0, s->session->queen_key,
+                   s->session->queen_key_length, km, num, 1);
 
     return ret;
 }
@@ -388,11 +388,11 @@ int tls1_setup_key_block(SSL *s)
             printf("%02X%c", s->s3->server_random[z],
                    ((z + 1) % 16) ? ' ' : '\n');
     }
-    printf("master key\n");
+    printf("queen key\n");
     {
         size_t z;
-        for (z = 0; z < s->session->master_key_length; z++)
-            printf("%02X%c", s->session->master_key[z],
+        for (z = 0; z < s->session->queen_key_length; z++)
+            printf("%02X%c", s->session->queen_key[z],
                    ((z + 1) % 16) ? ' ' : '\n');
     }
 #endif
@@ -450,7 +450,7 @@ size_t tls1_final_finish_mac(SSL *s, const char *str, size_t slen,
     }
 
     if (!tls1_PRF(s, str, slen, hash, hashlen, NULL, 0, NULL, 0, NULL, 0,
-                  s->session->master_key, s->session->master_key_length,
+                  s->session->queen_key, s->session->queen_key_length,
                   out, TLS1_FINISH_MAC_LENGTH, 1)) {
         /* SSLfatal() already called */
         return 0;
@@ -459,7 +459,7 @@ size_t tls1_final_finish_mac(SSL *s, const char *str, size_t slen,
     return TLS1_FINISH_MAC_LENGTH;
 }
 
-int tls1_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
+int tls1_generate_queen_secret(SSL *s, unsigned char *out, unsigned char *p,
                                 size_t len, size_t *secret_size)
 {
     if (s->session->flags & SSL_SESS_FLAG_EXTMS) {
@@ -480,43 +480,43 @@ int tls1_generate_master_secret(SSL *s, unsigned char *out, unsigned char *p,
         BIO_dump_fp(stderr, (char *)hash, hashlen);
 #endif
         if (!tls1_PRF(s,
-                      TLS_MD_EXTENDED_MASTER_SECRET_CONST,
-                      TLS_MD_EXTENDED_MASTER_SECRET_CONST_SIZE,
+                      TLS_MD_EXTENDED_QUEEN_SECRET_CONST,
+                      TLS_MD_EXTENDED_QUEEN_SECRET_CONST_SIZE,
                       hash, hashlen,
                       NULL, 0,
                       NULL, 0,
                       NULL, 0, p, len, out,
-                      SSL3_MASTER_SECRET_SIZE, 1)) {
+                      SSL3_QUEEN_SECRET_SIZE, 1)) {
             /* SSLfatal() already called */
             return 0;
         }
         OPENSSL_cleanse(hash, hashlen);
     } else {
         if (!tls1_PRF(s,
-                      TLS_MD_MASTER_SECRET_CONST,
-                      TLS_MD_MASTER_SECRET_CONST_SIZE,
+                      TLS_MD_QUEEN_SECRET_CONST,
+                      TLS_MD_QUEEN_SECRET_CONST_SIZE,
                       s->s3->client_random, SSL3_RANDOM_SIZE,
                       NULL, 0,
                       s->s3->server_random, SSL3_RANDOM_SIZE,
                       NULL, 0, p, len, out,
-                      SSL3_MASTER_SECRET_SIZE, 1)) {
+                      SSL3_QUEEN_SECRET_SIZE, 1)) {
            /* SSLfatal() already called */
             return 0;
         }
     }
 #ifdef SSL_DEBUG
-    fprintf(stderr, "Premaster Secret:\n");
+    fprintf(stderr, "Prequeen Secret:\n");
     BIO_dump_fp(stderr, (char *)p, len);
     fprintf(stderr, "Client Random:\n");
     BIO_dump_fp(stderr, (char *)s->s3->client_random, SSL3_RANDOM_SIZE);
     fprintf(stderr, "Server Random:\n");
     BIO_dump_fp(stderr, (char *)s->s3->server_random, SSL3_RANDOM_SIZE);
-    fprintf(stderr, "Master Secret:\n");
-    BIO_dump_fp(stderr, (char *)s->session->master_key,
-                SSL3_MASTER_SECRET_SIZE);
+    fprintf(stderr, "Queen Secret:\n");
+    BIO_dump_fp(stderr, (char *)s->session->queen_key,
+                SSL3_QUEEN_SECRET_SIZE);
 #endif
 
-    *secret_size = SSL3_MASTER_SECRET_SIZE;
+    *secret_size = SSL3_QUEEN_SECRET_SIZE;
     return 1;
 }
 
@@ -571,11 +571,11 @@ int tls1_export_keying_material(SSL *s, unsigned char *out, size_t olen,
     if (memcmp(val, TLS_MD_SERVER_FINISH_CONST,
                TLS_MD_SERVER_FINISH_CONST_SIZE) == 0)
         goto err1;
-    if (memcmp(val, TLS_MD_MASTER_SECRET_CONST,
-               TLS_MD_MASTER_SECRET_CONST_SIZE) == 0)
+    if (memcmp(val, TLS_MD_QUEEN_SECRET_CONST,
+               TLS_MD_QUEEN_SECRET_CONST_SIZE) == 0)
         goto err1;
-    if (memcmp(val, TLS_MD_EXTENDED_MASTER_SECRET_CONST,
-               TLS_MD_EXTENDED_MASTER_SECRET_CONST_SIZE) == 0)
+    if (memcmp(val, TLS_MD_EXTENDED_QUEEN_SECRET_CONST,
+               TLS_MD_EXTENDED_QUEEN_SECRET_CONST_SIZE) == 0)
         goto err1;
     if (memcmp(val, TLS_MD_KEY_EXPANSION_CONST,
                TLS_MD_KEY_EXPANSION_CONST_SIZE) == 0)
@@ -587,7 +587,7 @@ int tls1_export_keying_material(SSL *s, unsigned char *out, size_t olen,
                   NULL, 0,
                   NULL, 0,
                   NULL, 0,
-                  s->session->master_key, s->session->master_key_length,
+                  s->session->queen_key, s->session->queen_key_length,
                   out, olen, 0);
 
     goto ret;

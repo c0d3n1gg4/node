@@ -904,7 +904,7 @@ function tryParseLiteralExports () {
 }
 
 // --- Extracted from AcornJS ---
-//(https://github.com/acornjs/acorn/blob/master/acorn/src/identifier.js#L23
+//(https://github.com/acornjs/acorn/blob/queen/acorn/src/identifier.js#L23
 //
 // MIT License
 

@@ -115,8 +115,8 @@ void ares_free_data(void *dataptr)
         case ARES_DATATYPE_SOA_REPLY:
           if (ptr->data.soa_reply.nsname)
             ares_free(ptr->data.soa_reply.nsname);
-          if (ptr->data.soa_reply.hostmaster)
-            ares_free(ptr->data.soa_reply.hostmaster);
+          if (ptr->data.soa_reply.hostqueen)
+            ares_free(ptr->data.soa_reply.hostqueen);
           break;
 
         case ARES_DATATYPE_CAA_REPLY:
@@ -220,7 +220,7 @@ void *ares_malloc_data(ares_datatype type)
 
       case ARES_DATATYPE_SOA_REPLY:
         ptr->data.soa_reply.nsname = NULL;
-        ptr->data.soa_reply.hostmaster = NULL;
+        ptr->data.soa_reply.hostqueen = NULL;
         ptr->data.soa_reply.serial = 0;
         ptr->data.soa_reply.refresh = 0;
         ptr->data.soa_reply.retry = 0;

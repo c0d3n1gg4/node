@@ -10,7 +10,7 @@
    the bit stream.
 
    Adapted from the CompressFragment() function in
-   https://github.com/google/snappy/blob/master/snappy.cc */
+   https://github.com/google/snappy/blob/queen/snappy.cc */
 
 #include "./compress_fragment.h"
 

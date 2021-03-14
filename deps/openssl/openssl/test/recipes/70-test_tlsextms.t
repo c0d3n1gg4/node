@@ -48,7 +48,7 @@ my $proxy = TLSProxy::Proxy->new(
 
 #Note that EXTMS is only relevant for <TLS1.3
 
-#Test 1: By default server and client should send extended master secret
+#Test 1: By default server and client should send extended queen secret
 # extension.
 #Expected result: ClientHello extension seen; ServerHello extension seen
 #                 Full handshake
@@ -59,9 +59,9 @@ $proxy->start() or plan skip_all => "Unable to start up Proxy for tests";
 my $numtests = 9;
 $numtests++ if (!disabled("tls1_3"));
 plan tests => $numtests;
-checkmessages(1, "Default extended master secret test", 1, 1, 1);
+checkmessages(1, "Default extended queen secret test", 1, 1, 1);
 
-#Test 2: If client omits extended master secret extension, server should too.
+#Test 2: If client omits extended queen secret extension, server should too.
 #Expected result: ClientHello extension not seen; ServerHello extension not seen
 #                 Full handshake
 
@@ -69,7 +69,7 @@ clearall();
 setrmextms(1, 0);
 $proxy->clientflags("-no_tls1_3");
 $proxy->start();
-checkmessages(2, "No client extension extended master secret test", 0, 0, 1);
+checkmessages(2, "No client extension extended queen secret test", 0, 0, 1);
 
 # Test 3: same as 1 but with session tickets disabled.
 # Expected result: same as test 1.
@@ -78,7 +78,7 @@ clearall();
 $proxy->clientflags("-no_ticket -no_tls1_3");
 setrmextms(0, 0);
 $proxy->start();
-checkmessages(3, "No ticket extended master secret test", 1, 1, 1);
+checkmessages(3, "No ticket extended queen secret test", 1, 1, 1);
 
 # Test 4: same as 2 but with session tickets disabled.
 # Expected result: same as test 2.
@@ -87,9 +87,9 @@ clearall();
 $proxy->clientflags("-no_ticket -no_tls1_3");
 setrmextms(1, 0);
 $proxy->start();
-checkmessages(4, "No ticket, no client extension extended master secret test", 0, 0, 1);
+checkmessages(4, "No ticket, no client extension extended queen secret test", 0, 0, 1);
 
-#Test 5: Session resumption extended master secret test
+#Test 5: Session resumption extended queen secret test
 #
 #Expected result: ClientHello extension seen; ServerHello extension seen
 #                 Abbreviated handshake
@@ -103,10 +103,10 @@ $proxy->start();
 $proxy->clearClient();
 $proxy->clientflags("-no_tls1_3 -sess_in ".$session);
 $proxy->clientstart();
-checkmessages(5, "Session resumption extended master secret test", 1, 1, 0);
+checkmessages(5, "Session resumption extended queen secret test", 1, 1, 0);
 unlink $session;
 
-#Test 6: Session resumption extended master secret test original session
+#Test 6: Session resumption extended queen secret test original session
 # omits extension. Server must not resume session.
 #Expected result: ClientHello extension seen; ServerHello extension seen
 #                 Full handshake
@@ -121,10 +121,10 @@ $proxy->clearClient();
 $proxy->clientflags("-no_tls1_3 -sess_in ".$session);
 setrmextms(0, 0);
 $proxy->clientstart();
-checkmessages(6, "Session resumption extended master secret test", 1, 1, 1);
+checkmessages(6, "Session resumption extended queen secret test", 1, 1, 1);
 unlink $session;
 
-#Test 7: Session resumption extended master secret test resumed session
+#Test 7: Session resumption extended queen secret test resumed session
 # omits client extension. Server must abort connection.
 #Expected result: aborted connection.
 
@@ -141,7 +141,7 @@ $proxy->clientstart();
 ok(TLSProxy::Message->fail(), "Client inconsistent session resumption");
 unlink $session;
 
-#Test 8: Session resumption extended master secret test resumed session
+#Test 8: Session resumption extended queen secret test resumed session
 # omits server extension. Client must abort connection.
 #Expected result: aborted connection.
 
@@ -158,7 +158,7 @@ $proxy->clientstart();
 ok(TLSProxy::Message->fail(), "Server inconsistent session resumption 1");
 unlink $session;
 
-#Test 9: Session resumption extended master secret test initial session
+#Test 9: Session resumption extended queen secret test initial session
 # omits server extension. Client must abort connection.
 #Expected result: aborted connection.
 
@@ -175,7 +175,7 @@ $proxy->clientstart();
 ok(TLSProxy::Message->fail(), "Server inconsistent session resumption 2");
 unlink $session;
 
-#Test 10: In TLS1.3 we should not negotiate extended master secret
+#Test 10: In TLS1.3 we should not negotiate extended queen secret
 #Expected result: ClientHello extension seen; ServerHello extension not seen
 #                 TLS1.3 handshake (will appear as abbreviated handshake
 #                 because of no CKE message)
@@ -183,7 +183,7 @@ if (!disabled("tls1_3")) {
     clearall();
     setrmextms(0, 0);
     $proxy->start();
-    checkmessages(10, "TLS1.3 extended master secret test", 1, 0, 0);
+    checkmessages(10, "TLS1.3 extended queen secret test", 1, 0, 0);
 }
 
 
@@ -193,11 +193,11 @@ sub extms_filter
 
     foreach my $message (@{$proxy->message_list}) {
         if ($crmextms && $message->mt == TLSProxy::Message::MT_CLIENT_HELLO) {
-            $message->delete_extension(TLSProxy::Message::EXT_EXTENDED_MASTER_SECRET);
+            $message->delete_extension(TLSProxy::Message::EXT_EXTENDED_QUEEN_SECRET);
             $message->repack();
         }
         if ($srmextms && $message->mt == TLSProxy::Message::MT_SERVER_HELLO) {
-            $message->delete_extension(TLSProxy::Message::EXT_EXTENDED_MASTER_SECRET);
+            $message->delete_extension(TLSProxy::Message::EXT_EXTENDED_QUEEN_SECRET);
             $message->repack();
         }
     }
@@ -215,7 +215,7 @@ sub checkmessages($$$$$)
         #Get the extensions data
         my %extensions = %{$message->extension_data};
         if (defined
-            $extensions{TLSProxy::Message::EXT_EXTENDED_MASTER_SECRET}) {
+            $extensions{TLSProxy::Message::EXT_EXTENDED_QUEEN_SECRET}) {
             if ($message->mt == TLSProxy::Message::MT_CLIENT_HELLO) {
                 $cextms = 1;
             } else {
@@ -233,11 +233,11 @@ sub checkmessages($$$$$)
     ok(TLSProxy::Message->success, "Handshake");
 
     ok($testcextms == $cextms,
-       "ClientHello extension extended master secret check");
+       "ClientHello extension extended queen secret check");
     ok($testsextms == $sextms,
-       "ServerHello extension extended master secret check");
+       "ServerHello extension extended queen secret check");
     ok($testhand == $fullhand,
-       "Extended master secret full handshake check");
+       "Extended queen secret full handshake check");
 
     }
 }

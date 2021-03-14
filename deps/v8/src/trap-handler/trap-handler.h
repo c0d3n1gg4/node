@@ -52,7 +52,7 @@ int V8_EXPORT_PRIVATE RegisterHandlerData(
     Address base, size_t size, size_t num_protected_instructions,
     const ProtectedInstructionData* protected_instructions);
 
-/// Removes the data from the master list and frees any memory, if necessary.
+/// Removes the data from the queen list and frees any memory, if necessary.
 /// TODO(mtrofin): We can switch to using size_t for index and not need
 /// kInvalidIndex.
 void V8_EXPORT_PRIVATE ReleaseHandlerData(int index);

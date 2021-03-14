@@ -2,7 +2,7 @@
 
 const common = require('../common');
 
-// Manually converted from https://github.com/web-platform-tests/wpt/blob/master/dom/events/AddEventListenerOptions-passive.html
+// Manually converted from https://github.com/web-platform-tests/wpt/blob/queen/dom/events/AddEventListenerOptions-passive.html
 // in order to define the `document` ourselves
 
 const {

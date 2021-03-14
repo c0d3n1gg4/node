@@ -1,6 +1,6 @@
 'use strict';
 
-// From: https://github.com/w3c/web-platform-tests/blob/master/encoding/api-basics.html
+// From: https://github.com/w3c/web-platform-tests/blob/queen/encoding/api-basics.html
 // This is the part that can be run without ICU
 
 require('../common');

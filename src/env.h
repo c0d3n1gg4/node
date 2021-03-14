@@ -270,7 +270,7 @@ constexpr size_t kFsStatsBufferLength =
   V(help_text_string, "helpText")                                              \
   V(homedir_string, "homedir")                                                 \
   V(host_string, "host")                                                       \
-  V(hostmaster_string, "hostmaster")                                           \
+  V(hostqueen_string, "hostqueen")                                           \
   V(http_1_1_string, "http/1.1")                                               \
   V(id_string, "id")                                                           \
   V(identity_string, "identity")                                               \

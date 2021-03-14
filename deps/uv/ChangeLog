@@ -291,7 +291,7 @@ Changes since version 1.37.0:
 
 * build: check for libraries not provided by libc (Jeroen Roovers)
 
-* doc: fix the order of arguments to calloc() (MasterDuke17)
+* doc: fix the order of arguments to calloc() (QueenDuke17)
 
 * unix: don't abort when getrlimit() fails (Ben Noordhuis)
 
@@ -1771,7 +1771,7 @@ Changes since version 1.14.1:
 
 * android: fix getifaddrs() (Zheng, Lei)
 
-* netbsd: implement uv__tty_is_slave() (Kamil Rytarowski)
+* netbsd: implement uv__tty_is_servant() (Kamil Rytarowski)
 
 * zos: fix readlink for mounts with system variables (jBarz)
 

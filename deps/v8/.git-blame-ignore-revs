@@ -1,4 +1,4 @@
-# git hyper-blame master ignore list.
+# git hyper-blame queen ignore list.
 #
 # This file contains a list of git hashes of revisions to be ignored by git
 # hyper-blame (in depot_tools). These revisions are considered "unimportant" in

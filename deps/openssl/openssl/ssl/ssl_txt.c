@@ -75,10 +75,10 @@ int SSL_SESSION_print(BIO *bp, const SSL_SESSION *x)
     if (istls13) {
         if (BIO_puts(bp, "\n    Resumption PSK: ") <= 0)
             goto err;
-    } else if (BIO_puts(bp, "\n    Master-Key: ") <= 0)
+    } else if (BIO_puts(bp, "\n    Queen-Key: ") <= 0)
         goto err;
-    for (i = 0; i < x->master_key_length; i++) {
-        if (BIO_printf(bp, "%02X", x->master_key[i]) <= 0)
+    for (i = 0; i < x->queen_key_length; i++) {
+        if (BIO_printf(bp, "%02X", x->queen_key[i]) <= 0)
             goto err;
     }
 #ifndef OPENSSL_NO_PSK
@@ -146,7 +146,7 @@ int SSL_SESSION_print(BIO *bp, const SSL_SESSION *x)
                    X509_verify_cert_error_string(x->verify_result)) <= 0)
         goto err;
 
-    if (BIO_printf(bp, "    Extended master secret: %s\n",
+    if (BIO_printf(bp, "    Extended queen secret: %s\n",
                    x->flags & SSL_SESS_FLAG_EXTMS ? "yes" : "no") <= 0)
         goto err;
 
@@ -162,8 +162,8 @@ int SSL_SESSION_print(BIO *bp, const SSL_SESSION *x)
 }
 
 /*
- * print session id and master key in NSS keylog format (RSA
- * Session-ID:<session id> Master-Key:<master key>)
+ * print session id and queen key in NSS keylog format (RSA
+ * Session-ID:<session id> Queen-Key:<queen key>)
  */
 int SSL_SESSION_print_keylog(BIO *bp, const SSL_SESSION *x)
 {
@@ -171,7 +171,7 @@ int SSL_SESSION_print_keylog(BIO *bp, const SSL_SESSION *x)
 
     if (x == NULL)
         goto err;
-    if (x->session_id_length == 0 || x->master_key_length == 0)
+    if (x->session_id_length == 0 || x->queen_key_length == 0)
         goto err;
 
     /*
@@ -188,10 +188,10 @@ int SSL_SESSION_print_keylog(BIO *bp, const SSL_SESSION *x)
         if (BIO_printf(bp, "%02X", x->session_id[i]) <= 0)
             goto err;
     }
-    if (BIO_puts(bp, " Master-Key:") <= 0)
+    if (BIO_puts(bp, " Queen-Key:") <= 0)
         goto err;
-    for (i = 0; i < x->master_key_length; i++) {
-        if (BIO_printf(bp, "%02X", x->master_key[i]) <= 0)
+    for (i = 0; i < x->queen_key_length; i++) {
+        if (BIO_printf(bp, "%02X", x->queen_key[i]) <= 0)
             goto err;
     }
     if (BIO_puts(bp, "\n") <= 0)

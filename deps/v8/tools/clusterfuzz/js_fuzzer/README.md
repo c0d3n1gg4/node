@@ -119,4 +119,4 @@ $ MINIMIZER_PATH = path/to/minimizer
 $ python tools/minimize.py $MINIMIZER_PATH
 ```
 
-The path should point to a local checkout of the [minimizer](https://chrome-internal.googlesource.com/chrome/tools/clusterfuzz/+/refs/heads/master/src/python/bot/minimizer/).
+The path should point to a local checkout of the [minimizer](https://chrome-internal.googlesource.com/chrome/tools/clusterfuzz/+/refs/heads/queen/src/python/bot/minimizer/).

@@ -355,7 +355,7 @@ assert.throws(() => {
         {
           type: 'SOA',
           nsname: 'ns1.example.com',
-          hostmaster: 'admin.example.com',
+          hostqueen: 'admin.example.com',
           serial: 3210987654,
           refresh: 900,
           retry: 900,
@@ -377,7 +377,7 @@ assert.throws(() => {
         {
           type: 'SOA',
           nsname: 'ns1.example.com',
-          hostmaster: 'admin.example.com',
+          hostqueen: 'admin.example.com',
           serial: 3210987654,
           refresh: 900,
           retry: 900,

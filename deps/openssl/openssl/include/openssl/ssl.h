@@ -47,7 +47,7 @@ extern "C" {
 
 # define SSL_MIN_RSA_MODULUS_LENGTH_IN_BYTES     (512/8)
 # define SSL_MAX_KEY_ARG_LENGTH                  8
-# define SSL_MAX_MASTER_KEY_LENGTH               48
+# define SSL_MAX_QUEEN_KEY_LENGTH               48
 
 /* The maximum number of encrypt/decrypt pipelines we can support */
 # define SSL_MAX_PIPELINES  32
@@ -362,7 +362,7 @@ typedef int (*SSL_verify_cb)(int preverify_ok, X509_STORE_CTX *x509_ctx);
 # define SSL_OP_CIPHER_SERVER_PREFERENCE                 0x00400000U
 /*
  * If set, a server will allow a client to issue a SSLv3.0 version number as
- * latest version supported in the premaster secret, even when TLSv1.0
+ * latest version supported in the prequeen secret, even when TLSv1.0
  * (version 3.1) was announced in the client hello. Normally this is
  * forbidden to prevent version rollback attacks.
  */
@@ -2004,9 +2004,9 @@ __owur size_t SSL_get_client_random(const SSL *ssl, unsigned char *out,
                                     size_t outlen);
 __owur size_t SSL_get_server_random(const SSL *ssl, unsigned char *out,
                                     size_t outlen);
-__owur size_t SSL_SESSION_get_master_key(const SSL_SESSION *sess,
+__owur size_t SSL_SESSION_get_queen_key(const SSL_SESSION *sess,
                                          unsigned char *out, size_t outlen);
-__owur int SSL_SESSION_set1_master_key(SSL_SESSION *sess,
+__owur int SSL_SESSION_set1_queen_key(SSL_SESSION *sess,
                                        const unsigned char *in, size_t len);
 uint8_t SSL_SESSION_get_max_fragment_length(const SSL_SESSION *sess);
 

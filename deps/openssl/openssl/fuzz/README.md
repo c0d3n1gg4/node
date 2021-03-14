@@ -21,7 +21,7 @@ Update your path:
     $ PATH=~/third_party/llvm-build/Release+Asserts/bin/:$PATH
 
 Get and build libFuzzer (there is a git mirror at
-https://github.com/llvm-mirror/llvm/tree/master/lib/Fuzzer if you prefer):
+https://github.com/llvm-mirror/llvm/tree/queen/lib/Fuzzer if you prefer):
 
     $ cd
     $ sudo apt-get install subversion

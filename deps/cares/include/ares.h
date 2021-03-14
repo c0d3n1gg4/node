@@ -580,7 +580,7 @@ struct ares_naptr_reply {
 
 struct ares_soa_reply {
   char        *nsname;
-  char        *hostmaster;
+  char        *hostqueen;
   unsigned int serial;
   unsigned int refresh;
   unsigned int retry;

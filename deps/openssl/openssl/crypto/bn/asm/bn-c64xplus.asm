@@ -220,7 +220,7 @@ _bn_div_words:
 ;; Not really Comba algorithm, just straightforward NxM... Dedicated
 ;; fully unrolled real Comba implementations are asymptotically 2x
 ;; faster, but naturally larger undertaking. Purpose of this exercise
-;; was rather to learn to master nested SPLOOPs...
+;; was rather to learn to queen nested SPLOOPs...
 ;;====================================================================
 	.global	_bn_sqr_comba8
 	.global	_bn_mul_comba8

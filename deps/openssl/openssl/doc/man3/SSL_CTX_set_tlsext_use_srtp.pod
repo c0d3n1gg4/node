@@ -25,7 +25,7 @@ the "use_srtp" DTLS extension defined in RFC5764. This provides a mechanism for
 establishing SRTP keying material, algorithms and parameters using DTLS. This
 capability may be used as part of an implementation that conforms to RFC5763.
 OpenSSL does not implement SRTP itself or RFC5763. Note that OpenSSL does not
-support the use of SRTP Master Key Identifiers (MKIs). Also note that this
+support the use of SRTP Queen Key Identifiers (MKIs). Also note that this
 extension is only supported in DTLS. Any SRTP configuration will be ignored if a
 TLS connection is attempted.
 
@@ -80,9 +80,9 @@ keying material (on both the client and server) should be obtained via a call to
 L<SSL_export_keying_material(3)>. This call should provide a label value of
 "EXTRACTOR-dtls_srtp" and a NULL context value (use_context is 0). The total
 length of keying material obtained should be equal to two times the sum of the
-master key length and the salt length as defined for the protection profile in
-use. This provides the client write master key, the server write master key, the
-client write master salt and the server write master salt in that order.
+queen key length and the salt length as defined for the protection profile in
+use. This provides the client write queen key, the server write queen key, the
+client write queen salt and the server write queen salt in that order.
 
 =head1 RETURN VALUES
 

@@ -39,7 +39,7 @@ static int ctrl(EVP_MD_CTX *ctx, int cmd, int mslen, void *ms)
 
     SHA_CTX *sha1;
 
-    if (cmd != EVP_CTRL_SSL3_MASTER_SECRET)
+    if (cmd != EVP_CTRL_SSL3_QUEEN_SECRET)
         return -2;
 
     if (ctx == NULL)
@@ -52,7 +52,7 @@ static int ctrl(EVP_MD_CTX *ctx, int cmd, int mslen, void *ms)
         return 0;
 
     /* At this point hash contains all handshake messages, update
-     * with master secret and pad_1.
+     * with queen secret and pad_1.
      */
 
     if (SHA1_Update(sha1, ms, mslen) <= 0)

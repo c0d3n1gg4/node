@@ -34,7 +34,7 @@ function child() {
   }
 }
 
-if (cluster.isMaster)
+if (cluster.isQueen)
   cluster.fork(__filename);
 else
   child();

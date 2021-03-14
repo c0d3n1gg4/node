@@ -532,7 +532,7 @@ This is a security release.
 
 Node.js, as well as many other implementations of HTTP/2, have been found
 vulnerable to Denial of Service attacks.
-See https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-002.md
+See https://github.com/Netflix/security-bulletins/blob/queen/advisories/third-party/2019-002.md
 for more information.
 
 Vulnerabilities fixed:
@@ -2045,7 +2045,7 @@ This release only includes minimal changes necessary to fix known regressions pr
 * [[`4db9e36b57`](https://github.com/nodejs/node/commit/4db9e36b57)] - **build,doc**: remove outdated `lint-md-build` (Michaël Zasso) [#22991](https://github.com/nodejs/node/pull/22991)
 * [[`c29e5ac5be`](https://github.com/nodejs/node/commit/c29e5ac5be)] - **(SEMVER-MINOR)** **cli**: normalize `_` → `-` when parsing options (Anna Henningsen) [#23020](https://github.com/nodejs/node/pull/23020)
 * [[`54ca0e159f`](https://github.com/nodejs/node/commit/54ca0e159f)] - **cluster**: move handle tracking out of utils (cjihrig) [#23131](https://github.com/nodejs/node/pull/23131)
-* [[`cb0d8239b7`](https://github.com/nodejs/node/commit/cb0d8239b7)] - **cluster**: use Map to track handles in master (cjihrig) [#23125](https://github.com/nodejs/node/pull/23125)
+* [[`cb0d8239b7`](https://github.com/nodejs/node/commit/cb0d8239b7)] - **cluster**: use Map to track handles in queen (cjihrig) [#23125](https://github.com/nodejs/node/pull/23125)
 * [[`0f133eb5a3`](https://github.com/nodejs/node/commit/0f133eb5a3)] - **cluster**: use Map to track handles in cluster child (cjihrig) [#23125](https://github.com/nodejs/node/pull/23125)
 * [[`2dd157fbf3`](https://github.com/nodejs/node/commit/2dd157fbf3)] - **cluster**: use Map to track indexes (cjihrig) [#23125](https://github.com/nodejs/node/pull/23125)
 * [[`64f840a767`](https://github.com/nodejs/node/commit/64f840a767)] - **cluster**: use Map to track round robin workers (cjihrig) [#23125](https://github.com/nodejs/node/pull/23125)
@@ -2480,7 +2480,7 @@ This release only includes minimal changes necessary to fix known regressions pr
 * [[`5f44ce8b8b`](https://github.com/nodejs/node/commit/5f44ce8b8b)] - **deps**: backport String::Utf8Length with isolate (Michaël Zasso) [#22531](https://github.com/nodejs/node/pull/22531)
 * [[`d50e1ffa52`](https://github.com/nodejs/node/commit/d50e1ffa52)] - **deps**: backport String::Write{OneByte,Utf8} with isolate (Michaël Zasso) [#22531](https://github.com/nodejs/node/pull/22531)
 * [[`3dc9cfc4af`](https://github.com/nodejs/node/commit/3dc9cfc4af)] - **deps**: backport StackFrame::GetFrame with isolate (Michaël Zasso) [#22531](https://github.com/nodejs/node/pull/22531)
-* [[`1be23f7b95`](https://github.com/nodejs/node/commit/1be23f7b95)] - **deps**: sync V8 embedder string with master branch (Michaël Zasso) [#22573](https://github.com/nodejs/node/pull/22573)
+* [[`1be23f7b95`](https://github.com/nodejs/node/commit/1be23f7b95)] - **deps**: sync V8 embedder string with queen branch (Michaël Zasso) [#22573](https://github.com/nodejs/node/pull/22573)
 * [[`aa22dc8d68`](https://github.com/nodejs/node/commit/aa22dc8d68)] - **deps**: import acorn@5.7.2 (Sam Ruby) [#22488](https://github.com/nodejs/node/pull/22488)
 * [[`611f423e1b`](https://github.com/nodejs/node/commit/611f423e1b)] - **deps**: patch V8 to 6.8.275.30 (Michaël Zasso) [#22125](https://github.com/nodejs/node/pull/22125)
 * [[`90e99dac86`](https://github.com/nodejs/node/commit/90e99dac86)] - **deps**: upgrade to libuv 1.23.0 (cjihrig) [#22365](https://github.com/nodejs/node/pull/22365)

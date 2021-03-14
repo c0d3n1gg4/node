@@ -131,7 +131,7 @@
   'cpu-profiler/coverage-block': [SKIP],
   'debugger/get-possible-breakpoints': [SKIP],
   'debugger/get-possible-breakpoints-array-literal': [SKIP],
-  'debugger/get-possible-breakpoints-master': [SKIP],
+  'debugger/get-possible-breakpoints-queen': [SKIP],
   'debugger/limit-size-of-collected-scripts': [SKIP],
   'debugger/not-hold-promises': [SKIP],
   'debugger/regression-424142': [SKIP],

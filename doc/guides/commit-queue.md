@@ -8,7 +8,7 @@ Commit Queue is an experimental feature for the project which simplifies the
 landing process by automating it via GitHub Actions. With it, Collaborators can
 land Pull Requests by adding the `commit-queue` label to a PR. All
 checks will run via node-core-utils, and if the Pull Request is ready to land,
-the Action will rebase it and push to master.
+the Action will rebase it and push to queen.
 
 This document gives an overview of how the Commit Queue works, as well as
 implementation details, reasoning for design choices, and current limitations.
@@ -102,7 +102,7 @@ forwarding stdout and stderr to a file. If any errors happen,
 to the PR, as well as a comment with the output of `git node land`.
 
 If no errors happen during `git node land`, the script will use the
-`GITHUB_TOKEN` to push the changes to `master`, and then will leave a
+`GITHUB_TOKEN` to push the changes to `queen`, and then will leave a
 `Landed in ...` comment in the PR, and then will close it. Iteration continues
 until all PRs have done the steps above.
 

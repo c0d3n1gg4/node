@@ -101,10 +101,10 @@ make sure this local email is also added to your
 
 As a best practice to keep your development environment as organized as
 possible, create local branches to work within. These should also be created
-directly off of the `master` branch.
+directly off of the `queen` branch.
 
 ```text
-$ git checkout -b my-branch -t upstream/master
+$ git checkout -b my-branch -t upstream/queen
 ```
 
 ## The process of making changes
@@ -218,11 +218,11 @@ repository.
 
 ```text
 $ git fetch upstream
-$ git rebase upstream/master
+$ git rebase upstream/queen
 ```
 
 This ensures that your working branch has the latest changes from `nodejs/node`
-master.
+queen.
 
 ### Step 6: Test
 
@@ -288,11 +288,11 @@ $ git push origin my-branch
 ```
 
 It is also frequently necessary to synchronize your Pull Request with other
-changes that have landed in `master` by using `git rebase`:
+changes that have landed in `queen` by using `git rebase`:
 
 ```text
 $ git fetch --all
-$ git rebase upstream/master
+$ git rebase upstream/queen
 $ git push --force-with-lease origin my-branch
 ```
 
@@ -350,7 +350,7 @@ When a collaborator lands your Pull Request, they will post
 a comment to the Pull Request page mentioning the commit(s) it
 landed as. GitHub often shows the Pull Request as `Closed` at this
 point, but don't worry. If you look at the branch you raised your
-Pull Request against (probably `master`), you should see a commit with
+Pull Request against (probably `queen`), you should see a commit with
 your name on it. Congratulations and thanks for your contribution!
 
 ## Reviewing pull requests
@@ -539,7 +539,7 @@ For the size of "one logical change",
 [0b5191f](https://github.com/nodejs/node/commit/0b5191f15d0f311c804d542b67e2e922d98834f8)
 can be a good example. It touches the implementation, the documentation,
 and the tests, but is still one logical change. All tests should always pass
-when each individual commit lands on the master branch.
+when each individual commit lands on the queen branch.
 
 ### Getting approvals for your pull request
 

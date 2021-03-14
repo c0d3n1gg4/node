@@ -757,7 +757,7 @@ Vulnerabilities fixed:
 * [[`76d991cf6b`](https://github.com/nodejs/node/commit/76d991cf6b)] - **test**: simplify test-vm-memleak (Rich Trott) [#34881](https://github.com/nodejs/node/pull/34881)
 * [[`d016cdcaa9`](https://github.com/nodejs/node/commit/d016cdcaa9)] - **test**: fix test-cluster-net-listen-relative-path.js to run in / (Rich Trott) [#34820](https://github.com/nodejs/node/pull/34820)
 * [[`cc98103802`](https://github.com/nodejs/node/commit/cc98103802)] - **test**: run REPL preview test regardless of terminal type (Rich Trott) [#34798](https://github.com/nodejs/node/pull/34798)
-* [[`4661b887cf`](https://github.com/nodejs/node/commit/4661b887cf)] - **test**: modernize test-cluster-master-error (Anna Henningsen) [#34685](https://github.com/nodejs/node/pull/34685)
+* [[`4661b887cf`](https://github.com/nodejs/node/commit/4661b887cf)] - **test**: modernize test-cluster-queen-error (Anna Henningsen) [#34685](https://github.com/nodejs/node/pull/34685)
 * [[`a4d50de661`](https://github.com/nodejs/node/commit/a4d50de661)] - **test**: move test-inspector-already-activated-cli to parallel (Rich Trott) [#34755](https://github.com/nodejs/node/pull/34755)
 * [[`4b22d335d1`](https://github.com/nodejs/node/commit/4b22d335d1)] - **test**: move execution of WPT to worker threads (Michaël Zasso) [#34796](https://github.com/nodejs/node/pull/34796)
 * [[`ac776f43f4`](https://github.com/nodejs/node/commit/ac776f43f4)] - **test**: convert assertion that always fails to assert.fail() (Rich Trott) [#34793](https://github.com/nodejs/node/pull/34793)
@@ -2461,7 +2461,7 @@ in future 12.x and 13.x releases.
 **Use Largepages Runtime Option Introduced Linking Failure**:
 
 A Semver-Minor change to introduce `--use-largepages` as a runtime option
-introduced a linking failure. This had been fixed in master but regressed as the fix has not yet gone out
+introduced a linking failure. This had been fixed in queen but regressed as the fix has not yet gone out
 in a Current release. The feature has been reverted, but will be able to reland with a fix in a future
 Semver-Minor release.
 
@@ -3525,7 +3525,7 @@ https://blog.npmjs.org/post/189618601100/binary-planting-with-the-npm-cli
 * [[`58c585e3ed`](https://github.com/nodejs/node/commit/58c585e3ed)] - **deps**: npm: patch support for 13.x (Jordan Harband) [#30079](https://github.com/nodejs/node/pull/30079)
 * [[`2764567f90`](https://github.com/nodejs/node/commit/2764567f90)] - **deps**: upgrade to libuv 1.33.1 (Colin Ihrig) [#29996](https://github.com/nodejs/node/pull/29996)
 * [[`33bd1281fc`](https://github.com/nodejs/node/commit/33bd1281fc)] - **doc**: add missing hash for header link (Nick Schonning) [#30188](https://github.com/nodejs/node/pull/30188)
-* [[`b159b91798`](https://github.com/nodejs/node/commit/b159b91798)] - **doc**: linkify `.setupMaster()` in cluster doc (Trivikram Kamat) [#30204](https://github.com/nodejs/node/pull/30204)
+* [[`b159b91798`](https://github.com/nodejs/node/commit/b159b91798)] - **doc**: linkify `.setupQueen()` in cluster doc (Trivikram Kamat) [#30204](https://github.com/nodejs/node/pull/30204)
 * [[`9c4a9e7337`](https://github.com/nodejs/node/commit/9c4a9e7337)] - **doc**: explain http2 aborted event callback (dev-313) [#30179](https://github.com/nodejs/node/pull/30179)
 * [[`d7bfc6c987`](https://github.com/nodejs/node/commit/d7bfc6c987)] - **doc**: linkify `.fork()` in cluster documentation (Anna Henningsen) [#30163](https://github.com/nodejs/node/pull/30163)
 * [[`a71f210206`](https://github.com/nodejs/node/commit/a71f210206)] - **doc**: update AUTHORS list (Michaël Zasso) [#30142](https://github.com/nodejs/node/pull/30142)
@@ -4199,7 +4199,7 @@ This is a security release.
 
 Node.js, as well as many other implementations of HTTP/2, have been found
 vulnerable to Denial of Service attacks.
-See https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-002.md
+See https://github.com/Netflix/security-bulletins/blob/queen/advisories/third-party/2019-002.md
 for more information.
 
 Vulnerabilities fixed:

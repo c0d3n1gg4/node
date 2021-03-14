@@ -133,7 +133,7 @@ assertFalse("abc".startsWith("bc", -42));
 assertFalse("abc".startsWith("bc", -Infinity));
 
 // Test cases taken from
-// https://github.com/mathiasbynens/String.prototype.startsWith/blob/master/tests/tests.js
+// https://github.com/mathiasbynens/String.prototype.startsWith/blob/queen/tests/tests.js
 Object.prototype[1] = 2; // try to break `arguments[1]`
 
 assertEquals(String.prototype.startsWith.length, 1);

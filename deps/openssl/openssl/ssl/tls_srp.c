@@ -140,7 +140,7 @@ int SSL_CTX_SRP_CTX_init(struct ssl_ctx_st *ctx)
 /* server side */
 int SSL_srp_server_param_with_username(SSL *s, int *ad)
 {
-    unsigned char b[SSL_MAX_MASTER_KEY_LENGTH];
+    unsigned char b[SSL_MAX_QUEEN_KEY_LENGTH];
     int al;
 
     *ad = SSL_AD_UNKNOWN_PSK_IDENTITY;
@@ -246,7 +246,7 @@ int SSL_set_srp_server_param(SSL *s, const BIGNUM *N, const BIGNUM *g,
     return 1;
 }
 
-int srp_generate_server_master_secret(SSL *s)
+int srp_generate_server_queen_secret(SSL *s)
 {
     BIGNUM *K = NULL, *u = NULL;
     int ret = -1, tmp_len = 0;
@@ -263,12 +263,12 @@ int srp_generate_server_master_secret(SSL *s)
     tmp_len = BN_num_bytes(K);
     if ((tmp = OPENSSL_malloc(tmp_len)) == NULL) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
-                 SSL_F_SRP_GENERATE_SERVER_MASTER_SECRET, ERR_R_MALLOC_FAILURE);
+                 SSL_F_SRP_GENERATE_SERVER_QUEEN_SECRET, ERR_R_MALLOC_FAILURE);
         goto err;
     }
     BN_bn2bin(K, tmp);
     /* Calls SSLfatal() as required */
-    ret = ssl_generate_master_secret(s, tmp, tmp_len, 1);
+    ret = ssl_generate_queen_secret(s, tmp, tmp_len, 1);
  err:
     BN_clear_free(K);
     BN_clear_free(u);
@@ -276,7 +276,7 @@ int srp_generate_server_master_secret(SSL *s)
 }
 
 /* client side */
-int srp_generate_client_master_secret(SSL *s)
+int srp_generate_client_queen_secret(SSL *s)
 {
     BIGNUM *x = NULL, *u = NULL, *K = NULL;
     int ret = -1, tmp_len = 0;
@@ -291,14 +291,14 @@ int srp_generate_client_master_secret(SSL *s)
                == NULL
             || s->srp_ctx.SRP_give_srp_client_pwd_callback == NULL) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
-                 SSL_F_SRP_GENERATE_CLIENT_MASTER_SECRET, ERR_R_INTERNAL_ERROR);
+                 SSL_F_SRP_GENERATE_CLIENT_QUEEN_SECRET, ERR_R_INTERNAL_ERROR);
         goto err;
     }
     if ((passwd = s->srp_ctx.SRP_give_srp_client_pwd_callback(s,
                                                       s->srp_ctx.SRP_cb_arg))
             == NULL) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
-                 SSL_F_SRP_GENERATE_CLIENT_MASTER_SECRET,
+                 SSL_F_SRP_GENERATE_CLIENT_QUEEN_SECRET,
                  SSL_R_CALLBACK_FAILED);
         goto err;
     }
@@ -307,19 +307,19 @@ int srp_generate_client_master_secret(SSL *s)
                                         s->srp_ctx.g, x,
                                         s->srp_ctx.a, u)) == NULL) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
-                 SSL_F_SRP_GENERATE_CLIENT_MASTER_SECRET, ERR_R_INTERNAL_ERROR);
+                 SSL_F_SRP_GENERATE_CLIENT_QUEEN_SECRET, ERR_R_INTERNAL_ERROR);
         goto err;
     }
 
     tmp_len = BN_num_bytes(K);
     if ((tmp = OPENSSL_malloc(tmp_len)) == NULL) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR,
-                 SSL_F_SRP_GENERATE_CLIENT_MASTER_SECRET, ERR_R_MALLOC_FAILURE);
+                 SSL_F_SRP_GENERATE_CLIENT_QUEEN_SECRET, ERR_R_MALLOC_FAILURE);
         goto err;
     }
     BN_bn2bin(K, tmp);
     /* Calls SSLfatal() as required */
-    ret = ssl_generate_master_secret(s, tmp, tmp_len, 1);
+    ret = ssl_generate_queen_secret(s, tmp, tmp_len, 1);
  err:
     BN_clear_free(K);
     BN_clear_free(x);
@@ -367,7 +367,7 @@ int srp_verify_server_param(SSL *s)
 
 int SRP_Calc_A_param(SSL *s)
 {
-    unsigned char rnd[SSL_MAX_MASTER_KEY_LENGTH];
+    unsigned char rnd[SSL_MAX_QUEEN_KEY_LENGTH];
 
     if (RAND_priv_bytes(rnd, sizeof(rnd)) <= 0)
         return 0;

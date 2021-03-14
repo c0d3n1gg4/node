@@ -2151,8 +2151,8 @@ def _GetWinLinkRuleNameSuffix(embed_manifest):
     return "_embed" if embed_manifest else ""
 
 
-def _AddWinLinkRules(master_ninja, embed_manifest):
-    """Adds link rules for Windows platform to |master_ninja|."""
+def _AddWinLinkRules(queen_ninja, embed_manifest):
+    """Adds link rules for Windows platform to |queen_ninja|."""
 
     def FullLinkCommand(ldcmd, out, binary_type):
         resource_name = {"exe": "1", "dll": "2"}[binary_type]
@@ -2178,7 +2178,7 @@ def _AddWinLinkRules(master_ninja, embed_manifest):
         "@$binary.rsp" % (sys.executable, use_separate_mspdbsrv)
     )
     dllcmd = FullLinkCommand(dllcmd, "$binary", "dll")
-    master_ninja.rule(
+    queen_ninja.rule(
         "solink" + rule_name_suffix,
         description=dlldesc,
         command=dllcmd,
@@ -2187,7 +2187,7 @@ def _AddWinLinkRules(master_ninja, embed_manifest):
         restat=True,
         pool="link_pool",
     )
-    master_ninja.rule(
+    queen_ninja.rule(
         "solink_module" + rule_name_suffix,
         description=dlldesc,
         command=dllcmd,
@@ -2204,7 +2204,7 @@ def _AddWinLinkRules(master_ninja, embed_manifest):
         % (sys.executable, use_separate_mspdbsrv)
     )
     exe_cmd = FullLinkCommand(exe_cmd, "$binary", "exe")
-    master_ninja.rule(
+    queen_ninja.rule(
         "link" + rule_name_suffix,
         description="LINK%s $binary" % rule_name_suffix.upper(),
         command=exe_cmd,
@@ -2225,8 +2225,8 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
 
     toplevel_build = os.path.join(options.toplevel_dir, build_dir)
 
-    master_ninja_file = OpenOutput(os.path.join(toplevel_build, "build.ninja"))
-    master_ninja = ninja_syntax.Writer(master_ninja_file, width=120)
+    queen_ninja_file = OpenOutput(os.path.join(toplevel_build, "build.ninja"))
+    queen_ninja = ninja_syntax.Writer(queen_ninja_file, width=120)
 
     # Put build-time support tools in out/{config_name}.
     gyp.common.CopyTool(flavor, toplevel_build, generator_flags)
@@ -2340,30 +2340,30 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             if clang_cl:
                 # Use clang-cl to cross-compile for x86 or x86_64.
                 command += " -m32" if arch == "x86" else " -m64"
-            master_ninja.variable("cl_" + arch, command)
+            queen_ninja.variable("cl_" + arch, command)
 
     cc = GetEnvironFallback(["CC_target", "CC"], cc)
-    master_ninja.variable("cc", CommandWithWrapper("CC", wrappers, cc))
+    queen_ninja.variable("cc", CommandWithWrapper("CC", wrappers, cc))
     cxx = GetEnvironFallback(["CXX_target", "CXX"], cxx)
-    master_ninja.variable("cxx", CommandWithWrapper("CXX", wrappers, cxx))
+    queen_ninja.variable("cxx", CommandWithWrapper("CXX", wrappers, cxx))
 
     if flavor == "win":
-        master_ninja.variable("ld", ld)
-        master_ninja.variable("idl", "midl.exe")
-        master_ninja.variable("ar", ar)
-        master_ninja.variable("rc", "rc.exe")
-        master_ninja.variable("ml_x86", "ml.exe")
-        master_ninja.variable("ml_x64", "ml64.exe")
-        master_ninja.variable("mt", "mt.exe")
+        queen_ninja.variable("ld", ld)
+        queen_ninja.variable("idl", "midl.exe")
+        queen_ninja.variable("ar", ar)
+        queen_ninja.variable("rc", "rc.exe")
+        queen_ninja.variable("ml_x86", "ml.exe")
+        queen_ninja.variable("ml_x64", "ml64.exe")
+        queen_ninja.variable("mt", "mt.exe")
     else:
-        master_ninja.variable("ld", CommandWithWrapper("LINK", wrappers, ld))
-        master_ninja.variable("ldxx", CommandWithWrapper("LINK", wrappers, ldxx))
-        master_ninja.variable("ar", GetEnvironFallback(["AR_target", "AR"], ar))
+        queen_ninja.variable("ld", CommandWithWrapper("LINK", wrappers, ld))
+        queen_ninja.variable("ldxx", CommandWithWrapper("LINK", wrappers, ldxx))
+        queen_ninja.variable("ar", GetEnvironFallback(["AR_target", "AR"], ar))
         if flavor != "mac":
             # Mac does not use readelf/nm for .TOC generation, so avoiding polluting
-            # the master ninja with extra unused variables.
-            master_ninja.variable("nm", GetEnvironFallback(["NM_target", "NM"], nm))
-            master_ninja.variable(
+            # the queen ninja with extra unused variables.
+            queen_ninja.variable("nm", GetEnvironFallback(["NM_target", "NM"], nm))
+            queen_ninja.variable(
                 "readelf", GetEnvironFallback(["READELF_target", "READELF"], readelf)
             )
 
@@ -2373,9 +2373,9 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
         if not cxx_host:
             cxx_host = cxx
 
-        master_ninja.variable("ar_host", GetEnvironFallback(["AR_host"], ar_host))
-        master_ninja.variable("nm_host", GetEnvironFallback(["NM_host"], nm_host))
-        master_ninja.variable(
+        queen_ninja.variable("ar_host", GetEnvironFallback(["AR_host"], ar_host))
+        queen_ninja.variable("nm_host", GetEnvironFallback(["NM_host"], nm_host))
+        queen_ninja.variable(
             "readelf_host", GetEnvironFallback(["READELF_host"], readelf_host)
         )
         cc_host = GetEnvironFallback(["CC_host"], cc_host)
@@ -2387,32 +2387,32 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             cc_host = cc_host_global_setting.replace("$(CC)", cc)
         if "$(CXX)" in cxx_host and cxx_host_global_setting:
             cxx_host = cxx_host_global_setting.replace("$(CXX)", cxx)
-        master_ninja.variable(
+        queen_ninja.variable(
             "cc_host", CommandWithWrapper("CC.host", wrappers, cc_host)
         )
-        master_ninja.variable(
+        queen_ninja.variable(
             "cxx_host", CommandWithWrapper("CXX.host", wrappers, cxx_host)
         )
         if flavor == "win":
-            master_ninja.variable("ld_host", ld_host)
-            master_ninja.variable("ldxx_host", ldxx_host)
+            queen_ninja.variable("ld_host", ld_host)
+            queen_ninja.variable("ldxx_host", ldxx_host)
         else:
-            master_ninja.variable(
+            queen_ninja.variable(
                 "ld_host", CommandWithWrapper("LINK", wrappers, ld_host)
             )
-            master_ninja.variable(
+            queen_ninja.variable(
                 "ldxx_host", CommandWithWrapper("LINK", wrappers, ldxx_host)
             )
 
-    master_ninja.newline()
+    queen_ninja.newline()
 
-    master_ninja.pool("link_pool", depth=GetDefaultConcurrentLinks())
-    master_ninja.newline()
+    queen_ninja.pool("link_pool", depth=GetDefaultConcurrentLinks())
+    queen_ninja.newline()
 
     deps = "msvc" if flavor == "win" else "gcc"
 
     if flavor != "win":
-        master_ninja.rule(
+        queen_ninja.rule(
             "cc",
             description="CC $out",
             command=(
@@ -2422,7 +2422,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             depfile="$out.d",
             deps=deps,
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "cc_s",
             description="CC $out",
             command=(
@@ -2430,7 +2430,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
                 "$cflags_pch_c -c $in -o $out"
             ),
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "cxx",
             description="CXX $out",
             command=(
@@ -2457,7 +2457,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             "$cxx /nologo /showIncludes /FC "
             "@$out.rsp /c $in /Fo$out /Fd$pdbname_cc "
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "cc",
             description="CC $out",
             command=cc_command,
@@ -2465,7 +2465,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             rspfile_content="$defines $includes $cflags $cflags_c",
             deps=deps,
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "cxx",
             description="CXX $out",
             command=cxx_command,
@@ -2473,7 +2473,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             rspfile_content="$defines $includes $cflags $cflags_cc",
             deps=deps,
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "idl",
             description="IDL $in",
             command=(
@@ -2482,7 +2482,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
                 "$midl_includes $idlflags" % sys.executable
             ),
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "rc",
             description="RC $in",
             # Note: $in must be last otherwise rc.exe complains.
@@ -2492,7 +2492,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
                 % sys.executable
             ),
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "asm",
             description="ASM $out",
             command=(
@@ -2503,12 +2503,12 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
         )
 
     if flavor != "mac" and flavor != "win":
-        master_ninja.rule(
+        queen_ninja.rule(
             "alink",
             description="AR $out",
             command="rm -f $out && $ar rcs $arflags $out $in",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "alink_thin",
             description="AR $out",
             command="rm -f $out && $ar rcsT $arflags $out $in",
@@ -2534,7 +2534,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             }
         )
 
-        master_ninja.rule(
+        queen_ninja.rule(
             "solink",
             description="SOLINK $lib",
             restat=True,
@@ -2544,7 +2544,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
                              "--no-whole-archive $libs"),
             pool="link_pool",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "solink_module",
             description="SOLINK(module) $lib",
             restat=True,
@@ -2553,7 +2553,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             rspfile_content="-Wl,--start-group $in $solibs $libs -Wl,--end-group",
             pool="link_pool",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "link",
             description="LINK $out",
             command=(
@@ -2563,7 +2563,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             pool="link_pool",
         )
     elif flavor == "win":
-        master_ninja.rule(
+        queen_ninja.rule(
             "alink",
             description="LIB $out",
             command=(
@@ -2573,10 +2573,10 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             rspfile="$out.rsp",
             rspfile_content="$in_newline $libflags",
         )
-        _AddWinLinkRules(master_ninja, embed_manifest=True)
-        _AddWinLinkRules(master_ninja, embed_manifest=False)
+        _AddWinLinkRules(queen_ninja, embed_manifest=True)
+        _AddWinLinkRules(queen_ninja, embed_manifest=False)
     else:
-        master_ninja.rule(
+        queen_ninja.rule(
             "objc",
             description="OBJC $out",
             command=(
@@ -2586,7 +2586,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             depfile="$out.d",
             deps=deps,
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "objcxx",
             description="OBJCXX $out",
             command=(
@@ -2596,7 +2596,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             depfile="$out.d",
             deps=deps,
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "alink",
             description="LIBTOOL-STATIC $out, POSTBUILDS",
             command="rm -f $out && "
@@ -2604,12 +2604,12 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             "-static -o $out $in"
             "$postbuilds",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "lipo",
             description="LIPO $out, POSTBUILDS",
             command="rm -f $out && lipo -create $in -output $out$postbuilds",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "solipo",
             description="SOLIPO $out, POSTBUILDS",
             command=(
@@ -2646,7 +2646,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
         )
 
         solink_suffix = "@$link_file_list$postbuilds"
-        master_ninja.rule(
+        queen_ninja.rule(
             "solink",
             description="SOLINK $lib, POSTBUILDS",
             restat=True,
@@ -2656,7 +2656,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             rspfile_content="$in $solibs $libs",
             pool="link_pool",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "solink_notoc",
             description="SOLINK $lib, POSTBUILDS",
             restat=True,
@@ -2666,7 +2666,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             pool="link_pool",
         )
 
-        master_ninja.rule(
+        queen_ninja.rule(
             "solink_module",
             description="SOLINK(module) $lib, POSTBUILDS",
             restat=True,
@@ -2676,7 +2676,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             rspfile_content="$in $solibs $libs",
             pool="link_pool",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "solink_module_notoc",
             description="SOLINK(module) $lib, POSTBUILDS",
             restat=True,
@@ -2686,13 +2686,13 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             pool="link_pool",
         )
 
-        master_ninja.rule(
+        queen_ninja.rule(
             "link",
             description="LINK $out, POSTBUILDS",
             command=("$ld $ldflags -o $out " "$in $solibs $libs$postbuilds"),
             pool="link_pool",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "preprocess_infoplist",
             description="PREPROCESS INFOPLIST $out",
             command=(
@@ -2700,74 +2700,74 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
                 "plutil -convert xml1 $out $out"
             ),
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "copy_infoplist",
             description="COPY INFOPLIST $in",
             command="$env ./gyp-mac-tool copy-info-plist $in $out $binary $keys",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "merge_infoplist",
             description="MERGE INFOPLISTS $in",
             command="$env ./gyp-mac-tool merge-info-plist $out $in",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "compile_xcassets",
             description="COMPILE XCASSETS $in",
             command="$env ./gyp-mac-tool compile-xcassets $keys $in",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "compile_ios_framework_headers",
             description="COMPILE HEADER MAPS AND COPY FRAMEWORK HEADERS $in",
             command="$env ./gyp-mac-tool compile-ios-framework-header-map $out "
             "$framework $in && $env ./gyp-mac-tool "
             "copy-ios-framework-headers $framework $copy_headers",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "mac_tool",
             description="MACTOOL $mactool_cmd $in",
             command="$env ./gyp-mac-tool $mactool_cmd $in $out $binary",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "package_framework",
             description="PACKAGE FRAMEWORK $out, POSTBUILDS",
             command="./gyp-mac-tool package-framework $out $version$postbuilds "
             "&& touch $out",
         )
-        master_ninja.rule(
+        queen_ninja.rule(
             "package_ios_framework",
             description="PACKAGE IOS FRAMEWORK $out, POSTBUILDS",
             command="./gyp-mac-tool package-ios-framework $out $postbuilds "
             "&& touch $out",
         )
     if flavor == "win":
-        master_ninja.rule(
+        queen_ninja.rule(
             "stamp",
             description="STAMP $out",
             command="%s gyp-win-tool stamp $out" % sys.executable,
         )
     else:
-        master_ninja.rule(
+        queen_ninja.rule(
             "stamp", description="STAMP $out", command="${postbuilds}touch $out"
         )
     if flavor == "win":
-        master_ninja.rule(
+        queen_ninja.rule(
             "copy",
             description="COPY $in $out",
             command="%s gyp-win-tool recursive-mirror $in $out" % sys.executable,
         )
     elif flavor == "zos":
-        master_ninja.rule(
+        queen_ninja.rule(
             "copy",
             description="COPY $in $out",
             command="rm -rf $out && cp -fRP $in $out",
         )
     else:
-        master_ninja.rule(
+        queen_ninja.rule(
             "copy",
             description="COPY $in $out",
             command="ln -f $in $out 2>/dev/null || (rm -rf $out && cp -af $in $out)",
         )
-    master_ninja.newline()
+    queen_ninja.newline()
 
     all_targets = set()
     for build_file in params["build_files"]:
@@ -2843,7 +2843,7 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
             with OpenOutput(os.path.join(toplevel_build, output_file)) as ninja_file:
                 ninja_file.write(ninja_output.getvalue())
             ninja_output.close()
-            master_ninja.subninja(output_file)
+            queen_ninja.subninja(output_file)
 
         if target:
             if name != target.FinalOutput() and spec["toolset"] == "target":
@@ -2859,10 +2859,10 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
         # Write a short name to build this target.  This benefits both the
         # "build chrome" case as well as the gyp tests, which expect to be
         # able to run actions and build libraries by their short name.
-        master_ninja.newline()
-        master_ninja.comment("Short names for targets.")
+        queen_ninja.newline()
+        queen_ninja.comment("Short names for targets.")
         for short_name in sorted(target_short_names):
-            master_ninja.build(
+            queen_ninja.build(
                 short_name,
                 "phony",
                 [x.FinalOutput() for x in target_short_names[short_name]],
@@ -2873,17 +2873,17 @@ def GenerateOutputForConfig(target_list, target_dicts, data, params, config_name
     # haven't already been output for another target.
     empty_target_names = empty_target_names - non_empty_target_names
     if empty_target_names:
-        master_ninja.newline()
-        master_ninja.comment("Empty targets (output for completeness).")
+        queen_ninja.newline()
+        queen_ninja.comment("Empty targets (output for completeness).")
         for name in sorted(empty_target_names):
-            master_ninja.build(name, "phony")
+            queen_ninja.build(name, "phony")
 
     if all_outputs:
-        master_ninja.newline()
-        master_ninja.build("all", "phony", sorted(all_outputs))
-        master_ninja.default(generator_flags.get("default_target", "all"))
+        queen_ninja.newline()
+        queen_ninja.build("all", "phony", sorted(all_outputs))
+        queen_ninja.default(generator_flags.get("default_target", "all"))
 
-    master_ninja_file.close()
+    queen_ninja_file.close()
 
 
 def PerformBuild(data, configurations, params):

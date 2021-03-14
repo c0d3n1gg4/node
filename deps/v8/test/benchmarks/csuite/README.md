@@ -22,7 +22,7 @@ Suppose you are comparing two binaries, and want a quick look at results.
 Normally, Octane should have about 10 runs, but 3 will only take a few
 minutes:
 
-    ./csuite.py -r 3 octane baseline ~/src/v8/out-master/d8
+    ./csuite.py -r 3 octane baseline ~/src/v8/out-queen/d8
     ./csuite.py -r 3 octane compare ~/src/v8/out-mine/d8
 
 You can run from any place:

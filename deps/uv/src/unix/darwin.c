@@ -188,7 +188,7 @@ int uv_uptime(double* uptime) {
 static int uv__get_cpu_speed(uint64_t* speed) {
   /* IOKit */
   void (*pIOObjectRelease)(io_object_t);
-  kern_return_t (*pIOMasterPort)(mach_port_t, mach_port_t*);
+  kern_return_t (*pIOQueenPort)(mach_port_t, mach_port_t*);
   CFMutableDictionaryRef (*pIOServiceMatching)(const char*);
   kern_return_t (*pIOServiceGetMatchingServices)(mach_port_t,
                                                  CFMutableDictionaryRef,
@@ -239,7 +239,7 @@ static int uv__get_cpu_speed(uint64_t* speed) {
       goto out;                                                               \
   }                                                                           \
   while (0)
-  V(iokit_handle, IOMasterPort);
+  V(iokit_handle, IOQueenPort);
   V(iokit_handle, IOServiceMatching);
   V(iokit_handle, IOServiceGetMatchingServices);
   V(iokit_handle, IOIteratorNext);
@@ -255,7 +255,7 @@ static int uv__get_cpu_speed(uint64_t* speed) {
 
 #define S(s) pCFStringCreateWithCString(NULL, (s), kCFStringEncodingUTF8)
 
-  kr = pIOMasterPort(MACH_PORT_NULL, &mach_port);
+  kr = pIOQueenPort(MACH_PORT_NULL, &mach_port);
   assert(kr == KERN_SUCCESS);
   CFMutableDictionaryRef classes_to_match
       = pIOServiceMatching("IOPlatformDevice");

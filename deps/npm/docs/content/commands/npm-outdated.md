@@ -60,7 +60,7 @@ With these `dependencies`:
 ```json
 {
   "glob": "^5.0.15",
-  "nothingness": "github:othiym23/nothingness#master",
+  "nothingness": "github:othiym23/nothingness#queen",
   "npm": "^3.5.1",
   "once": "^1.3.1"
 }

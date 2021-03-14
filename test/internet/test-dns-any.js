@@ -64,7 +64,7 @@ const checkers = {
   },
   checkSOA(r) {
     assert.strictEqual(typeof r.nsname, 'string');
-    assert.strictEqual(typeof r.hostmaster, 'string');
+    assert.strictEqual(typeof r.hostqueen, 'string');
     assert.strictEqual(typeof r.serial, 'number');
     assert.strictEqual(typeof r.refresh, 'number');
     assert.strictEqual(typeof r.retry, 'number');

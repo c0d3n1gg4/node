@@ -73,7 +73,7 @@ static X509 *ocspcert = NULL;
  */
 struct sslapitest_log_counts {
     unsigned int rsa_key_exchange_count;
-    unsigned int master_secret_count;
+    unsigned int queen_secret_count;
     unsigned int client_early_secret_count;
     unsigned int client_handshake_secret_count;
     unsigned int server_handshake_secret_count;
@@ -169,10 +169,10 @@ static int test_keylog_output(char *buffer, const SSL *ssl,
     char *token = NULL;
     unsigned char actual_client_random[SSL3_RANDOM_SIZE] = {0};
     size_t client_random_size = SSL3_RANDOM_SIZE;
-    unsigned char actual_master_key[SSL_MAX_MASTER_KEY_LENGTH] = {0};
-    size_t master_key_size = SSL_MAX_MASTER_KEY_LENGTH;
+    unsigned char actual_queen_key[SSL_MAX_QUEEN_KEY_LENGTH] = {0};
+    size_t queen_key_size = SSL_MAX_QUEEN_KEY_LENGTH;
     unsigned int rsa_key_exchange_count = 0;
-    unsigned int master_secret_count = 0;
+    unsigned int queen_secret_count = 0;
     unsigned int client_early_secret_count = 0;
     unsigned int client_handshake_secret_count = 0;
     unsigned int server_handshake_secret_count = 0;
@@ -185,8 +185,8 @@ static int test_keylog_output(char *buffer, const SSL *ssl,
          token = strtok(NULL, " \n")) {
         if (strcmp(token, "RSA") == 0) {
             /*
-             * Premaster secret. Tokens should be: 16 ASCII bytes of
-             * hex-encoded encrypted secret, then the hex-encoded pre-master
+             * Prequeen secret. Tokens should be: 16 ASCII bytes of
+             * hex-encoded encrypted secret, then the hex-encoded pre-queen
              * secret.
              */
             if (!TEST_ptr(token = strtok(NULL, " \n")))
@@ -196,15 +196,15 @@ static int test_keylog_output(char *buffer, const SSL *ssl,
             if (!TEST_ptr(token = strtok(NULL, " \n")))
                 return 0;
             /*
-             * We can't sensibly check the log because the premaster secret is
-             * transient, and OpenSSL doesn't keep hold of it once the master
+             * We can't sensibly check the log because the prequeen secret is
+             * transient, and OpenSSL doesn't keep hold of it once the queen
              * secret is generated.
              */
             rsa_key_exchange_count++;
         } else if (strcmp(token, "CLIENT_RANDOM") == 0) {
             /*
-             * Master secret. Tokens should be: 64 ASCII bytes of hex-encoded
-             * client random, then the hex-encoded master secret.
+             * Queen secret. Tokens should be: 64 ASCII bytes of hex-encoded
+             * client random, then the hex-encoded queen secret.
              */
             client_random_size = SSL_get_client_random(ssl,
                                                        actual_client_random,
@@ -223,16 +223,16 @@ static int test_keylog_output(char *buffer, const SSL *ssl,
 
             if (!TEST_ptr(token = strtok(NULL, " \n")))
                 return 0;
-            master_key_size = SSL_SESSION_get_master_key(session,
-                                                         actual_master_key,
-                                                         master_key_size);
-            if (!TEST_size_t_ne(master_key_size, 0))
+            queen_key_size = SSL_SESSION_get_queen_key(session,
+                                                         actual_queen_key,
+                                                         queen_key_size);
+            if (!TEST_size_t_ne(queen_key_size, 0))
                 return 0;
             if (!TEST_false(compare_hex_encoded_buffer(token, strlen(token),
-                                                       actual_master_key,
-                                                       master_key_size)))
+                                                       actual_queen_key,
+                                                       queen_key_size)))
                 return 0;
-            master_secret_count++;
+            queen_secret_count++;
         } else if (strcmp(token, "CLIENT_EARLY_TRAFFIC_SECRET") == 0
                     || strcmp(token, "CLIENT_HANDSHAKE_TRAFFIC_SECRET") == 0
                     || strcmp(token, "SERVER_HANDSHAKE_TRAFFIC_SECRET") == 0
@@ -291,8 +291,8 @@ static int test_keylog_output(char *buffer, const SSL *ssl,
     /* Got what we expected? */
     if (!TEST_size_t_eq(rsa_key_exchange_count,
                         expected->rsa_key_exchange_count)
-            || !TEST_size_t_eq(master_secret_count,
-                               expected->master_secret_count)
+            || !TEST_size_t_eq(queen_secret_count,
+                               expected->queen_secret_count)
             || !TEST_size_t_eq(client_early_secret_count,
                                expected->client_early_secret_count)
             || !TEST_size_t_eq(client_handshake_secret_count,
@@ -332,7 +332,7 @@ static int test_keylog(void)
                                        &sctx, &cctx, cert, privkey)))
         return 0;
 
-    /* We cannot log the master secret for TLSv1.3, so we should forbid it. */
+    /* We cannot log the queen secret for TLSv1.3, so we should forbid it. */
     SSL_CTX_set_options(cctx, SSL_OP_NO_TLSv1_3);
     SSL_CTX_set_options(sctx, SSL_OP_NO_TLSv1_3);
 
@@ -365,11 +365,11 @@ static int test_keylog(void)
     /*
      * Now we want to test that our output data was vaguely sensible. We
      * do that by using strtok and confirming that we have more or less the
-     * data we expect. For both client and server, we expect to see one master
+     * data we expect. For both client and server, we expect to see one queen
      * secret. The client should also see a RSA key exchange.
      */
     expected.rsa_key_exchange_count = 1;
-    expected.master_secret_count = 1;
+    expected.queen_secret_count = 1;
     if (!TEST_true(test_keylog_output(client_log_buffer, clientssl,
                                       SSL_get_session(clientssl), &expected)))
         goto end;
@@ -392,7 +392,7 @@ end:
 #endif
 
 #ifndef OPENSSL_NO_TLS1_3
-static int test_keylog_no_master_key(void)
+static int test_keylog_no_queen_key(void)
 {
     SSL_CTX *cctx = NULL, *sctx = NULL;
     SSL *clientssl = NULL, *serverssl = NULL;
@@ -2057,9 +2057,9 @@ static unsigned int psk_client_cb(SSL *ssl, const char *hint, char *id,
         return 0;
 
     /* We'll reuse the PSK we set up for TLSv1.3 */
-    if (SSL_SESSION_get_master_key(clientpsk, NULL, 0) > max_psk_len)
+    if (SSL_SESSION_get_queen_key(clientpsk, NULL, 0) > max_psk_len)
         return 0;
-    psklen = SSL_SESSION_get_master_key(clientpsk, psk, max_psk_len);
+    psklen = SSL_SESSION_get_queen_key(clientpsk, psk, max_psk_len);
     strncpy(id, pskid, max_id_len);
 
     return psklen;
@@ -2113,9 +2113,9 @@ static unsigned int psk_server_cb(SSL *ssl, const char *identity,
     }
 
     /* We'll reuse the PSK we set up for TLSv1.3 */
-    if (SSL_SESSION_get_master_key(serverpsk, NULL, 0) > max_psk_len)
+    if (SSL_SESSION_get_queen_key(serverpsk, NULL, 0) > max_psk_len)
         return 0;
-    psklen = SSL_SESSION_get_master_key(serverpsk, psk, max_psk_len);
+    psklen = SSL_SESSION_get_queen_key(serverpsk, psk, max_psk_len);
 
     return psklen;
 }
@@ -2152,7 +2152,7 @@ static SSL_SESSION *create_a_psk(SSL *ssl)
     sess = SSL_SESSION_new();
     if (!TEST_ptr(sess)
             || !TEST_ptr(cipher)
-            || !TEST_true(SSL_SESSION_set1_master_key(sess, key,
+            || !TEST_true(SSL_SESSION_set1_queen_key(sess, key,
                                                       sizeof(key)))
             || !TEST_true(SSL_SESSION_set_cipher(sess, cipher))
             || !TEST_true(
@@ -3748,7 +3748,7 @@ static int test_tls13_psk(int idx)
     clientpsk = SSL_SESSION_new();
     if (!TEST_ptr(clientpsk)
             || !TEST_ptr(cipher)
-            || !TEST_true(SSL_SESSION_set1_master_key(clientpsk, key,
+            || !TEST_true(SSL_SESSION_set1_queen_key(clientpsk, key,
                                                       sizeof(key)))
             || !TEST_true(SSL_SESSION_set_cipher(clientpsk, cipher))
             || !TEST_true(SSL_SESSION_set_protocol_version(clientpsk,
@@ -6773,7 +6773,7 @@ int setup_tests(void)
     ADD_TEST(test_keylog);
 #endif
 #ifndef OPENSSL_NO_TLS1_3
-    ADD_TEST(test_keylog_no_master_key);
+    ADD_TEST(test_keylog_no_queen_key);
 #endif
 #ifndef OPENSSL_NO_TLS1_2
     ADD_TEST(test_client_hello_cb);

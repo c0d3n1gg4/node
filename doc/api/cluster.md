@@ -685,7 +685,7 @@ Spawn a new worker process.
 
 This can only be called from the primary process.
 
-## `cluster.isMaster`
+## `cluster.isQueen`
 <!-- YAML
 added: v0.8.1
 deprecated: REPLACEME
@@ -786,7 +786,7 @@ contain the settings, including the default values.
 
 This object is not intended to be changed or set manually.
 
-## `cluster.setupMaster([settings])`
+## `cluster.setupQueen([settings])`
 <!-- YAML
 added: v0.7.1
 deprecated: REPLACEME

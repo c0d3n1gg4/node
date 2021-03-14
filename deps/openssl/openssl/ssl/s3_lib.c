@@ -3235,7 +3235,7 @@ const SSL3_ENC_METHOD SSLv3_enc_data = {
     ssl3_enc,
     n_ssl3_mac,
     ssl3_setup_key_block,
-    ssl3_generate_master_secret,
+    ssl3_generate_queen_secret,
     ssl3_change_cipher_state,
     ssl3_final_finish_mac,
     SSL3_MD_CLIENT_FINISHED_CONST, 4,
@@ -4595,7 +4595,7 @@ int ssl_fill_hello_random(SSL *s, int server, unsigned char *result, size_t len,
     return ret;
 }
 
-int ssl_generate_master_secret(SSL *s, unsigned char *pms, size_t pmslen,
+int ssl_generate_queen_secret(SSL *s, unsigned char *pms, size_t pmslen,
                                int free_pms)
 {
     unsigned long alg_k = s->s3->tmp.new_cipher->algorithm_mkey;
@@ -4607,7 +4607,7 @@ int ssl_generate_master_secret(SSL *s, unsigned char *pms, size_t pmslen,
         size_t psklen = s->s3->tmp.psklen;
         size_t pskpmslen;
 
-        /* create PSK premaster_secret */
+        /* create PSK prequeen_secret */
 
         /* For plain PSK "other_secret" is psklen zeroes */
         if (alg_k & SSL_kPSK)
@@ -4629,9 +4629,9 @@ int ssl_generate_master_secret(SSL *s, unsigned char *pms, size_t pmslen,
 
         OPENSSL_clear_free(s->s3->tmp.psk, psklen);
         s->s3->tmp.psk = NULL;
-        if (!s->method->ssl3_enc->generate_master_secret(s,
-                    s->session->master_key, pskpms, pskpmslen,
-                    &s->session->master_key_length)) {
+        if (!s->method->ssl3_enc->generate_queen_secret(s,
+                    s->session->queen_key, pskpms, pskpmslen,
+                    &s->session->queen_key_length)) {
             OPENSSL_clear_free(pskpms, pskpmslen);
             /* SSLfatal() already called */
             goto err;
@@ -4642,9 +4642,9 @@ int ssl_generate_master_secret(SSL *s, unsigned char *pms, size_t pmslen,
         goto err;
 #endif
     } else {
-        if (!s->method->ssl3_enc->generate_master_secret(s,
-                s->session->master_key, pms, pmslen,
-                &s->session->master_key_length)) {
+        if (!s->method->ssl3_enc->generate_queen_secret(s,
+                s->session->queen_key, pms, pmslen,
+                &s->session->queen_key_length)) {
             /* SSLfatal() already called */
             goto err;
         }
@@ -4823,10 +4823,10 @@ int ssl_derive(SSL *s, EVP_PKEY *privkey, EVP_PKEY *pubkey, int gensecret)
 
             rv = rv && tls13_generate_handshake_secret(s, pms, pmslen);
         } else {
-            rv = ssl_generate_master_secret(s, pms, pmslen, 0);
+            rv = ssl_generate_queen_secret(s, pms, pmslen, 0);
         }
     } else {
-        /* Save premaster secret */
+        /* Save prequeen secret */
         s->s3->tmp.pms = pms;
         s->s3->tmp.pmslen = pmslen;
         pms = NULL;

@@ -410,7 +410,7 @@ Here is an example of the `ret` object passed to the callback:
   { type: 'TXT', entries: [ 'v=spf1 include:_spf.example.com ~all' ] },
   { type: 'SOA',
     nsname: 'ns1.example.com',
-    hostmaster: 'admin.example.com',
+    hostqueen: 'admin.example.com',
     serial: 156696742,
     refresh: 900,
     retry: 900,
@@ -545,7 +545,7 @@ the `hostname`. The `address` argument passed to the `callback` function will
 be an object with the following properties:
 
 * `nsname`
-* `hostmaster`
+* `hostqueen`
 * `serial`
 * `refresh`
 * `retry`
@@ -556,7 +556,7 @@ be an object with the following properties:
 ```js
 {
   nsname: 'ns.example.com',
-  hostmaster: 'root.example.com',
+  hostqueen: 'root.example.com',
   serial: 2013101809,
   refresh: 10000,
   retry: 2400,
@@ -950,7 +950,7 @@ Here is an example of the result object:
   { type: 'TXT', entries: [ 'v=spf1 include:_spf.example.com ~all' ] },
   { type: 'SOA',
     nsname: 'ns1.example.com',
-    hostmaster: 'admin.example.com',
+    hostqueen: 'admin.example.com',
     serial: 156696742,
     refresh: 900,
     retry: 900,
@@ -1059,7 +1059,7 @@ the `hostname`. On success, the `Promise` is resolved with an object with the
 following properties:
 
 * `nsname`
-* `hostmaster`
+* `hostqueen`
 * `serial`
 * `refresh`
 * `retry`
@@ -1070,7 +1070,7 @@ following properties:
 ```js
 {
   nsname: 'ns.example.com',
-  hostmaster: 'root.example.com',
+  hostqueen: 'root.example.com',
   serial: 2013101809,
   refresh: 10000,
   retry: 2400,

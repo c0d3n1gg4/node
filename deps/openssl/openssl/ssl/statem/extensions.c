@@ -276,7 +276,7 @@ static const EXTENSION_DEFINITION ext_defs[] = {
     INVALID_EXTENSION,
 #endif
     {
-        TLSEXT_TYPE_extended_master_secret,
+        TLSEXT_TYPE_extended_queen_secret,
         SSL_EXT_CLIENT_HELLO | SSL_EXT_TLS1_2_SERVER_HELLO
         | SSL_EXT_TLS1_2_AND_BELOW_ONLY,
         init_ems, tls_parse_ctos_ems, tls_parse_stoc_ems,
@@ -1180,7 +1180,7 @@ static int init_ems(SSL *s, unsigned int context)
 static int final_ems(SSL *s, unsigned int context, int sent)
 {
     /*
-     * Check extended master secret extension is not dropped on
+     * Check extended queen secret extension is not dropped on
      * renegotiation.
      */
     if (!(s->s3->flags & TLS1_FLAGS_RECEIVED_EXTMS)
@@ -1191,7 +1191,7 @@ static int final_ems(SSL *s, unsigned int context, int sent)
     }
     if (!s->server && s->hit) {
         /*
-         * Check extended master secret extension is consistent with
+         * Check extended queen secret extension is consistent with
          * original session.
          */
         if (!(s->s3->flags & TLS1_FLAGS_RECEIVED_EXTMS) !=
@@ -1509,8 +1509,8 @@ int tls_psk_do_binder(SSL *s, const EVP_MD *md, const unsigned char *msgstart,
     else
         early_secret = (unsigned char *)sess->early_secret;
 
-    if (!tls13_generate_secret(s, md, NULL, sess->master_key,
-                               sess->master_key_length, early_secret)) {
+    if (!tls13_generate_secret(s, md, NULL, sess->queen_key,
+                               sess->queen_key_length, early_secret)) {
         /* SSLfatal() already called */
         goto err;
     }

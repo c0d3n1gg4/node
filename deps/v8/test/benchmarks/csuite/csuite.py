@@ -23,7 +23,7 @@ Say you want to see how much optimization buys you:
   ./csuite.py kraken compare ~/src/v8/out/d8
 
 Suppose you are comparing two binaries, quick n' dirty style:
-  ./csuite.py -r 3 octane baseline ~/src/v8/out-master/d8
+  ./csuite.py -r 3 octane baseline ~/src/v8/out-queen/d8
   ./csuite.py -r 3 octane compare ~/src/v8/out-mine/d8
 
 You can run from any place:
@@ -124,7 +124,7 @@ if __name__ == '__main__':
   # Ensure output directory is setup
   output_path_base = os.path.abspath(os.getcwd())
   output_path = os.path.join(output_path_base, "_results")
-  output_file = os.path.join(output_path, "master_" + suite)
+  output_file = os.path.join(output_path, "queen_" + suite)
   if not os.path.exists(output_path):
     if opts.verbose:
       print("Creating directory %s." % output_path)

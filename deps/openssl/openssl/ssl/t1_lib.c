@@ -28,7 +28,7 @@ SSL3_ENC_METHOD const TLSv1_enc_data = {
     tls1_enc,
     tls1_mac,
     tls1_setup_key_block,
-    tls1_generate_master_secret,
+    tls1_generate_queen_secret,
     tls1_change_cipher_state,
     tls1_final_finish_mac,
     TLS_MD_CLIENT_FINISH_CONST, TLS_MD_CLIENT_FINISH_CONST_SIZE,
@@ -45,7 +45,7 @@ SSL3_ENC_METHOD const TLSv1_1_enc_data = {
     tls1_enc,
     tls1_mac,
     tls1_setup_key_block,
-    tls1_generate_master_secret,
+    tls1_generate_queen_secret,
     tls1_change_cipher_state,
     tls1_final_finish_mac,
     TLS_MD_CLIENT_FINISH_CONST, TLS_MD_CLIENT_FINISH_CONST_SIZE,
@@ -62,7 +62,7 @@ SSL3_ENC_METHOD const TLSv1_2_enc_data = {
     tls1_enc,
     tls1_mac,
     tls1_setup_key_block,
-    tls1_generate_master_secret,
+    tls1_generate_queen_secret,
     tls1_change_cipher_state,
     tls1_final_finish_mac,
     TLS_MD_CLIENT_FINISH_CONST, TLS_MD_CLIENT_FINISH_CONST_SIZE,
@@ -80,7 +80,7 @@ SSL3_ENC_METHOD const TLSv1_3_enc_data = {
     tls13_enc,
     tls1_mac,
     tls13_setup_key_block,
-    tls13_generate_master_secret,
+    tls13_generate_queen_secret,
     tls13_change_cipher_state,
     tls13_final_finish_mac,
     TLS_MD_CLIENT_FINISH_CONST, TLS_MD_CLIENT_FINISH_CONST_SIZE,
@@ -1381,7 +1381,7 @@ SSL_TICKET_STATUS tls_decrypt_ticket(SSL *s, const unsigned char *etick,
          * Indicate that the ticket couldn't be decrypted rather than
          * generating the session from ticket now, trigger
          * abbreviated handshake based on external mechanism to
-         * calculate the master secret later.
+         * calculate the queen secret later.
          */
         ret = SSL_TICKET_NO_DECRYPT;
         goto end;

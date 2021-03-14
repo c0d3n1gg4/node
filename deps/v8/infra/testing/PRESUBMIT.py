@@ -37,7 +37,7 @@ SUPPORTED_SWARMING_DIMENSIONS = [
 # This is not an exhaustive list. It only reflects what we currently use. If
 # there's need to specify a different property, add it here and update the
 # properties passed to swarming in:
-# //build/scripts/slave/recipe_modules/v8/testing.py.
+# //build/scripts/servant/recipe_modules/v8/testing.py.
 SUPPORTED_SWARMING_TASK_ATTRS = [
   'expiration',
   'hard_timeout',

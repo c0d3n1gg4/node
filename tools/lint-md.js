@@ -8663,7 +8663,7 @@ if (windows && appData) {
 var npmPrefix = readNpmConfig(null, builtinNpmConfig).prefix;
 
 // If there is no prefix defined, use the defaults
-// See: <https://github.com/eush77/npm-prefix/blob/master/index.js>
+// See: <https://github.com/eush77/npm-prefix/blob/queen/index.js>
 /* istanbul ignore next */
 if (!npmPrefix) {
   npmPrefix = windows
@@ -52730,7 +52730,7 @@ function gfm(options) {
 }
 
 // To aid in future maintenance, this layout closely matches remark-cli/cli.js.
-// https://github.com/remarkjs/remark/blob/master/packages/remark-cli/cli.js
+// https://github.com/remarkjs/remark/blob/queen/packages/remark-cli/cli.js
 
 
 

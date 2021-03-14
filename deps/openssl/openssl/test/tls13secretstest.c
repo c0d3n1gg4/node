@@ -95,7 +95,7 @@ static unsigned char server_hts_iv[] = {
 0xf7, 0xf6, 0x88, 0x4c, 0x49, 0x81, 0x71, 0x6c, 0x2d, 0x0d, 0x29, 0xa4
 };
 
-static unsigned char master_secret[] = {
+static unsigned char queen_secret[] = {
 0x5c, 0x79, 0xd1, 0x69, 0x42, 0x4e, 0x26, 0x2b, 0x56, 0x32, 0x03, 0x62, 0x7b,
 0xe4, 0xeb, 0x51, 0x03, 0x3f, 0x58, 0x8c, 0x43, 0xc9, 0xce, 0x03, 0x73, 0x37,
 0x2d, 0xbc, 0xbc, 0x01, 0x85, 0xa7
@@ -269,8 +269,8 @@ static int test_handshake_secrets(void)
     SSL *s = NULL;
     int ret = 0;
     size_t hashsize;
-    unsigned char out_master_secret[EVP_MAX_MD_SIZE];
-    size_t master_secret_length;
+    unsigned char out_queen_secret[EVP_MAX_MD_SIZE];
+    size_t queen_secret_length;
 
     ctx = SSL_CTX_new(TLS_method());
     if (!TEST_ptr(ctx))
@@ -343,16 +343,16 @@ static int test_handshake_secrets(void)
      */
     full_hash = 1;
 
-    if (!TEST_true(tls13_generate_master_secret(s, out_master_secret,
+    if (!TEST_true(tls13_generate_queen_secret(s, out_queen_secret,
                                                 s->handshake_secret, hashsize,
-                                                &master_secret_length))) {
-        TEST_info("Master secret generation failed");
+                                                &queen_secret_length))) {
+        TEST_info("Queen secret generation failed");
         goto err;
     }
 
-    if (!TEST_mem_eq(out_master_secret, master_secret_length,
-                     master_secret, sizeof(master_secret))) {
-        TEST_info("Master secret does not match");
+    if (!TEST_mem_eq(out_queen_secret, queen_secret_length,
+                     queen_secret, sizeof(queen_secret))) {
+        TEST_info("Queen secret does not match");
         goto err;
     }
 
@@ -363,7 +363,7 @@ static int test_handshake_secrets(void)
     if (!TEST_size_t_eq(sizeof(client_ats_iv), IVLEN))
         goto err;
 
-    if (!TEST_true(test_secret(s, out_master_secret,
+    if (!TEST_true(test_secret(s, out_queen_secret,
                                (unsigned char *)client_ats_label,
                                strlen(client_ats_label), client_ats,
                                client_ats_key, client_ats_iv))) {
@@ -378,7 +378,7 @@ static int test_handshake_secrets(void)
     if (!TEST_size_t_eq(sizeof(server_ats_iv), IVLEN))
         goto err;
 
-    if (!TEST_true(test_secret(s, out_master_secret,
+    if (!TEST_true(test_secret(s, out_queen_secret,
                                (unsigned char *)server_ats_label,
                                strlen(server_ats_label), server_ats,
                                server_ats_key, server_ats_iv))) {

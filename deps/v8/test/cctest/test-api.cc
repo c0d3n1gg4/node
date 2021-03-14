@@ -27517,7 +27517,7 @@ struct ConvertJSValue<uint32_t> {
 // NaNs and +/-Infinity should be 0, otherwise (modulo 2^64) - 2^63.
 // Step 8 - 12 of https://heycam.github.io/webidl/#abstract-opdef-converttoint
 // The int64_t and uint64_t implementations below are copied from Blink:
-// https://source.chromium.org/chromium/chromium/src/+/master:third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h;l=249?q=doubletointeger&sq=&ss=chromium%2Fchromium%2Fsrc
+// https://source.chromium.org/chromium/chromium/src/+/queen:third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h;l=249?q=doubletointeger&sq=&ss=chromium%2Fchromium%2Fsrc
 template <>
 struct ConvertJSValue<int64_t> {
   static Maybe<int64_t> Get(v8::Local<v8::Value> value,

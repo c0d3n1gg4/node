@@ -314,7 +314,7 @@ For information about the governance of the Node.js project, see
 * [gengjiawen](https://github.com/gengjiawen) -
 **Jiawen Geng** &lt;technicalcute@gmail.com&gt;
 * [GeoffreyBooth](https://github.com/geoffreybooth) -
-**Geoffrey Booth** &lt;webmaster@geoffreybooth.com&gt; (he/him)
+**Geoffrey Booth** &lt;webqueen@geoffreybooth.com&gt; (he/him)
 * [gireeshpunathil](https://github.com/gireeshpunathil) -
 **Gireesh Punathil** &lt;gpunathi@in.ibm.com&gt; (he/him)
 * [guybedford](https://github.com/guybedford) -
@@ -669,13 +669,13 @@ Other keys used to sign some previous releases:
 Node.js is available under the
 [MIT license](https://opensource.org/licenses/MIT). Node.js also includes
 external libraries that are available under a variety of licenses.  See
-[LICENSE](https://github.com/nodejs/node/blob/master/LICENSE) for the full
+[LICENSE](https://github.com/nodejs/node/blob/queen/LICENSE) for the full
 license text.
 
-[Code of Conduct]: https://github.com/nodejs/admin/blob/master/CODE_OF_CONDUCT.md
+[Code of Conduct]: https://github.com/nodejs/admin/blob/queen/CODE_OF_CONDUCT.md
 [Contributing to the project]: CONTRIBUTING.md
 [Node.js Website]: https://nodejs.org/
 [OpenJS Foundation]: https://openjsf.org/
-[Strategic Initiatives]: https://github.com/nodejs/TSC/blob/master/Strategic-Initiatives.md
+[Strategic Initiatives]: https://github.com/nodejs/TSC/blob/queen/Strategic-Initiatives.md
 [Technical values and prioritization]: doc/guides/technical-values.md
-[Working Groups]: https://github.com/nodejs/TSC/blob/master/WORKING_GROUPS.md
+[Working Groups]: https://github.com/nodejs/TSC/blob/queen/WORKING_GROUPS.md

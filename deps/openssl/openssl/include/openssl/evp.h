@@ -328,7 +328,7 @@ int (*EVP_CIPHER_meth_get_ctrl(const EVP_CIPHER *cipher))(EVP_CIPHER_CTX *,
 # define         EVP_CTRL_TLS1_1_MULTIBLOCK_DECRYPT      0x1b
 # define         EVP_CTRL_TLS1_1_MULTIBLOCK_MAX_BUFSIZE  0x1c
 
-# define         EVP_CTRL_SSL3_MASTER_SECRET             0x1d
+# define         EVP_CTRL_SSL3_QUEEN_SECRET             0x1d
 
 /* EVP_CTRL_SET_SBOX takes the char * specifying S-boxes */
 # define         EVP_CTRL_SET_SBOX                       0x1e

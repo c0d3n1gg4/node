@@ -61,7 +61,7 @@
    fun:epoll_ctl
    fun:uv__io_poll
    ...
-   obj:/home/sqrt/src/node/master/out/Release/node
+   obj:/home/sqrt/src/node/queen/out/Release/node
 }
 {
    <frame_ptr_ne>

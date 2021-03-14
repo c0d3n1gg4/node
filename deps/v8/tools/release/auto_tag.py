@@ -23,7 +23,7 @@ class Preparation(Step):
 
     self.CommonPrepare()
     self.PrepareBranch()
-    self.GitCheckout("master")
+    self.GitCheckout("queen")
     self.vc.Pull()
 
 

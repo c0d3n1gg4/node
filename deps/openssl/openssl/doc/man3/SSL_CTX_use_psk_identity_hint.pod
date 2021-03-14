@@ -46,7 +46,7 @@ SSL_set_psk_find_session_callback() as appropriate.
 The callback function is given a pointer to the SSL connection in B<ssl> and
 an identity in B<identity> of length B<identity_len>. The callback function
 should identify an SSL_SESSION object that provides the PSK details and store it
-in B<*sess>. The SSL_SESSION object should, as a minimum, set the master key,
+in B<*sess>. The SSL_SESSION object should, as a minimum, set the queen key,
 the ciphersuite and the protocol version. See
 L<SSL_CTX_set_psk_use_session_callback(3)> for details.
 

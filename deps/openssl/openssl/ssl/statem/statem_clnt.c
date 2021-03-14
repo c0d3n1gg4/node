@@ -1155,9 +1155,9 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
      * version indicates the negotiated version: for example from
      * an SSLv2/v3 compatible client hello). The client_version
      * field is the maximum version we permit and it is also
-     * used in RSA encrypted premaster secrets. Some servers can
+     * used in RSA encrypted prequeen secrets. Some servers can
      * choke if we initially report a higher version then
-     * renegotiate to a lower one in the premaster secret. This
+     * renegotiate to a lower one in the prequeen secret. This
      * didn't happen with TLS 1.0 as most servers supported it
      * but it can with TLS 1.1 or later if the server only supports
      * 1.0.
@@ -1165,12 +1165,12 @@ int tls_construct_client_hello(SSL *s, WPACKET *pkt)
      * Possible scenario with previous logic:
      *      1. Client hello indicates TLS 1.2
      *      2. Server hello says TLS 1.0
-     *      3. RSA encrypted premaster secret uses 1.2.
+     *      3. RSA encrypted prequeen secret uses 1.2.
      *      4. Handshake proceeds using TLS 1.0.
      *      5. Server sends hello request to renegotiate.
      *      6. Client hello indicates TLS v1.0 as we now
      *         know that is maximum server supports.
-     *      7. Server chokes on RSA encrypted premaster secret
+     *      7. Server chokes on RSA encrypted prequeen secret
      *         containing version 1.0.
      *
      * For interoperability it should be OK to always use the
@@ -1563,17 +1563,17 @@ MSG_PROCESS_RETURN tls_process_server_hello(SSL *s, PACKET *pkt)
                 && s->ext.session_secret_cb != NULL && s->session->ext.tick) {
             const SSL_CIPHER *pref_cipher = NULL;
             /*
-             * s->session->master_key_length is a size_t, but this is an int for
+             * s->session->queen_key_length is a size_t, but this is an int for
              * backwards compat reasons
              */
-            int master_key_length;
-            master_key_length = sizeof(s->session->master_key);
-            if (s->ext.session_secret_cb(s, s->session->master_key,
-                                         &master_key_length,
+            int queen_key_length;
+            queen_key_length = sizeof(s->session->queen_key);
+            if (s->ext.session_secret_cb(s, s->session->queen_key,
+                                         &queen_key_length,
                                          NULL, &pref_cipher,
                                          s->ext.session_secret_cb_arg)
-                     && master_key_length > 0) {
-                s->session->master_key_length = master_key_length;
+                     && queen_key_length > 0) {
+                s->session->queen_key_length = queen_key_length;
                 s->session->cipher = pref_cipher ?
                     pref_cipher : ssl_get_cipher_by_char(s, cipherchars, 0);
             } else {
@@ -2725,17 +2725,17 @@ MSG_PROCESS_RETURN tls_process_new_session_ticket(SSL *s, PACKET *pkt)
         }
         hashlen = (size_t)hashleni;
 
-        if (!tls13_hkdf_expand(s, md, s->resumption_master_secret,
+        if (!tls13_hkdf_expand(s, md, s->resumption_queen_secret,
                                nonce_label,
                                sizeof(nonce_label) - 1,
                                PACKET_data(&nonce),
                                PACKET_remaining(&nonce),
-                               s->session->master_key,
+                               s->session->queen_key,
                                hashlen, 1)) {
             /* SSLfatal() already called */
             goto err;
         }
-        s->session->master_key_length = hashlen;
+        s->session->queen_key_length = hashlen;
 
         OPENSSL_free(exts);
         ssl_update_cache(s, SSL_SESS_CACHE_CLIENT);
@@ -2984,7 +2984,7 @@ static int tls_construct_cke_rsa(SSL *s, WPACKET *pkt)
         return 0;
     }
 
-    pmslen = SSL_MAX_MASTER_KEY_LENGTH;
+    pmslen = SSL_MAX_QUEEN_KEY_LENGTH;
     pms = OPENSSL_malloc(pmslen);
     if (pms == NULL) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_CKE_RSA,
@@ -3030,7 +3030,7 @@ static int tls_construct_cke_rsa(SSL *s, WPACKET *pkt)
         goto err;
     }
 
-    /* Log the premaster secret, if logging is enabled. */
+    /* Log the prequeen secret, if logging is enabled. */
     if (!ssl_log_rsa_client_key_exchange(s, encdata, enclen, pms, pmslen)) {
         /* SSLfatal() already called */
         goto err;
@@ -3368,7 +3368,7 @@ int tls_client_key_exchange_post_work(SSL *s)
 #ifndef OPENSSL_NO_SRP
     /* Check for SRP */
     if (s->s3->tmp.new_cipher->algorithm_mkey & SSL_kSRP) {
-        if (!srp_generate_client_master_secret(s)) {
+        if (!srp_generate_client_queen_secret(s)) {
             /* SSLfatal() already called */
             goto err;
         }
@@ -3381,9 +3381,9 @@ int tls_client_key_exchange_post_work(SSL *s)
                  SSL_F_TLS_CLIENT_KEY_EXCHANGE_POST_WORK, ERR_R_MALLOC_FAILURE);
         goto err;
     }
-    if (!ssl_generate_master_secret(s, pms, pmslen, 1)) {
+    if (!ssl_generate_queen_secret(s, pms, pmslen, 1)) {
         /* SSLfatal() already called */
-        /* ssl_generate_master_secret frees the pms even on error */
+        /* ssl_generate_queen_secret frees the pms even on error */
         pms = NULL;
         pmslen = 0;
         goto err;

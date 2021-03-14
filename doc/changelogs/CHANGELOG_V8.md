@@ -137,7 +137,7 @@ This is a security release.
 
 Node.js, as well as many other implementations of HTTP/2, have been found
 vulnerable to Denial of Service attacks.
-See https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-002.md
+See https://github.com/Netflix/security-bulletins/blob/queen/advisories/third-party/2019-002.md
 for more information.
 
 Vulnerabilities fixed:
@@ -2369,7 +2369,7 @@ This release marks the transition of Node.js v8 into Long Term Support (LTS) wit
 * [[`45ccf5cc35`](https://github.com/nodejs/node/commit/45ccf5cc35)] - **test**: improve coverage for process.umask (Evan Lucas) [#16188](https://github.com/nodejs/node/pull/16188)
 * [[`f9c1bcb13c`](https://github.com/nodejs/node/commit/f9c1bcb13c)] - **test**: remove message from notStrictEqual (twk-b) [#16048](https://github.com/nodejs/node/pull/16048)
 * [[`5629351c66`](https://github.com/nodejs/node/commit/5629351c66)] - **test**: use fixtures module (Ben Hallion) [#15808](https://github.com/nodejs/node/pull/15808)
-* [[`3f9b0a985c`](https://github.com/nodejs/node/commit/3f9b0a985c)] - **test**: refactor test-cluster-setup-master (Jean-Baptiste Brossard) [#16065](https://github.com/nodejs/node/pull/16065)
+* [[`3f9b0a985c`](https://github.com/nodejs/node/commit/3f9b0a985c)] - **test**: refactor test-cluster-setup-queen (Jean-Baptiste Brossard) [#16065](https://github.com/nodejs/node/pull/16065)
 * [[`8173b0c363`](https://github.com/nodejs/node/commit/8173b0c363)] - **test**: use relative path in pipePrefix (Randal Hanford) [#15988](https://github.com/nodejs/node/pull/15988)
 * [[`fa836fc21b`](https://github.com/nodejs/node/commit/fa836fc21b)] - **test**: replace fixtureDir with fixtures methods (Vladimir Ilic) [#16114](https://github.com/nodejs/node/pull/16114)
 * [[`9e8df31e8d`](https://github.com/nodejs/node/commit/9e8df31e8d)] - **test**: remove error messages in crypto-binary test (Kim Gentes) [#15981](https://github.com/nodejs/node/pull/15981)
@@ -3446,8 +3446,8 @@ https://medium.com/the-node-js-collection/get-ready-a-new-v8-is-coming-node-js-p
 * [[`de3d73c88c`](https://github.com/nodejs/node/commit/de3d73c88c)] - **test**: replace CRLF by LF in a fixture (Vse Mozhet Byt) [#14437](https://github.com/nodejs/node/pull/14437)
 * [[`aeb8d66eec`](https://github.com/nodejs/node/commit/aeb8d66eec)] - **test**: fix test-async-wrap-getasyncid flakyness (Julien Gilli) [#14329](https://github.com/nodejs/node/pull/14329)
 * [[`3c50c592a5`](https://github.com/nodejs/node/commit/3c50c592a5)] - **test**: replace concatenation with template literals (笑斌) [#14293](https://github.com/nodejs/node/pull/14293)
-* [[`1813467d27`](https://github.com/nodejs/node/commit/1813467d27)] - **test**: upgrade tests to work with master’s `common` (Anna Henningsen) [#14459](https://github.com/nodejs/node/pull/14459)
-* [[`d89bb1c6f3`](https://github.com/nodejs/node/commit/d89bb1c6f3)] - **test**: bump test/common to master (Anna Henningsen) [#14459](https://github.com/nodejs/node/pull/14459)
+* [[`1813467d27`](https://github.com/nodejs/node/commit/1813467d27)] - **test**: upgrade tests to work with queen’s `common` (Anna Henningsen) [#14459](https://github.com/nodejs/node/pull/14459)
+* [[`d89bb1c6f3`](https://github.com/nodejs/node/commit/d89bb1c6f3)] - **test**: bump test/common to queen (Anna Henningsen) [#14459](https://github.com/nodejs/node/pull/14459)
 * [[`d7a1637897`](https://github.com/nodejs/node/commit/d7a1637897)] - **test**: change isAix to isAIX (章礼平) [#14263](https://github.com/nodejs/node/pull/14263)
 * [[`552d2be625`](https://github.com/nodejs/node/commit/552d2be625)] - **test**: improve test-util-inspect (Peter Marshall) [#14003](https://github.com/nodejs/node/pull/14003)
 * [[`0418a70d7c`](https://github.com/nodejs/node/commit/0418a70d7c)] - **test**: add non-internet resolveAny tests (Anna Henningsen) [#13883](https://github.com/nodejs/node/pull/13883)
@@ -3516,7 +3516,7 @@ Big thanks to @addaleax who prepared the vast majority of this release.
 * **Cluster**
   * Users now have more fine-grained control over the inspector port used by
     individual cluster workers. Previously, cluster workers were restricted to
-    incrementing from the master's debug port.
+    incrementing from the queen's debug port.
     [[`dfc46e262a`](https://github.com/nodejs/node/commit/dfc46e262a)] -
     [#14140](https://github.com/nodejs/node/pull/14140)
 
@@ -3601,7 +3601,7 @@ Big thanks to @addaleax who prepared the vast majority of this release.
 * [[`575dcdcf0e`](https://github.com/nodejs/node/commit/575dcdcf0e)] - **doc**: correct stream Duplex allowHalfOpen doc (Rich Trott) [#14127](https://github.com/nodejs/node/pull/14127)
 * [[`cfa5e0c3b6`](https://github.com/nodejs/node/commit/cfa5e0c3b6)] - **doc**: note 'resize' event conditions on Windows (Dean Coakley) [#13576](https://github.com/nodejs/node/pull/13576)
 * [[`217e1dc7b1`](https://github.com/nodejs/node/commit/217e1dc7b1)] - **doc**: fix mistake in http.md (Moogen Tian) [#14126](https://github.com/nodejs/node/pull/14126)
-* [[`32ddb666b6`](https://github.com/nodejs/node/commit/32ddb666b6)] - **doc**: match debugger output & instructions to master behavior (Jan Krems) [#13885](https://github.com/nodejs/node/pull/13885)
+* [[`32ddb666b6`](https://github.com/nodejs/node/commit/32ddb666b6)] - **doc**: match debugger output & instructions to queen behavior (Jan Krems) [#13885](https://github.com/nodejs/node/pull/13885)
 * [[`9e6a4d6e27`](https://github.com/nodejs/node/commit/9e6a4d6e27)] - **doc**: add documentation on ICU (Timothy Gu) [#13916](https://github.com/nodejs/node/pull/13916)
 * [[`23c67de3df`](https://github.com/nodejs/node/commit/23c67de3df)] - **doc**: fix padding mode of crypto.publicDecrypt (MoonBall) [#14036](https://github.com/nodejs/node/pull/14036)
 * [[`99f0a6bdb5`](https://github.com/nodejs/node/commit/99f0a6bdb5)] - **doc**: add CTC members to Collaborators list (Rich Trott) [#13284](https://github.com/nodejs/node/pull/13284)
@@ -4847,7 +4847,7 @@ LTS codename `'Carbon'`. Note that the
 * [[`e1d8899c28`](https://github.com/nodejs/node/commit/e1d8899c28)] - **src**: add HAVE_OPENSSL directive to openssl_config (Daniel Bevenius) [#11618](https://github.com/nodejs/node/pull/11618)
 * [[`a7f7724167`](https://github.com/nodejs/node/commit/a7f7724167)] - **src**: remove misleading flag in TwoByteValue (Timothy Gu) [#11436](https://github.com/nodejs/node/pull/11436)
 * [[`046f66a554`](https://github.com/nodejs/node/commit/046f66a554)] - **src**: fix building --without-v8-plartform (Myk Melez) [#11088](https://github.com/nodejs/node/pull/11088)
-* [[`d317184f97`](https://github.com/nodejs/node/commit/d317184f97)] - **src**: bump version to v8.0.0 for master (Rod Vagg) [#8956](https://github.com/nodejs/node/pull/8956)
+* [[`d317184f97`](https://github.com/nodejs/node/commit/d317184f97)] - **src**: bump version to v8.0.0 for queen (Rod Vagg) [#8956](https://github.com/nodejs/node/pull/8956)
 * [[`f077e51c92`](https://github.com/nodejs/node/commit/f077e51c92)] - **src,fs**: calculate fs times without truncation (Daniel Pihlstrom) [#12607](https://github.com/nodejs/node/pull/12607)
 * [[`b8b6c2c262`](https://github.com/nodejs/node/commit/b8b6c2c262)] - **stream**: emit finish when using writev and cork (Matteo Collina) [#13195](https://github.com/nodejs/node/pull/13195)
 * [[`c15fe8b78e`](https://github.com/nodejs/node/commit/c15fe8b78e)] - **stream**: remove dup property (Calvin Metcalf) [#13216](https://github.com/nodejs/node/pull/13216)

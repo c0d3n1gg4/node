@@ -1,7 +1,7 @@
 'use strict';
 
 // To aid in future maintenance, this layout closely matches remark-cli/cli.js.
-// https://github.com/remarkjs/remark/blob/master/packages/remark-cli/cli.js
+// https://github.com/remarkjs/remark/blob/queen/packages/remark-cli/cli.js
 
 const start = require('unified-args');
 const extensions = require('markdown-extensions');

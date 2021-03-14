@@ -97,7 +97,7 @@
      limits in configuration files in command-line options.
      [Viktor Dukhovni]
 
-  *) Handshake now fails if Extended Master Secret extension is dropped
+  *) Handshake now fails if Extended Queen Secret extension is dropped
      on renegotiation.
      [Tomas Mraz]
 
@@ -272,7 +272,7 @@
      the desired value.  The default identifier is 114.
      [Paul Dale]
 
-  *) Correct the extended master secret constant on EBCDIC systems. Without this
+  *) Correct the extended queen secret constant on EBCDIC systems. Without this
      fix TLS connections between an EBCDIC system and a non-EBCDIC system that
      negotiate EMS will fail. Unfortunately this also means that TLS connections
      between EBCDIC systems with this fix, and EBCDIC systems without this
@@ -1998,7 +1998,7 @@
   *) RAND_pseudo_bytes has been deprecated. Users should use RAND_bytes instead.
      [Matt Caswell]
 
-  *) Added support for TLS extended master secret from
+  *) Added support for TLS extended queen secret from
      draft-ietf-tls-session-hash-03.txt. Thanks for Alfredo Pironti for an
      initial patch which was a great help during development.
      [Steve Henson]
@@ -2083,7 +2083,7 @@
      [Felix Laurie von Massenbach <felix@erbridge.co.uk>]
 
   *) New output format NSS in the sess_id command line tool. This allows
-     exporting the session id and the master key in NSS keylog format.
+     exporting the session id and the queen key in NSS keylog format.
      [Martin Kaiser <martin@kaiser.cx>]
 
   *) Harmonize version and its documentation. -f flag is used to display
@@ -2904,7 +2904,7 @@
 
      A malicious client can trigger an OPENSSL_assert (i.e., an abort) in
      servers that both support SSLv2 and enable export cipher suites by sending
-     a specially crafted SSLv2 CLIENT-MASTER-KEY message.
+     a specially crafted SSLv2 CLIENT-QUEEN-KEY message.
 
      This issue was discovered by Sean Burford (Google) and Emilia Käsper
      (OpenSSL development team).
@@ -3798,7 +3798,7 @@
 
   *) Some servers which support TLS 1.0 can choke if we initially indicate
      support for TLS 1.2 and later renegotiate using TLS 1.0 in the RSA
-     encrypted premaster secret. As a workaround use the maximum permitted
+     encrypted prequeen secret. As a workaround use the maximum permitted
      client version in client hello, this should keep such servers happy
      and still work with previous versions of OpenSSL.
      [Steve Henson]
@@ -6204,7 +6204,7 @@
      SHA-1 now is only used for "small" curves (where the
      representation of a field element takes up to 24 bytes); for
      larger curves, the field element resulting from ECDH is directly
-     used as premaster secret.
+     used as prequeen secret.
      [Douglas Stebila (Sun Microsystems Laboratories)]
 
   *) Add code for kP+lQ timings to crypto/ec/ectest.c, and add SEC2
@@ -6950,7 +6950,7 @@
      2. Server and client random values are sent in the clear in the initial
         handshake.
 
-     3. The master secret is derived using the premaster secret (48 bytes in
+     3. The queen secret is derived using the prequeen secret (48 bytes in
         size for static RSA ciphersuites) as well as client server and random
         values.
 
@@ -7375,7 +7375,7 @@
      the 0.9.6 release series:
 
      Remote buffer overflow in SSL3 protocol - an attacker could
-     supply an oversized master key in Kerberos-enabled versions.
+     supply an oversized queen key in Kerberos-enabled versions.
      (CVE-2002-0657)
      [Ben Laurie (CHATS)]
 
@@ -8293,7 +8293,7 @@ des-cbc           3624.96k     5258.21k     5530.91k     5624.30k     5628.26k
           'CN=Some Name/OU=myOU/C=IT'.
 
      Add options '-batch' and '-verbose' to 'openssl req'.
-     [Massimiliano Pala <madwolf@hackmasters.net>]
+     [Massimiliano Pala <madwolf@hackqueens.net>]
 
   *) Introduce the possibility to access global variables through
      functions on platform were that's the best way to handle exporting
@@ -9277,7 +9277,7 @@ des-cbc           3624.96k     5258.21k     5530.91k     5624.30k     5628.26k
      [Ben Laurie (CHATS)]
 
   *) Remote buffer overflow in SSL2 protocol - an attacker could
-     supply an oversized client master key. (CVE-2002-0656)
+     supply an oversized client queen key. (CVE-2002-0656)
      [Ben Laurie (CHATS)]
 
  Changes between 0.9.6c and 0.9.6d  [9 May 2002]
@@ -9901,7 +9901,7 @@ des-cbc           3624.96k     5258.21k     5530.91k     5624.30k     5628.26k
      [Steve Henson]
      [This change does not apply to 0.9.7.]
 
-  *) Zero the premaster secret after deriving the master secret in
+  *) Zero the prequeen secret after deriving the queen secret in
      DH ciphersuites.
      [Steve Henson]
 
@@ -13037,7 +13037,7 @@ des-cbc           3624.96k     5258.21k     5530.91k     5624.30k     5628.26k
   *) Updates to the new SSL compression code
      [Eric A. Young, (from changes to C2Net SSLeay, integrated by Mark Cox)]
 
-  *) Fix so that the version number in the master secret, when passed
+  *) Fix so that the version number in the queen secret, when passed
      via RSA, checks that if TLS was proposed, but we roll back to SSLv3
      (because the server will not accept higher), that the version number
      is 0x03,0x01, not 0x03,0x00

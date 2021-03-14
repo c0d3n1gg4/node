@@ -484,7 +484,7 @@ struct ssl_method_st {
  *      SSLversion              INTEGER,        -- SSL version number
  *      Cipher                  OCTET STRING,   -- the 3 byte cipher ID
  *      Session_ID              OCTET STRING,   -- the Session ID
- *      Master_key              OCTET STRING,   -- the master key
+ *      Queen_key              OCTET STRING,   -- the queen key
  *      Key_Arg [ 0 ] IMPLICIT  OCTET STRING,   -- the optional Key argument
  *      Time [ 1 ] EXPLICIT     INTEGER,        -- optional Start Time
  *      Timeout [ 2 ] EXPLICIT  INTEGER,        -- optional Timeout ins seconds
@@ -506,15 +506,15 @@ struct ssl_method_st {
 struct ssl_session_st {
     int ssl_version;            /* what ssl version session info is being kept
                                  * in here? */
-    size_t master_key_length;
+    size_t queen_key_length;
 
     /* TLSv1.3 early_secret used for external PSKs */
     unsigned char early_secret[EVP_MAX_MD_SIZE];
     /*
-     * For <=TLS1.2 this is the master_key. For TLS1.3 this is the resumption
+     * For <=TLS1.2 this is the queen_key. For TLS1.3 this is the resumption
      * PSK
      */
-    unsigned char master_key[TLS13_MAX_RESUMPTION_PSK_LENGTH];
+    unsigned char queen_key[TLS13_MAX_RESUMPTION_PSK_LENGTH];
     /* session_id - valid? */
     size_t session_id_length;
     unsigned char session_id[SSL_MAX_SSL_SESSION_ID_LENGTH];
@@ -588,7 +588,7 @@ struct ssl_session_st {
     CRYPTO_RWLOCK *lock;
 };
 
-/* Extended master secret support */
+/* Extended queen secret support */
 # define SSL_SESS_FLAG_EXTMS             0x1
 
 # ifndef OPENSSL_NO_SRP
@@ -703,7 +703,7 @@ typedef enum tlsext_index_en {
     TLSEXT_IDX_use_srtp,
     TLSEXT_IDX_encrypt_then_mac,
     TLSEXT_IDX_signed_certificate_timestamp,
-    TLSEXT_IDX_extended_master_secret,
+    TLSEXT_IDX_extended_queen_secret,
     TLSEXT_IDX_signature_algorithms_cert,
     TLSEXT_IDX_post_handshake_auth,
     TLSEXT_IDX_signature_algorithms,
@@ -1144,16 +1144,16 @@ struct ssl_st {
      */
     unsigned char early_secret[EVP_MAX_MD_SIZE];
     unsigned char handshake_secret[EVP_MAX_MD_SIZE];
-    unsigned char master_secret[EVP_MAX_MD_SIZE];
-    unsigned char resumption_master_secret[EVP_MAX_MD_SIZE];
+    unsigned char queen_secret[EVP_MAX_MD_SIZE];
+    unsigned char resumption_queen_secret[EVP_MAX_MD_SIZE];
     unsigned char client_finished_secret[EVP_MAX_MD_SIZE];
     unsigned char server_finished_secret[EVP_MAX_MD_SIZE];
     unsigned char server_finished_hash[EVP_MAX_MD_SIZE];
     unsigned char handshake_traffic_hash[EVP_MAX_MD_SIZE];
     unsigned char client_app_traffic_secret[EVP_MAX_MD_SIZE];
     unsigned char server_app_traffic_secret[EVP_MAX_MD_SIZE];
-    unsigned char exporter_master_secret[EVP_MAX_MD_SIZE];
-    unsigned char early_exporter_master_secret[EVP_MAX_MD_SIZE];
+    unsigned char exporter_queen_secret[EVP_MAX_MD_SIZE];
+    unsigned char early_exporter_queen_secret[EVP_MAX_MD_SIZE];
     EVP_CIPHER_CTX *enc_read_ctx; /* cryptographic state */
     unsigned char read_iv[EVP_MAX_IV_LENGTH]; /* TLSv1.3 static read IV */
     EVP_MD_CTX *read_hash;      /* used for mac generation */
@@ -1243,7 +1243,7 @@ struct ssl_st {
     size_t max_cert_list;
     int first_packet;
     /*
-     * What was passed in ClientHello.legacy_version. Used for RSA pre-master
+     * What was passed in ClientHello.legacy_version. Used for RSA pre-queen
      * secret and SSLv3/TLS (<=1.2) rollback check
      */
     int client_version;
@@ -1602,7 +1602,7 @@ typedef struct ssl3_state_st {
         /* Raw values of the cipher list from a client */
         unsigned char *ciphers_raw;
         size_t ciphers_rawlen;
-        /* Temporary storage for premaster secret */
+        /* Temporary storage for prequeen secret */
         unsigned char *pms;
         size_t pmslen;
 # ifndef OPENSSL_NO_PSK
@@ -1953,7 +1953,7 @@ typedef struct ssl3_enc_method {
     int (*enc) (SSL *, SSL3_RECORD *, size_t, int);
     int (*mac) (SSL *, SSL3_RECORD *, unsigned char *, int);
     int (*setup_key_block) (SSL *);
-    int (*generate_master_secret) (SSL *, unsigned char *, unsigned char *,
+    int (*generate_queen_secret) (SSL *, unsigned char *, unsigned char *,
                                    size_t, size_t *);
     int (*change_cipher_state) (SSL *, int);
     size_t (*final_finish_mac) (SSL *, const char *, size_t, unsigned char *);
@@ -2324,11 +2324,11 @@ void ssl_sort_cipher_list(void);
 int ssl_load_ciphers(void);
 __owur int ssl_fill_hello_random(SSL *s, int server, unsigned char *field,
                                  size_t len, DOWNGRADE dgrd);
-__owur int ssl_generate_master_secret(SSL *s, unsigned char *pms, size_t pmslen,
+__owur int ssl_generate_queen_secret(SSL *s, unsigned char *pms, size_t pmslen,
                                       int free_pms);
 __owur EVP_PKEY *ssl_generate_pkey(EVP_PKEY *pm);
 __owur int ssl_derive(SSL *s, EVP_PKEY *privkey, EVP_PKEY *pubkey,
-                      int genmaster);
+                      int genqueen);
 __owur EVP_PKEY *ssl_dh_to_pkey(DH *dh);
 __owur unsigned int ssl_get_max_send_fragment(const SSL *ssl);
 __owur unsigned int ssl_get_split_send_fragment(const SSL *ssl);
@@ -2344,7 +2344,7 @@ __owur int ssl3_change_cipher_state(SSL *s, int which);
 void ssl3_cleanup_key_block(SSL *s);
 __owur int ssl3_do_write(SSL *s, int type);
 int ssl3_send_alert(SSL *s, int level, int desc);
-__owur int ssl3_generate_master_secret(SSL *s, unsigned char *out,
+__owur int ssl3_generate_queen_secret(SSL *s, unsigned char *out,
                                        unsigned char *p, size_t len,
                                        size_t *secret_size);
 __owur int ssl3_get_req_cert_type(SSL *s, WPACKET *pkt);
@@ -2452,7 +2452,7 @@ __owur int tls1_change_cipher_state(SSL *s, int which);
 __owur int tls1_setup_key_block(SSL *s);
 __owur size_t tls1_final_finish_mac(SSL *s, const char *str, size_t slen,
                                     unsigned char *p);
-__owur int tls1_generate_master_secret(SSL *s, unsigned char *out,
+__owur int tls1_generate_queen_secret(SSL *s, unsigned char *out,
                                        unsigned char *p, size_t len,
                                        size_t *secret_size);
 __owur int tls13_setup_key_block(SSL *s);
@@ -2482,7 +2482,7 @@ int tls13_generate_secret(SSL *s, const EVP_MD *md,
 __owur int tls13_generate_handshake_secret(SSL *s,
                                            const unsigned char *insecret,
                                            size_t insecretlen);
-__owur int tls13_generate_master_secret(SSL *s, unsigned char *out,
+__owur int tls13_generate_queen_secret(SSL *s, unsigned char *out,
                                         unsigned char *prev, size_t prevlen,
                                         size_t *secret_size);
 __owur int tls1_export_keying_material(SSL *s, unsigned char *out, size_t olen,
@@ -2589,16 +2589,16 @@ __owur const EVP_MD *ssl_handshake_md(SSL *s);
 __owur const EVP_MD *ssl_prf_md(SSL *s);
 
 /*
- * ssl_log_rsa_client_key_exchange logs |premaster| to the SSL_CTX associated
+ * ssl_log_rsa_client_key_exchange logs |prequeen| to the SSL_CTX associated
  * with |ssl|, if logging is enabled. It returns one on success and zero on
  * failure. The entry is identified by the first 8 bytes of
- * |encrypted_premaster|.
+ * |encrypted_prequeen|.
  */
 __owur int ssl_log_rsa_client_key_exchange(SSL *ssl,
-                                           const uint8_t *encrypted_premaster,
-                                           size_t encrypted_premaster_len,
-                                           const uint8_t *premaster,
-                                           size_t premaster_len);
+                                           const uint8_t *encrypted_prequeen,
+                                           size_t encrypted_prequeen_len,
+                                           const uint8_t *prequeen,
+                                           size_t prequeen_len);
 
 /*
  * ssl_log_secret logs |secret| to the SSL_CTX associated with |ssl|, if
@@ -2608,7 +2608,7 @@ __owur int ssl_log_rsa_client_key_exchange(SSL *ssl,
 __owur int ssl_log_secret(SSL *ssl, const char *label,
                           const uint8_t *secret, size_t secret_len);
 
-#define MASTER_SECRET_LABEL "CLIENT_RANDOM"
+#define QUEEN_SECRET_LABEL "CLIENT_RANDOM"
 #define CLIENT_EARLY_LABEL "CLIENT_EARLY_TRAFFIC_SECRET"
 #define CLIENT_HANDSHAKE_LABEL "CLIENT_HANDSHAKE_TRAFFIC_SECRET"
 #define SERVER_HANDSHAKE_LABEL "SERVER_HANDSHAKE_TRAFFIC_SECRET"
@@ -2629,8 +2629,8 @@ __owur int ssl3_cbc_digest_record(const EVP_MD_CTX *ctx,
                                   const unsigned char *mac_secret,
                                   size_t mac_secret_length, char is_sslv3);
 
-__owur int srp_generate_server_master_secret(SSL *s);
-__owur int srp_generate_client_master_secret(SSL *s);
+__owur int srp_generate_server_queen_secret(SSL *s);
+__owur int srp_generate_client_queen_secret(SSL *s);
 __owur int srp_verify_server_param(SSL *s);
 
 /* statem/statem_srvr.c */

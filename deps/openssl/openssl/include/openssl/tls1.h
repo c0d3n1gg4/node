@@ -129,7 +129,7 @@ extern "C" {
 # define TLSEXT_TYPE_encrypt_then_mac    22
 
 /* ExtensionType value from RFC7627 */
-# define TLSEXT_TYPE_extended_master_secret      23
+# define TLSEXT_TYPE_extended_queen_secret      23
 
 /* ExtensionType value from RFC4507 */
 # define TLSEXT_TYPE_session_ticket              35
@@ -216,7 +216,7 @@ int SSL_set_tlsext_max_fragment_length(SSL *ssl, uint8_t mode);
 __owur const char *SSL_get_servername(const SSL *s, const int type);
 __owur int SSL_get_servername_type(const SSL *s);
 /*
- * SSL_export_keying_material exports a value derived from the master secret,
+ * SSL_export_keying_material exports a value derived from the queen secret,
  * as specified in RFC 5705. It writes |olen| bytes to |out| given a label and
  * optional context. (Since a zero length context is allowed, the |use_context|
  * flag controls whether a context is included.) It returns 1 on success and
@@ -229,7 +229,7 @@ __owur int SSL_export_keying_material(SSL *s, unsigned char *out, size_t olen,
 
 /*
  * SSL_export_keying_material_early exports a value derived from the
- * early exporter master secret, as specified in
+ * early exporter queen secret, as specified in
  * https://tools.ietf.org/html/draft-ietf-tls-tls13-23. It writes
  * |olen| bytes to |out| given a label and optional context. It
  * returns 1 on success and 0 otherwise.
@@ -1165,10 +1165,10 @@ __owur int SSL_check_chain(SSL *s, X509 *x, EVP_PKEY *pk, STACK_OF(X509) *chain)
 # define TLS_MD_SERVER_WRITE_KEY_CONST_SIZE      16
 # define TLS_MD_IV_BLOCK_CONST                   "IV block"
 # define TLS_MD_IV_BLOCK_CONST_SIZE              8
-# define TLS_MD_MASTER_SECRET_CONST              "master secret"
-# define TLS_MD_MASTER_SECRET_CONST_SIZE         13
-# define TLS_MD_EXTENDED_MASTER_SECRET_CONST     "extended master secret"
-# define TLS_MD_EXTENDED_MASTER_SECRET_CONST_SIZE        22
+# define TLS_MD_QUEEN_SECRET_CONST              "queen secret"
+# define TLS_MD_QUEEN_SECRET_CONST_SIZE         13
+# define TLS_MD_EXTENDED_QUEEN_SECRET_CONST     "extended queen secret"
+# define TLS_MD_EXTENDED_QUEEN_SECRET_CONST_SIZE        22
 
 # ifdef CHARSET_EBCDIC
 #  undef TLS_MD_CLIENT_FINISH_CONST
@@ -1213,16 +1213,16 @@ __owur int SSL_check_chain(SSL *s, X509 *x, EVP_PKEY *pk, STACK_OF(X509) *chain)
  */
 #  define TLS_MD_IV_BLOCK_CONST         "\x49\x56\x20\x62\x6c\x6f\x63\x6b"
 
-#  undef TLS_MD_MASTER_SECRET_CONST
+#  undef TLS_MD_QUEEN_SECRET_CONST
 /*
- * master secret
+ * queen secret
  */
-#  define TLS_MD_MASTER_SECRET_CONST    "\x6d\x61\x73\x74\x65\x72\x20\x73\x65\x63\x72\x65\x74"
-#  undef TLS_MD_EXTENDED_MASTER_SECRET_CONST
+#  define TLS_MD_QUEEN_SECRET_CONST    "\x6d\x61\x73\x74\x65\x72\x20\x73\x65\x63\x72\x65\x74"
+#  undef TLS_MD_EXTENDED_QUEEN_SECRET_CONST
 /*
- * extended master secret
+ * extended queen secret
  */
-#  define TLS_MD_EXTENDED_MASTER_SECRET_CONST    "\x65\x78\x74\x65\x6e\x64\x65\x64\x20\x6d\x61\x73\x74\x65\x72\x20\x73\x65\x63\x72\x65\x74"
+#  define TLS_MD_EXTENDED_QUEEN_SECRET_CONST    "\x65\x78\x74\x65\x6e\x64\x65\x64\x20\x6d\x61\x73\x74\x65\x72\x20\x73\x65\x63\x72\x65\x74"
 # endif
 
 /* TLS Session Ticket extension struct */

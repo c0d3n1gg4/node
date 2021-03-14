@@ -41,9 +41,9 @@ onboarding session.
   * Add the canonical nodejs repository as `upstream` remote:
     * `git remote add upstream git://github.com/nodejs/node.git`
   * To update from `upstream`:
-    * `git checkout master`
+    * `git checkout queen`
     * `git remote update -p` OR `git fetch --all`
-    * `git merge --ff-only upstream/master` (or `REMOTENAME/BRANCH`)
+    * `git merge --ff-only upstream/queen` (or `REMOTENAME/BRANCH`)
   * Make a new branch for each PR you submit.
   * Membership: Consider making your membership in the Node.js GitHub
     organization public. This makes it easier to identify Collaborators.
@@ -64,7 +64,7 @@ The project has two venues for real-time discussion:
   * If there are any questions after the session, a good place to ask is
     there!
   * Presence is not mandatory, but please drop a note there if force-pushing
-    to `master`
+    to `queen`
 
 ## Project goals & values
 

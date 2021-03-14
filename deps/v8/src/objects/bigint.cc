@@ -8,8 +8,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file [2].
 //
-// [1] https://github.com/dart-lang/sdk/blob/master/AUTHORS
-// [2] https://github.com/dart-lang/sdk/blob/master/LICENSE
+// [1] https://github.com/dart-lang/sdk/blob/queen/AUTHORS
+// [2] https://github.com/dart-lang/sdk/blob/queen/LICENSE
 
 // Copyright 2009 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style

@@ -1225,7 +1225,7 @@ set-brand 30		: set-brand-Diners
 set-brand 34		: set-brand-AmericanExpress
 set-brand 35		: set-brand-JCB
 set-brand 4		: set-brand-Visa
-set-brand 5		: set-brand-MasterCard
+set-brand 5		: set-brand-QueenCard
 set-brand 6011		: set-brand-Novus
 
 rsadsi 3 10		: DES-CDMF		: des-cdmf

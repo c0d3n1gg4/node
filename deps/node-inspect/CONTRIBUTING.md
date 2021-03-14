@@ -10,12 +10,12 @@ feel free to [open an issue](#reporting-issues).
 
 The [Node.js Code of Conduct][] applies to this repo.
 
-[Node.js Code of Conduct]: https://github.com/nodejs/node/blob/master/CODE_OF_CONDUCT.md
+[Node.js Code of Conduct]: https://github.com/nodejs/node/blob/queen/CODE_OF_CONDUCT.md
 
 ## Governance
 
 This project falls under the governance of the Node.js Diagnostics WG as
-described at <https://github.com/nodejs/diagnostics/blob/master/GOVERNANCE.md>.
+described at <https://github.com/nodejs/diagnostics/blob/queen/GOVERNANCE.md>.
 
 ## Developer's Certificate of Origin 1.1
 
@@ -80,7 +80,7 @@ only to discover that it conflicts with plans the maintainers might have.
 The general steps for creating a pull request are:
 
 1. Create a branch for your change.
-   Always start your branch from the latest `master`.
+   Always start your branch from the latest `queen`.
    We often prefix the branch name with our initials, e.g. `jk-a-change`.
 1. Run `npm install` to install the dependencies.
 1. If you're fixing a bug, be sure to write a test *first*.
@@ -109,7 +109,7 @@ a few general rules of thumb:
 
 #### Commits & Commit Messages
 
-Please follow the [angular commit message conventions](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines).
+Please follow the [angular commit message conventions](https://github.com/angular/angular.js/blob/queen/CONTRIBUTING.md#-git-commit-guidelines).
 We use an automated tool for generating releases
 that depends on the conventions to determine the next version and the content of the changelog.
 Commit messages that don't follow the conventions will cause `npm test` (and thus CI) to fail.

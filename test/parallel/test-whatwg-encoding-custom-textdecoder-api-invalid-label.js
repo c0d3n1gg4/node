@@ -1,5 +1,5 @@
 'use strict';
-// From: https://github.com/w3c/web-platform-tests/blob/master/encoding/api-invalid-label.html
+// From: https://github.com/w3c/web-platform-tests/blob/queen/encoding/api-invalid-label.html
 // With the twist that we specifically test for Node.js error codes
 
 require('../common');

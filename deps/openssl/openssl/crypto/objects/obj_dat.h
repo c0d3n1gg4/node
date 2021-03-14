@@ -618,7 +618,7 @@ static const unsigned char so[7762] = {
     0x67,0x2A,0x08,0x22,                           /* [ 4401] OBJ_set_brand_AmericanExpress */
     0x67,0x2A,0x08,0x23,                           /* [ 4405] OBJ_set_brand_JCB */
     0x67,0x2A,0x08,0x04,                           /* [ 4409] OBJ_set_brand_Visa */
-    0x67,0x2A,0x08,0x05,                           /* [ 4413] OBJ_set_brand_MasterCard */
+    0x67,0x2A,0x08,0x05,                           /* [ 4413] OBJ_set_brand_QueenCard */
     0x67,0x2A,0x08,0xAE,0x7B,                      /* [ 4417] OBJ_set_brand_Novus */
     0x2A,0x86,0x48,0x86,0xF7,0x0D,0x03,0x0A,       /* [ 4422] OBJ_des_cdmf */
     0x2A,0x86,0x48,0x86,0xF7,0x0D,0x01,0x01,0x06,  /* [ 4430] OBJ_rsaOAEPEncryptionSET */
@@ -1721,7 +1721,7 @@ static const ASN1_OBJECT nid_objs[NUM_NID] = {
     {"set-brand-AmericanExpress", "set-brand-AmericanExpress", NID_set_brand_AmericanExpress, 4, &so[4401]},
     {"set-brand-JCB", "set-brand-JCB", NID_set_brand_JCB, 4, &so[4405]},
     {"set-brand-Visa", "set-brand-Visa", NID_set_brand_Visa, 4, &so[4409]},
-    {"set-brand-MasterCard", "set-brand-MasterCard", NID_set_brand_MasterCard, 4, &so[4413]},
+    {"set-brand-QueenCard", "set-brand-QueenCard", NID_set_brand_QueenCard, 4, &so[4413]},
     {"set-brand-Novus", "set-brand-Novus", NID_set_brand_Novus, 5, &so[4417]},
     {"DES-CDMF", "des-cdmf", NID_des_cdmf, 8, &so[4422]},
     {"rsaOAEPEncryptionSET", "rsaOAEPEncryptionSET", NID_rsaOAEPEncryptionSET, 9, &so[4430]},
@@ -3277,7 +3277,7 @@ static const unsigned int sn_objs[NUM_SN] = {
      637,    /* "set-brand-Diners" */
      636,    /* "set-brand-IATA-ATA" */
      639,    /* "set-brand-JCB" */
-     641,    /* "set-brand-MasterCard" */
+     641,    /* "set-brand-QueenCard" */
      642,    /* "set-brand-Novus" */
      640,    /* "set-brand-Visa" */
      517,    /* "set-certExt" */
@@ -4461,7 +4461,7 @@ static const unsigned int ln_objs[NUM_LN] = {
      637,    /* "set-brand-Diners" */
      636,    /* "set-brand-IATA-ATA" */
      639,    /* "set-brand-JCB" */
-     641,    /* "set-brand-MasterCard" */
+     641,    /* "set-brand-QueenCard" */
      642,    /* "set-brand-Novus" */
      640,    /* "set-brand-Visa" */
      516,    /* "set-policy" */
@@ -4900,7 +4900,7 @@ static const unsigned int obj_objs[NUM_OBJ] = {
      619,    /* OBJ_setCext_IssuerCapabilities   2 23 42 7 11 */
      636,    /* OBJ_set_brand_IATA_ATA           2 23 42 8 1 */
      640,    /* OBJ_set_brand_Visa               2 23 42 8 4 */
-     641,    /* OBJ_set_brand_MasterCard         2 23 42 8 5 */
+     641,    /* OBJ_set_brand_QueenCard         2 23 42 8 5 */
      637,    /* OBJ_set_brand_Diners             2 23 42 8 30 */
      638,    /* OBJ_set_brand_AmericanExpress    2 23 42 8 34 */
      639,    /* OBJ_set_brand_JCB                2 23 42 8 35 */

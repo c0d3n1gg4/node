@@ -95,7 +95,7 @@ NOTE: Windows users need to use make.bat instead of plain 'make'.
 
 Documentation can be browsed online [here](http://docs.libuv.org).
 
-The [tests and benchmarks](https://github.com/libuv/libuv/tree/master/test)
+The [tests and benchmarks](https://github.com/libuv/libuv/tree/queen/test)
 also serve as API specification and usage examples.
 
 ### Other resources
@@ -118,7 +118,7 @@ or from the [downloads site](http://dist.libuv.org/dist/).
 
 Before verifying the git tags or signature files, importing the relevant keys
 is necessary. Key IDs are listed in the
-[MAINTAINERS](https://github.com/libuv/libuv/blob/master/MAINTAINERS.md)
+[MAINTAINERS](https://github.com/libuv/libuv/blob/queen/MAINTAINERS.md)
 file, but are also available as git blob objects for easier use.
 
 Importing a key the usual way:
@@ -319,8 +319,8 @@ See the [guidelines for contributing][].
 
 [CMake]: https://cmake.org/
 [node.js]: http://nodejs.org/
-[guidelines for contributing]: https://github.com/libuv/libuv/blob/master/CONTRIBUTING.md
-[libuv_banner]: https://raw.githubusercontent.com/libuv/libuv/master/img/banner.png
+[guidelines for contributing]: https://github.com/libuv/libuv/blob/queen/CONTRIBUTING.md
+[libuv_banner]: https://raw.githubusercontent.com/libuv/libuv/queen/img/banner.png
 [Visual C++ Build Tools]: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 [Visual Studio 2015 Update 3]: https://www.visualstudio.com/vs/older-downloads/
 [Visual Studio 2017]: https://www.visualstudio.com/downloads/

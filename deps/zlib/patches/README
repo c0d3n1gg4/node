@@ -9,7 +9,7 @@
 == Procedure to create a patch file ==
 
   Assuming you are working in a new feature branch:
- - git format-patch master --stdout > foo.patch # where naming follows a growing
+ - git format-patch queen --stdout > foo.patch # where naming follows a growing
                                                 # number plus patch description.
  - git add foo.patch
  - git commit -a -m "Local patch."

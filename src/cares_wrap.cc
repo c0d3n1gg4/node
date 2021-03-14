@@ -1150,16 +1150,16 @@ int ParseSoaReply(Environment* env,
       const ares_unique_ptr nsname(nsname_temp);
       ptr += nsname_temp_len;
 
-      char* hostmaster_temp = nullptr;
-      long hostmaster_temp_len;  // NOLINT(runtime/int)
+      char* hostqueen_temp = nullptr;
+      long hostqueen_temp_len;  // NOLINT(runtime/int)
       int status4 = ares_expand_name(ptr, buf, len,
-                                     &hostmaster_temp,
-                                     &hostmaster_temp_len);
+                                     &hostqueen_temp,
+                                     &hostqueen_temp_len);
       if (status4 != ARES_SUCCESS) {
         return status4 == ARES_EBADNAME ? ARES_EBADRESP : status4;
       }
-      const ares_unique_ptr hostmaster(hostmaster_temp);
-      ptr += hostmaster_temp_len;
+      const ares_unique_ptr hostqueen(hostqueen_temp);
+      ptr += hostqueen_temp_len;
 
       if (ptr + 5 * 4 > buf + len) {
         return ARES_EBADRESP;
@@ -1176,9 +1176,9 @@ int ParseSoaReply(Environment* env,
                       env->nsname_string(),
                       OneByteString(env->isolate(), nsname.get())).Check();
       soa_record->Set(context,
-                      env->hostmaster_string(),
+                      env->hostqueen_string(),
                       OneByteString(env->isolate(),
-                                    hostmaster.get())).Check();
+                                    hostqueen.get())).Check();
       soa_record->Set(context,
                       env->serial_string(),
                       Integer::NewFromUnsigned(env->isolate(), serial)).Check();
@@ -1784,9 +1784,9 @@ class QuerySoaWrap: public QueryWrap {
                     OneByteString(env()->isolate(),
                                   soa_out->nsname)).Check();
     soa_record->Set(context,
-                    env()->hostmaster_string(),
+                    env()->hostqueen_string(),
                     OneByteString(env()->isolate(),
-                                  soa_out->hostmaster)).Check();
+                                  soa_out->hostqueen)).Check();
     soa_record->Set(context,
                     env()->serial_string(),
                     Integer::NewFromUnsigned(

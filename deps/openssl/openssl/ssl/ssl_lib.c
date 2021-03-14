@@ -4175,25 +4175,25 @@ size_t SSL_get_server_random(const SSL *ssl, unsigned char *out, size_t outlen)
     return outlen;
 }
 
-size_t SSL_SESSION_get_master_key(const SSL_SESSION *session,
+size_t SSL_SESSION_get_queen_key(const SSL_SESSION *session,
                                   unsigned char *out, size_t outlen)
 {
     if (outlen == 0)
-        return session->master_key_length;
-    if (outlen > session->master_key_length)
-        outlen = session->master_key_length;
-    memcpy(out, session->master_key, outlen);
+        return session->queen_key_length;
+    if (outlen > session->queen_key_length)
+        outlen = session->queen_key_length;
+    memcpy(out, session->queen_key, outlen);
     return outlen;
 }
 
-int SSL_SESSION_set1_master_key(SSL_SESSION *sess, const unsigned char *in,
+int SSL_SESSION_set1_queen_key(SSL_SESSION *sess, const unsigned char *in,
                                 size_t len)
 {
-    if (len > sizeof(sess->master_key))
+    if (len > sizeof(sess->queen_key))
         return 0;
 
-    memcpy(sess->master_key, in, len);
-    sess->master_key_length = len;
+    memcpy(sess->queen_key, in, len);
+    sess->queen_key_length = len;
     return 1;
 }
 
@@ -5250,24 +5250,24 @@ static int nss_keylog_int(const char *prefix,
 }
 
 int ssl_log_rsa_client_key_exchange(SSL *ssl,
-                                    const uint8_t *encrypted_premaster,
-                                    size_t encrypted_premaster_len,
-                                    const uint8_t *premaster,
-                                    size_t premaster_len)
+                                    const uint8_t *encrypted_prequeen,
+                                    size_t encrypted_prequeen_len,
+                                    const uint8_t *prequeen,
+                                    size_t prequeen_len)
 {
-    if (encrypted_premaster_len < 8) {
+    if (encrypted_prequeen_len < 8) {
         SSLfatal(ssl, SSL_AD_INTERNAL_ERROR,
                  SSL_F_SSL_LOG_RSA_CLIENT_KEY_EXCHANGE, ERR_R_INTERNAL_ERROR);
         return 0;
     }
 
-    /* We only want the first 8 bytes of the encrypted premaster as a tag. */
+    /* We only want the first 8 bytes of the encrypted prequeen as a tag. */
     return nss_keylog_int("RSA",
                           ssl,
-                          encrypted_premaster,
+                          encrypted_prequeen,
                           8,
-                          premaster,
-                          premaster_len);
+                          prequeen,
+                          prequeen_len);
 }
 
 int ssl_log_secret(SSL *ssl,

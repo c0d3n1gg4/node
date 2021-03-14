@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-SSL_get_extms_support - extended master secret support
+SSL_get_extms_support - extended queen secret support
 
 =head1 SYNOPSIS
 
@@ -13,15 +13,15 @@ SSL_get_extms_support - extended master secret support
 =head1 DESCRIPTION
 
 SSL_get_extms_support() indicates whether the current session used extended
-master secret.
+queen secret.
 
 This function is implemented as a macro.
 
 =head1 RETURN VALUES
 
 SSL_get_extms_support() returns 1 if the current session used extended
-master secret, 0 if it did not and -1 if a handshake is currently in
-progress i.e. it is not possible to determine if extended master secret
+queen secret, 0 if it did not and -1 if a handshake is currently in
+progress i.e. it is not possible to determine if extended queen secret
 was used.
 
 =head1 SEE ALSO

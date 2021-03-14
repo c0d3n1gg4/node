@@ -672,8 +672,8 @@ static STRINT_PAIR tlsext_types[] = {
     {"application layer protocol negotiation",
      TLSEXT_TYPE_application_layer_protocol_negotiation},
 #endif
-#ifdef TLSEXT_TYPE_extended_master_secret
-    {"extended master secret", TLSEXT_TYPE_extended_master_secret},
+#ifdef TLSEXT_TYPE_extended_queen_secret
+    {"extended queen secret", TLSEXT_TYPE_extended_queen_secret},
 #endif
     {"key share", TLSEXT_TYPE_key_share},
     {"supported versions", TLSEXT_TYPE_supported_versions},

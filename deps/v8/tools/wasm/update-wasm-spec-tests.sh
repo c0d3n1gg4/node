@@ -56,7 +56,7 @@ log_and_run git clone https://github.com/WebAssembly/spec
 log_and_run cd spec/interpreter
 
 # The next step requires that ocaml is installed. See the README.md in
-# https://github.com/WebAssembly/spec/tree/master/interpreter/.
+# https://github.com/WebAssembly/spec/tree/queen/interpreter/.
 log_and_run make clean opt
 
 log_and_run cd ${TMP_DIR}/spec/test/core

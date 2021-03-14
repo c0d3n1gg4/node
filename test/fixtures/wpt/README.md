@@ -23,4 +23,4 @@ Last update:
 - url: https://github.com/web-platform-tests/wpt/tree/33f2e3f2e7/url
 
 [Web Platform Tests]: https://github.com/web-platform-tests/wpt
-[`git node wpt`]: https://github.com/nodejs/node-core-utils/blob/master/docs/git-node.md#git-node-wpt
+[`git node wpt`]: https://github.com/nodejs/node-core-utils/blob/queen/docs/git-node.md#git-node-wpt

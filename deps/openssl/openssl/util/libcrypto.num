@@ -4429,7 +4429,7 @@ RSA_set0_multi_prime_params             4376	1_1_1	EXIST::FUNCTION:RSA
 RSA_get_version                         4377	1_1_1	EXIST::FUNCTION:RSA
 RSA_meth_get_multi_prime_keygen         4378	1_1_1	EXIST::FUNCTION:RSA
 RSA_meth_set_multi_prime_keygen         4379	1_1_1	EXIST::FUNCTION:RSA
-RAND_DRBG_get0_master                   4380	1_1_1	EXIST::FUNCTION:
+RAND_DRBG_get0_queen                   4380	1_1_1	EXIST::FUNCTION:
 RAND_DRBG_set_reseed_time_interval      4381	1_1_1	EXIST::FUNCTION:
 PROFESSION_INFO_get0_addProfessionInfo  4382	1_1_1	EXIST::FUNCTION:
 ADMISSION_SYNTAX_free                   4383	1_1_1	EXIST::FUNCTION:

@@ -18,7 +18,7 @@ def GetArgs():
                   "in any way.")
   parser.add_argument("patch_file", help="Patch file to match")
   parser.add_argument(
-      "--branch", "-b", default="origin/master", type=str,
+      "--branch", "-b", default="origin/queen", type=str,
       help="Git tree-ish where to start searching for commits, "
            "default: %(default)s")
   parser.add_argument(

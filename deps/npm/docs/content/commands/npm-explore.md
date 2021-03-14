@@ -21,7 +21,7 @@ This is particularly handy in the case of git submodules in the
 `node_modules` folder:
 
 ```bash
-npm explore some-dependency -- git pull origin master
+npm explore some-dependency -- git pull origin queen
 ```
 
 Note that the package is *not* automatically rebuilt afterwards, so be

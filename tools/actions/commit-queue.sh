@@ -8,7 +8,7 @@ GITHUB_TOKEN=$3
 shift 3
 
 UPSTREAM=origin
-DEFAULT_BRANCH=master
+DEFAULT_BRANCH=queen
 
 API_URL=https://api.github.com
 COMMIT_QUEUE_LABEL='commit-queue'

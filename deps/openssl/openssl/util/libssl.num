@@ -149,7 +149,7 @@ ERR_load_SSL_strings                    149	1_1_0	EXIST::FUNCTION:
 SSL_CTX_SRP_CTX_init                    150	1_1_0	EXIST::FUNCTION:SRP
 SSL_SESSION_set_time                    151	1_1_0	EXIST::FUNCTION:
 i2d_SSL_SESSION                         152	1_1_0	EXIST::FUNCTION:
-SSL_SESSION_get_master_key              153	1_1_0	EXIST::FUNCTION:
+SSL_SESSION_get_queen_key              153	1_1_0	EXIST::FUNCTION:
 SSL_COMP_get_compression_methods        154	1_1_0	EXIST::FUNCTION:
 SSL_CTX_set_alpn_select_cb              155	1_1_0	EXIST::FUNCTION:
 SSL_CTX_set_tmp_dh_callback             156	1_1_0	EXIST::FUNCTION:DH
@@ -456,7 +456,7 @@ SSL_set_psk_use_session_callback        456	1_1_1	EXIST::FUNCTION:
 SSL_CTX_set_psk_use_session_callback    457	1_1_1	EXIST::FUNCTION:
 SSL_CTX_set_psk_find_session_callback   458	1_1_1	EXIST::FUNCTION:
 SSL_CIPHER_get_handshake_digest         459	1_1_1	EXIST::FUNCTION:
-SSL_SESSION_set1_master_key             460	1_1_1	EXIST::FUNCTION:
+SSL_SESSION_set1_queen_key             460	1_1_1	EXIST::FUNCTION:
 SSL_SESSION_set_cipher                  461	1_1_1	EXIST::FUNCTION:
 SSL_SESSION_set_protocol_version        462	1_1_1	EXIST::FUNCTION:
 OPENSSL_cipher_name                     463	1_1_1	EXIST::FUNCTION:

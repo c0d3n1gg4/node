@@ -2,7 +2,7 @@
 
 This document describes how to make a new libFuzzer fuzzer for V8. A general
 introduction to libFuzzer can be found
-[here](https://chromium.googlesource.com/chromium/src/+/master/testing/libfuzzer/README.md).
+[here](https://chromium.googlesource.com/chromium/src/+/queen/testing/libfuzzer/README.md).
 In short, libFuzzer is an in-process coverage-driven evolutionary fuzzer.
 libFuzzer serves you with a sequence of byte arrays that you can use to test
 your code. libFuzzer tries to generate this sequence of byte arrays in a way
@@ -67,11 +67,11 @@ new fuzzer to cluster fuzz.
    [wasm.cc](https://cs.chromium.org/chromium/src/v8/test/fuzzer/wasm.cc) fuzzer
    is `v8_wasm_fuzzer`. There is no need to set a `dictionary` , or a `seed_corpus`.
    See
-   [chromium-fuzzing-getting-started](https://chromium.googlesource.com/chromium/src/+/master/testing/libfuzzer/getting_started.md)
+   [chromium-fuzzing-getting-started](https://chromium.googlesource.com/chromium/src/+/queen/testing/libfuzzer/getting_started.md)
    for more information.
 
 2. Compile the fuzzer in chromium (for different configurations see:
-   https://chromium.googlesource.com/chromium/src/+/master/testing/libfuzzer/reference.md):
+   https://chromium.googlesource.com/chromium/src/+/queen/testing/libfuzzer/reference.md):
 
    * `gn gen out/libfuzzer '--args=use_libfuzzer=true is_asan=true is_debug=false enable_nacl=false'`
 

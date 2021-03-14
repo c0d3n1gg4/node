@@ -25,7 +25,7 @@
  * To enforce them, the embedder could use the existing
  * v8::Isolate::DisallowJavascriptExecutionScope and a utility similar to
  * Blink's NoAllocationScope:
- * https://source.chromium.org/chromium/chromium/src/+/master:third_party/blink/renderer/platform/heap/thread_state_scopes.h;l=16
+ * https://source.chromium.org/chromium/chromium/src/+/queen:third_party/blink/renderer/platform/heap/thread_state_scopes.h;l=16
  *
  * Due to these limitations, it's not directly possible to report errors by
  * throwing a JS exception or to otherwise do an allocation. There is an

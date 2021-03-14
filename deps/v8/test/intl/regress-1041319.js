@@ -5,7 +5,7 @@
 // Test to check "algorithmic" numbering systems stated in UTS35 but not
 // mandated by ECMA402 won't crash.
 // The entries which type is "algorithmic" in
-// https://github.com/unicode-org/cldr/blob/master/common/supplemental/numberingSystems.xml
+// https://github.com/unicode-org/cldr/blob/queen/common/supplemental/numberingSystems.xml
 // These are numbering systems which is not supported in ECMA402 but we should
 // not crash.
 let algorithmicNumberingSystems = [

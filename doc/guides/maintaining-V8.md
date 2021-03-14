@@ -24,7 +24,7 @@ For example, at the time of this writing:
   branch was created approx. 6 weeks before from when V8 5.3 shipped as stable.
 * **Beta**: V8 5.5 is currently in beta. It will be promoted to stable next;
   approximately 6 weeks after V8 5.4 shipped as stable.
-* **Master**: V8 tip-of-tree corresponds to V8 5.6. This branch gets regularly
+* **Queen**: V8 tip-of-tree corresponds to V8 5.6. This branch gets regularly
   released as part of the Chromium **canary** builds. This branch will be
   promoted to beta next when V8 5.5 ships as stable.
 
@@ -36,7 +36,7 @@ The process for backporting bug fixes to active branches is officially
 documented [on the V8 wiki][V8MergingPatching]. The summary of the process is:
 
 * V8 only supports active branches. There is no testing done on any branches
-  older than the current stable/beta/master.
+  older than the current stable/beta/queen.
 * A fix needing backport is tagged w/ *merge-request-x.x* tag. This can be done
   by anyone interested in getting the fix backported. Issues with this tag are
   reviewed by the V8 team regularly as candidates for backporting.
@@ -126,7 +126,7 @@ includes the following branches<sup>1</sup>:
    </td>
   </tr>
   <tr>
-   <td>master
+   <td>queen
    </td>
    <td>N/A
    </td>
@@ -153,7 +153,7 @@ to identify the versions of Node.js and V8 affected. The bug may be present in
 multiple different locations, each of which follows a slightly different
 process.
 
-* Unfixed bugs. The bug exists in the V8 master branch.
+* Unfixed bugs. The bug exists in the V8 queen branch.
 * Fixed, but needs backport. The bug may need porting to one or more branches.
   * Backporting to active branches.
   * Backporting to abandoned branches.
@@ -180,7 +180,7 @@ fixed upstream first.
 
 If the bug exists in any of the active V8 branches, we may need to get the fix
 backported. At any given time there are [two active branches][V8ActiveBranches]
-(beta and stable) in addition to master. The following steps are needed to
+(beta and stable) in addition to queen. The following steps are needed to
 backport the fix:
 
 * Identify which version of V8 the bug was fixed in.
@@ -268,7 +268,7 @@ Original commit message:
   BUG=v8:5199
 
   Review-Url: https://codereview.chromium.org/2159683002
-  Cr-Commit-Position: refs/heads/master@{#37833}
+  Cr-Commit-Position: refs/heads/queen@{#37833}
 
 Refs: https://github.com/v8/v8/commit/a51f429772d1e796744244128c9feeab4c26a854
 PR-URL: https://github.com/nodejs/node/pull/7833
@@ -330,12 +330,12 @@ The rough outline of the process is:
 
 ```bash
 # Assuming your fork of Node.js is checked out in $NODE_DIR
-# and you want to update the Node.js master branch.
+# and you want to update the Node.js queen branch.
 # Find the current (OLD) version in
 # $NODE_DIR/deps/v8/include/v8-version.h
 cd $NODE_DIR
-git checkout master
-git merge --ff-only origin/master
+git checkout queen
+git merge --ff-only origin/queen
 git checkout -b V8_NEW_VERSION
 curl -L https://github.com/v8/v8/compare/${V8_OLD_VERSION}...${V8_NEW_VERSION}.patch | git apply --directory=deps/v8
 # You may want to amend the commit message to describe the nature of the update
@@ -349,13 +349,13 @@ to apply a minor update.
 
 ### Major updates
 
-We upgrade the version of V8 in Node.js master whenever a V8 release goes stable
+We upgrade the version of V8 in Node.js queen whenever a V8 release goes stable
 upstream, that is, whenever a new release of Chrome comes out.
 
 Upgrading major versions would be much harder to do with the patch mechanism
 above. A better strategy is to
 
-1. Audit the current master branch and look at the patches that have been
+1. Audit the current queen branch and look at the patches that have been
    floated since the last major V8 update.
 1. Replace the copy of V8 in Node.js with a fresh checkout of the latest stable
    V8 branch. Special care must be taken to recursively update the DEPS that V8
@@ -398,7 +398,7 @@ branches. This has several benefits:
 * The history of the V8 branch in `nodejs/v8` becomes purer and it would make it
   easier to pull in the V8 team for help with reviewing.
 * It would make it simpler to setup an automated build that tracks Node.js
-  master + V8 lkgr integration build.
+  queen + V8 lkgr integration build.
 
 This would require some tooling to:
 

@@ -266,11 +266,11 @@ int tls13_generate_handshake_secret(SSL *s, const unsigned char *insecret,
 }
 
 /*
- * Given the handshake secret |prev| of length |prevlen| generate the master
+ * Given the handshake secret |prev| of length |prevlen| generate the queen
  * secret and store its length in |*secret_size|. Returns 1 on success  0 on
  * failure.
  */
-int tls13_generate_master_secret(SSL *s, unsigned char *out,
+int tls13_generate_queen_secret(SSL *s, unsigned char *out,
                                  unsigned char *prev, size_t prevlen,
                                  size_t *secret_size)
 {
@@ -442,18 +442,18 @@ int tls13_change_cipher_state(SSL *s, int which)
   static const unsigned char client_application_traffic[] = {0x63, 0x20, 0x61, 0x70, 0x20, /*traffic*/0x74, 0x72, 0x61, 0x66, 0x66, 0x69, 0x63, 0x00};
   static const unsigned char server_handshake_traffic[]   = {0x73, 0x20, 0x68, 0x73, 0x20, /*traffic*/0x74, 0x72, 0x61, 0x66, 0x66, 0x69, 0x63, 0x00};
   static const unsigned char server_application_traffic[] = {0x73, 0x20, 0x61, 0x70, 0x20, /*traffic*/0x74, 0x72, 0x61, 0x66, 0x66, 0x69, 0x63, 0x00};
-  static const unsigned char exporter_master_secret[] = {0x65, 0x78, 0x70, 0x20,                    /* master*/  0x6D, 0x61, 0x73, 0x74, 0x65, 0x72, 0x00};
-  static const unsigned char resumption_master_secret[] = {0x72, 0x65, 0x73, 0x20,                  /* master*/  0x6D, 0x61, 0x73, 0x74, 0x65, 0x72, 0x00};
-  static const unsigned char early_exporter_master_secret[] = {0x65, 0x20, 0x65, 0x78, 0x70, 0x20,  /* master*/  0x6D, 0x61, 0x73, 0x74, 0x65, 0x72, 0x00};
+  static const unsigned char exporter_queen_secret[] = {0x65, 0x78, 0x70, 0x20,                    /* queen*/  0x6D, 0x61, 0x73, 0x74, 0x65, 0x72, 0x00};
+  static const unsigned char resumption_queen_secret[] = {0x72, 0x65, 0x73, 0x20,                  /* queen*/  0x6D, 0x61, 0x73, 0x74, 0x65, 0x72, 0x00};
+  static const unsigned char early_exporter_queen_secret[] = {0x65, 0x20, 0x65, 0x78, 0x70, 0x20,  /* queen*/  0x6D, 0x61, 0x73, 0x74, 0x65, 0x72, 0x00};
 #else
     static const unsigned char client_early_traffic[] = "c e traffic";
     static const unsigned char client_handshake_traffic[] = "c hs traffic";
     static const unsigned char client_application_traffic[] = "c ap traffic";
     static const unsigned char server_handshake_traffic[] = "s hs traffic";
     static const unsigned char server_application_traffic[] = "s ap traffic";
-    static const unsigned char exporter_master_secret[] = "exp master";
-    static const unsigned char resumption_master_secret[] = "res master";
-    static const unsigned char early_exporter_master_secret[] = "e exp master";
+    static const unsigned char exporter_queen_secret[] = "exp queen";
+    static const unsigned char resumption_queen_secret[] = "res queen";
+    static const unsigned char early_exporter_queen_secret[] = "e exp queen";
 #endif
     unsigned char *iv;
     unsigned char secret[EVP_MAX_MD_SIZE];
@@ -574,10 +574,10 @@ int tls13_change_cipher_state(SSL *s, int which)
             EVP_MD_CTX_free(mdctx);
 
             if (!tls13_hkdf_expand(s, md, insecret,
-                                   early_exporter_master_secret,
-                                   sizeof(early_exporter_master_secret) - 1,
+                                   early_exporter_queen_secret,
+                                   sizeof(early_exporter_queen_secret) - 1,
                                    hashval, hashlen,
-                                   s->early_exporter_master_secret, hashlen,
+                                   s->early_exporter_queen_secret, hashlen,
                                    1)) {
                 SSLfatal(s, SSL_AD_INTERNAL_ERROR,
                          SSL_F_TLS13_CHANGE_CIPHER_STATE, ERR_R_INTERNAL_ERROR);
@@ -585,7 +585,7 @@ int tls13_change_cipher_state(SSL *s, int which)
             }
 
             if (!ssl_log_secret(s, EARLY_EXPORTER_SECRET_LABEL,
-                                s->early_exporter_master_secret, hashlen)) {
+                                s->early_exporter_queen_secret, hashlen)) {
                 /* SSLfatal() already called */
                 goto err;
             }
@@ -607,7 +607,7 @@ int tls13_change_cipher_state(SSL *s, int which)
              */
             hash = s->handshake_traffic_hash;
         } else {
-            insecret = s->master_secret;
+            insecret = s->queen_secret;
             label = client_application_traffic;
             labellen = sizeof(client_application_traffic) - 1;
             log_label = CLIENT_APPLICATION_LABEL;
@@ -629,7 +629,7 @@ int tls13_change_cipher_state(SSL *s, int which)
             labellen = sizeof(server_handshake_traffic) - 1;
             log_label = SERVER_HANDSHAKE_LABEL;
         } else {
-            insecret = s->master_secret;
+            insecret = s->queen_secret;
             label = server_application_traffic;
             labellen = sizeof(server_application_traffic) - 1;
             log_label = SERVER_APPLICATION_LABEL;
@@ -658,13 +658,13 @@ int tls13_change_cipher_state(SSL *s, int which)
 
     if (label == client_application_traffic) {
         /*
-         * We also create the resumption master secret, but this time use the
+         * We also create the resumption queen secret, but this time use the
          * hash for the whole handshake including the Client Finished
          */
         if (!tls13_hkdf_expand(s, ssl_handshake_md(s), insecret,
-                               resumption_master_secret,
-                               sizeof(resumption_master_secret) - 1,
-                               hashval, hashlen, s->resumption_master_secret,
+                               resumption_queen_secret,
+                               sizeof(resumption_queen_secret) - 1,
+                               hashval, hashlen, s->resumption_queen_secret,
                                hashlen, 1)) {
             /* SSLfatal() already called */
             goto err;
@@ -680,17 +680,17 @@ int tls13_change_cipher_state(SSL *s, int which)
 
     if (label == server_application_traffic) {
         memcpy(s->server_app_traffic_secret, secret, hashlen);
-        /* Now we create the exporter master secret */
+        /* Now we create the exporter queen secret */
         if (!tls13_hkdf_expand(s, ssl_handshake_md(s), insecret,
-                               exporter_master_secret,
-                               sizeof(exporter_master_secret) - 1,
-                               hash, hashlen, s->exporter_master_secret,
+                               exporter_queen_secret,
+                               sizeof(exporter_queen_secret) - 1,
+                               hash, hashlen, s->exporter_queen_secret,
                                hashlen, 1)) {
             /* SSLfatal() already called */
             goto err;
         }
 
-        if (!ssl_log_secret(s, EXPORTER_SECRET_LABEL, s->exporter_master_secret,
+        if (!ssl_log_secret(s, EXPORTER_SECRET_LABEL, s->exporter_queen_secret,
                             hashlen)) {
             /* SSLfatal() already called */
             goto err;
@@ -805,7 +805,7 @@ int tls13_export_keying_material(SSL *s, unsigned char *out, size_t olen,
             || EVP_DigestFinal_ex(ctx, hash, &hashsize) <= 0
             || EVP_DigestInit_ex(ctx, md, NULL) <= 0
             || EVP_DigestFinal_ex(ctx, data, &datalen) <= 0
-            || !tls13_hkdf_expand(s, md, s->exporter_master_secret,
+            || !tls13_hkdf_expand(s, md, s->exporter_queen_secret,
                                   (const unsigned char *)label, llen,
                                   data, datalen, exportsecret, hashsize, 0)
             || !tls13_hkdf_expand(s, md, exportsecret, exporterlabel,
@@ -868,7 +868,7 @@ int tls13_export_keying_material_early(SSL *s, unsigned char *out, size_t olen,
             || EVP_DigestFinal_ex(ctx, hash, &hashsize) <= 0
             || EVP_DigestInit_ex(ctx, md, NULL) <= 0
             || EVP_DigestFinal_ex(ctx, data, &datalen) <= 0
-            || !tls13_hkdf_expand(s, md, s->early_exporter_master_secret,
+            || !tls13_hkdf_expand(s, md, s->early_exporter_queen_secret,
                                   (const unsigned char *)label, llen,
                                   data, datalen, exportsecret, hashsize, 0)
             || !tls13_hkdf_expand(s, md, exportsecret, exporterlabel,

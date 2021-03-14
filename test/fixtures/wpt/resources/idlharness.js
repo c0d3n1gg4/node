@@ -24,7 +24,7 @@ policies and contribution forms [3].
  * object will have from WebIDLParser.js, the best way is to look at the
  * grammar:
  *
- *   https://github.com/darobin/webidl.js/blob/master/lib/grammar.peg
+ *   https://github.com/darobin/webidl.js/blob/queen/lib/grammar.peg
  *
  * So for instance:
  *

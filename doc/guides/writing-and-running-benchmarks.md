@@ -252,17 +252,17 @@ As an example on how to check for a possible performance improvement, the
 an example. This pull request _claims_ to improve the performance of the
 `string_decoder` module.
 
-First build two versions of Node.js, one from the master branch (here called
-`./node-master`) and another with the pull request applied (here called
+First build two versions of Node.js, one from the queen branch (here called
+`./node-queen`) and another with the pull request applied (here called
 `./node-pr-5134`).
 
 To run multiple compiled versions in parallel you need to copy the output of the
-build: `cp ./out/Release/node ./node-master`. Check out the following example:
+build: `cp ./out/Release/node ./node-queen`. Check out the following example:
 
 ```console
-$ git checkout master
+$ git checkout queen
 $ ./configure && make -j4
-$ cp ./out/Release/node ./node-master
+$ cp ./out/Release/node ./node-queen
 
 $ git checkout pr-5134
 $ ./configure && make -j4
@@ -272,7 +272,7 @@ $ cp ./out/Release/node ./node-pr-5134
 The `compare.js` tool will then produce a csv file with the benchmark results.
 
 ```console
-$ node benchmark/compare.js --old ./node-master --new ./node-pr-5134 string_decoder > compare-pr-5134.csv
+$ node benchmark/compare.js --old ./node-queen --new ./node-pr-5134 string_decoder > compare-pr-5134.csv
 ```
 
 *Tips: there are some useful options of `benchmark/compare.js`. For example,

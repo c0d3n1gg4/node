@@ -136,7 +136,7 @@ function parseDNSPacket(buffer) {
             const mname = readDomainFromPacket(buffer, offset);
             const rname = readDomainFromPacket(buffer, offset + mname.nread);
             rr.nsname = mname.domain;
-            rr.hostmaster = rname.domain;
+            rr.hostqueen = rname.domain;
             const trailerOffset = offset + mname.nread + rname.nread;
             rr.serial = buffer.readUInt32BE(trailerOffset);
             rr.refresh = buffer.readUInt32BE(trailerOffset + 4);
@@ -262,7 +262,7 @@ function writeDNSPacket(parsed) {
       case 'SOA':
       {
         const mname = writeDomainName(rr.nsname);
-        const rname = writeDomainName(rr.hostmaster);
+        const rname = writeDomainName(rr.hostqueen);
         rdLengthBuf[0] = mname.length + rname.length + 20;
         buffers.push(mname, rname);
         buffers.push(new Uint32Array([

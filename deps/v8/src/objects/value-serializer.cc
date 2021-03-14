@@ -162,8 +162,8 @@ enum class SerializationTag : uint8_t {
 
   // The following tags are reserved because they were in use in Chromium before
   // the kHostObject tag was introduced in format version 13, at
-  //   v8           refs/heads/master@{#43466}
-  //   chromium/src refs/heads/master@{#453568}
+  //   v8           refs/heads/queen@{#43466}
+  //   chromium/src refs/heads/queen@{#453568}
   //
   // They must not be reused without a version check to prevent old values from
   // starting to deserialize incorrectly. For simplicity, it's recommended to

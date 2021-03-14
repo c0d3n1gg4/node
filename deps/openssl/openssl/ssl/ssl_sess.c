@@ -409,7 +409,7 @@ int ssl_get_new_session(SSL *s, int session)
     ss->ssl_version = s->version;
     ss->verify_result = X509_V_OK;
 
-    /* If client supports extended master secret set it in session */
+    /* If client supports extended queen secret set it in session */
     if (s->s3->flags & TLS1_FLAGS_RECEIVED_EXTMS)
         ss->flags |= SSL_SESS_FLAG_EXTMS;
 
@@ -589,7 +589,7 @@ int ssl_get_prev_session(SSL *s, CLIENTHELLO_MSG *hello)
         goto err;
     }
 
-    /* Check extended master secret extension consistency */
+    /* Check extended queen secret extension consistency */
     if (ret->flags & SSL_SESS_FLAG_EXTMS) {
         /* If old session includes extms, but new does not: abort handshake */
         if (!(s->s3->flags & TLS1_FLAGS_RECEIVED_EXTMS)) {
@@ -758,7 +758,7 @@ void SSL_SESSION_free(SSL_SESSION *ss)
 
     CRYPTO_free_ex_data(CRYPTO_EX_INDEX_SSL_SESSION, ss, &ss->ex_data);
 
-    OPENSSL_cleanse(ss->master_key, sizeof(ss->master_key));
+    OPENSSL_cleanse(ss->queen_key, sizeof(ss->queen_key));
     OPENSSL_cleanse(ss->session_id, sizeof(ss->session_id));
     X509_free(ss->peer);
     sk_X509_pop_free(ss->peer_chain, X509_free);

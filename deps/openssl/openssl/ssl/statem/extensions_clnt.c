@@ -494,7 +494,7 @@ EXT_RETURN tls_construct_ctos_sct(SSL *s, WPACKET *pkt, unsigned int context,
 EXT_RETURN tls_construct_ctos_ems(SSL *s, WPACKET *pkt, unsigned int context,
                                   X509 *x, size_t chainidx)
 {
-    if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_extended_master_secret)
+    if (!WPACKET_put_bytes_u16(pkt, TLSEXT_TYPE_extended_queen_secret)
             || !WPACKET_put_bytes_u16(pkt, 0)) {
         SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_CTOS_EMS,
                  ERR_R_INTERNAL_ERROR);
@@ -796,7 +796,7 @@ EXT_RETURN tls_construct_ctos_early_data(SSL *s, WPACKET *pkt,
 
             psksess = SSL_SESSION_new();
             if (psksess == NULL
-                    || !SSL_SESSION_set1_master_key(psksess, psk, psklen)
+                    || !SSL_SESSION_set1_queen_key(psksess, psk, psklen)
                     || !SSL_SESSION_set_cipher(psksess, cipher)
                     || !SSL_SESSION_set_protocol_version(psksess, TLS1_3_VERSION)) {
                 SSLfatal(s, SSL_AD_INTERNAL_ERROR,

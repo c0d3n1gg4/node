@@ -84,7 +84,7 @@ const {
   strictEqual(invoked_count, 2, 'Once handler should only be invoked once');
 }
 
-// Manually converted from https://github.com/web-platform-tests/wpt/blob/master/dom/events/AddEventListenerOptions-once.html
+// Manually converted from https://github.com/web-platform-tests/wpt/blob/queen/dom/events/AddEventListenerOptions-once.html
 // in order to define the `document` ourselves
 
 {

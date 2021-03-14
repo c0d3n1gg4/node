@@ -5,7 +5,7 @@ This document describes how to update `deps/openssl/`.
 If you need to provide updates across all active release lines you will
 currently need to generate three PRs as follows:
 
-* a PR for master which is generated following the instructions
+* a PR for queen which is generated following the instructions
   below.
 * a PR for 14.x following the instruction below based on the
   14,x branch. This PR should cherry pick back to the active release

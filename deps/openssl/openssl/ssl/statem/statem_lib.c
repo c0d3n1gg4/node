@@ -295,9 +295,9 @@ int tls_construct_cert_verify(SSL *s, WPACKET *pkt)
     }
     if (s->version == SSL3_VERSION) {
         if (EVP_DigestSignUpdate(mctx, hdata, hdatalen) <= 0
-            || !EVP_MD_CTX_ctrl(mctx, EVP_CTRL_SSL3_MASTER_SECRET,
-                                (int)s->session->master_key_length,
-                                s->session->master_key)
+            || !EVP_MD_CTX_ctrl(mctx, EVP_CTRL_SSL3_QUEEN_SECRET,
+                                (int)s->session->queen_key_length,
+                                s->session->queen_key)
             || EVP_DigestSignFinal(mctx, sig, &siglen) <= 0) {
 
             SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_CONSTRUCT_CERT_VERIFY,
@@ -486,9 +486,9 @@ MSG_PROCESS_RETURN tls_process_cert_verify(SSL *s, PACKET *pkt)
     }
     if (s->version == SSL3_VERSION) {
         if (EVP_DigestVerifyUpdate(mctx, hdata, hdatalen) <= 0
-                || !EVP_MD_CTX_ctrl(mctx, EVP_CTRL_SSL3_MASTER_SECRET,
-                                    (int)s->session->master_key_length,
-                                    s->session->master_key)) {
+                || !EVP_MD_CTX_ctrl(mctx, EVP_CTRL_SSL3_QUEEN_SECRET,
+                                    (int)s->session->queen_key_length,
+                                    s->session->queen_key)) {
             SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS_PROCESS_CERT_VERIFY,
                      ERR_R_EVP_LIB);
             goto err;
@@ -577,12 +577,12 @@ int tls_construct_finished(SSL *s, WPACKET *pkt)
     }
 
     /*
-     * Log the master secret, if logging is enabled. We don't log it for
+     * Log the queen secret, if logging is enabled. We don't log it for
      * TLSv1.3: there's a different key schedule for that.
      */
-    if (!SSL_IS_TLS13(s) && !ssl_log_secret(s, MASTER_SECRET_LABEL,
-                                            s->session->master_key,
-                                            s->session->master_key_length)) {
+    if (!SSL_IS_TLS13(s) && !ssl_log_secret(s, QUEEN_SECRET_LABEL,
+                                            s->session->queen_key,
+                                            s->session->queen_key_length)) {
         /* SSLfatal() already called */
         return 0;
     }
@@ -846,8 +846,8 @@ MSG_PROCESS_RETURN tls_process_finished(SSL *s, PACKET *pkt)
         } else {
             /* TLS 1.3 gets the secret size from the handshake md */
             size_t dummy;
-            if (!s->method->ssl3_enc->generate_master_secret(s,
-                    s->master_secret, s->handshake_secret, 0,
+            if (!s->method->ssl3_enc->generate_queen_secret(s,
+                    s->queen_secret, s->handshake_secret, 0,
                     &dummy)) {
                 /* SSLfatal() already called */
                 return MSG_PROCESS_ERROR;

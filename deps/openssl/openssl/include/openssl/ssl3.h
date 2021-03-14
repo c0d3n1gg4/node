@@ -127,7 +127,7 @@ extern "C" {
 # define SSL3_SSL_SESSION_ID_LENGTH              32
 # define SSL3_MAX_SSL_SESSION_ID_LENGTH          32
 
-# define SSL3_MASTER_SECRET_SIZE                 48
+# define SSL3_QUEEN_SECRET_SIZE                 48
 # define SSL3_RANDOM_SIZE                        32
 # define SSL3_SESSION_ID_SIZE                    32
 # define SSL3_RT_HEADER_LENGTH                   5
@@ -218,10 +218,10 @@ extern "C" {
 
 /* Pseudo content types to indicate additional parameters */
 # define TLS1_RT_CRYPTO                  0x1000
-# define TLS1_RT_CRYPTO_PREMASTER        (TLS1_RT_CRYPTO | 0x1)
+# define TLS1_RT_CRYPTO_PREQUEEN        (TLS1_RT_CRYPTO | 0x1)
 # define TLS1_RT_CRYPTO_CLIENT_RANDOM    (TLS1_RT_CRYPTO | 0x2)
 # define TLS1_RT_CRYPTO_SERVER_RANDOM    (TLS1_RT_CRYPTO | 0x3)
-# define TLS1_RT_CRYPTO_MASTER           (TLS1_RT_CRYPTO | 0x4)
+# define TLS1_RT_CRYPTO_QUEEN           (TLS1_RT_CRYPTO | 0x4)
 
 # define TLS1_RT_CRYPTO_READ             0x0000
 # define TLS1_RT_CRYPTO_WRITE            0x0100
@@ -285,14 +285,14 @@ extern "C" {
 # define TLS1_FLAGS_ENCRYPT_THEN_MAC_READ        0x0100
 # define TLS1_FLAGS_ENCRYPT_THEN_MAC             TLS1_FLAGS_ENCRYPT_THEN_MAC_READ
 
-/* Set if extended master secret extension received from peer */
+/* Set if extended queen secret extension received from peer */
 # define TLS1_FLAGS_RECEIVED_EXTMS               0x0200
 
 # define TLS1_FLAGS_ENCRYPT_THEN_MAC_WRITE       0x0400
 
 # define TLS1_FLAGS_STATELESS                    0x0800
 
-/* Set if extended master secret extension required on renegotiation */
+/* Set if extended queen secret extension required on renegotiation */
 # define TLS1_FLAGS_REQUIRED_EXTMS               0x1000
 
 # define SSL3_MT_HELLO_REQUEST                   0

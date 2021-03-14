@@ -355,8 +355,8 @@ TEST(async function test_resolveSoa(done) {
     assert.strictEqual(typeof result, 'object');
     assert.strictEqual(typeof result.nsname, 'string');
     assert.ok(result.nsname.length > 0);
-    assert.strictEqual(typeof result.hostmaster, 'string');
-    assert.ok(result.hostmaster.length > 0);
+    assert.strictEqual(typeof result.hostqueen, 'string');
+    assert.ok(result.hostqueen.length > 0);
     assert.strictEqual(typeof result.serial, 'number');
     assert.ok((result.serial > 0) && (result.serial < 4294967295));
     assert.strictEqual(typeof result.refresh, 'number');

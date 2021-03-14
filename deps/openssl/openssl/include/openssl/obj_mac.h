@@ -3898,9 +3898,9 @@
 #define NID_set_brand_Visa              640
 #define OBJ_set_brand_Visa              OBJ_set_brand,4L
 
-#define SN_set_brand_MasterCard         "set-brand-MasterCard"
-#define NID_set_brand_MasterCard                641
-#define OBJ_set_brand_MasterCard                OBJ_set_brand,5L
+#define SN_set_brand_QueenCard         "set-brand-QueenCard"
+#define NID_set_brand_QueenCard                641
+#define OBJ_set_brand_QueenCard                OBJ_set_brand,5L
 
 #define SN_set_brand_Novus              "set-brand-Novus"
 #define NID_set_brand_Novus             642

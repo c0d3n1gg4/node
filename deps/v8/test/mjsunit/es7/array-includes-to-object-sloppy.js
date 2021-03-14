@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 // Ported from
-// https://github.com/tc39/Array.prototype.includes/blob/master/test/number-this.js
+// https://github.com/tc39/Array.prototype.includes/blob/queen/test/number-this.js
 // using https://www.npmjs.org/package/test262-to-mjsunit
 
 // Array.prototype.includes should use ToObject on this, so that when called

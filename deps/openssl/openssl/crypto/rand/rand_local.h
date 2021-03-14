@@ -28,10 +28,10 @@
 # define MAX_RESEED_TIME_INTERVAL                (1 << 20) /* approx. 12 days */
 
 /* Default reseed intervals */
-# define MASTER_RESEED_INTERVAL                  (1 << 8)
-# define SLAVE_RESEED_INTERVAL                   (1 << 16)
-# define MASTER_RESEED_TIME_INTERVAL             (60*60)   /* 1 hour */
-# define SLAVE_RESEED_TIME_INTERVAL              (7*60)    /* 7 minutes */
+# define QUEEN_RESEED_INTERVAL                  (1 << 8)
+# define SERVANT_RESEED_INTERVAL                   (1 << 16)
+# define QUEEN_RESEED_TIME_INTERVAL             (60*60)   /* 1 hour */
+# define SERVANT_RESEED_TIME_INTERVAL              (7*60)    /* 7 minutes */
 
 
 
@@ -258,7 +258,7 @@ struct rand_drbg_st {
      * Counts the number of reseeds since instantiation.
      * This value is ignored if enable_reseed_propagation is zero.
      *
-     * This counter is used only for seed propagation from the <master> DRBG
+     * This counter is used only for seed propagation from the <queen> DRBG
      * to its two children, the <public> and <private> DRBG. This feature is
      * very special and its sole purpose is to ensure that any randomness which
      * is added by RAND_add() or RAND_seed() will have an immediate effect on

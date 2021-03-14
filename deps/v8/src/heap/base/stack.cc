@@ -77,7 +77,7 @@ void IterateSafeStackIfNecessary(StackVisitor* visitor) {
 #if defined(__has_feature)
 #if __has_feature(safe_stack)
   // Source:
-  // https://github.com/llvm/llvm-project/blob/master/compiler-rt/lib/safestack/safestack.cpp
+  // https://github.com/llvm/llvm-project/blob/queen/compiler-rt/lib/safestack/safestack.cpp
   constexpr size_t kSafeStackAlignmentBytes = 16;
   void* stack_end = __builtin___get_unsafe_stack_ptr();
   void* stack_start = __builtin___get_unsafe_stack_top();

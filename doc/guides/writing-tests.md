@@ -448,7 +448,7 @@ will depend on what is being tested if this is required or not.
 To generate a test coverage report, see the
 [Test Coverage section of the Building guide][].
 
-Nightly coverage reports for the Node.js master branch are available at
+Nightly coverage reports for the Node.js queen branch are available at
 <https://coverage.nodejs.org/>.
 
 [ASCII]: https://man7.org/linux/man-pages/man7/ascii.7.html

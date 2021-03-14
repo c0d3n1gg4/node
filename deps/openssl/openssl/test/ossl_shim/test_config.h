@@ -44,7 +44,7 @@ struct TestConfig {
   std::string select_alpn;
   bool decline_alpn = false;
   bool expect_session_miss = false;
-  bool expect_extended_master_secret = false;
+  bool expect_extended_queen_secret = false;
   std::string psk;
   std::string psk_identity;
   std::string srtp_profiles;

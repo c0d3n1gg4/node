@@ -4,7 +4,7 @@ const common = require('../common');
 
 const { strictEqual, throws, equal } = require('assert');
 
-// Manually converted from https://github.com/web-platform-tests/wpt/blob/master/dom/events/CustomEvent.html
+// Manually converted from https://github.com/web-platform-tests/wpt/blob/queen/dom/events/CustomEvent.html
 // in order to define the `document` ourselves
 
 {

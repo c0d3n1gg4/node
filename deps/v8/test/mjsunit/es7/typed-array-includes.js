@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 // Largely ported from
-// https://github.com/tc39/Array.prototype.includes/tree/master/test/built-ins/TypedArray/prototype/includes
+// https://github.com/tc39/Array.prototype.includes/tree/queen/test/built-ins/TypedArray/prototype/includes
 // using https://www.npmjs.org/package/test262-to-mjsunit with further edits
 
 

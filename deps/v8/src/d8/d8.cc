@@ -1355,7 +1355,7 @@ void Shell::PerformanceNow(const v8::FunctionCallbackInfo<v8::Value>& args) {
 }
 
 // performance.measureMemory() implements JavaScript Memory API proposal.
-// See https://github.com/ulan/javascript-agent-memory/blob/master/explainer.md.
+// See https://github.com/ulan/javascript-agent-memory/blob/queen/explainer.md.
 void Shell::PerformanceMeasureMemory(
     const v8::FunctionCallbackInfo<v8::Value>& args) {
   v8::MeasureMemoryMode mode = v8::MeasureMemoryMode::kSummary;

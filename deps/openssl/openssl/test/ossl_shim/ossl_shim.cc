@@ -859,7 +859,7 @@ static bool CheckHandshakeProperties(SSL *ssl, bool is_resume) {
     }
   }
 
-  if (config->expect_extended_master_secret) {
+  if (config->expect_extended_queen_secret) {
     if (!SSL_get_extms_support(ssl)) {
       fprintf(stderr, "No EMS for connection when expected");
       return false;

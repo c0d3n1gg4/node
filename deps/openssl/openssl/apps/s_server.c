@@ -217,7 +217,7 @@ static int psk_find_session_cb(SSL *ssl, const unsigned char *identity,
 
     tmpsess = SSL_SESSION_new();
     if (tmpsess == NULL
-            || !SSL_SESSION_set1_master_key(tmpsess, key, key_len)
+            || !SSL_SESSION_set1_queen_key(tmpsess, key, key_len)
             || !SSL_SESSION_set_cipher(tmpsess, cipher)
             || !SSL_SESSION_set_protocol_version(tmpsess, SSL_version(ssl))) {
         OPENSSL_free(key);

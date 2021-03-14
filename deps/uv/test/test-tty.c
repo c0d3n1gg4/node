@@ -437,34 +437,34 @@ TEST_IMPL(tty_pty) {
     (defined(__linux__) && !defined(__ANDROID__)) || \
     defined(__NetBSD__)                           || \
     defined(__OpenBSD__)
-  int master_fd, slave_fd, r;
+  int queen_fd, servant_fd, r;
   struct winsize w;
   uv_loop_t loop;
-  uv_tty_t master_tty, slave_tty;
+  uv_tty_t queen_tty, servant_tty;
 
   ASSERT(0 == uv_loop_init(&loop));
 
-  r = openpty(&master_fd, &slave_fd, NULL, NULL, &w);
+  r = openpty(&queen_fd, &servant_fd, NULL, NULL, &w);
   if (r != 0)
     RETURN_SKIP("No pty available, skipping.");
 
-  ASSERT(0 == uv_tty_init(&loop, &slave_tty, slave_fd, 0));
-  ASSERT(0 == uv_tty_init(&loop, &master_tty, master_fd, 0));
-  ASSERT(uv_is_readable((uv_stream_t*) &slave_tty));
-  ASSERT(uv_is_writable((uv_stream_t*) &slave_tty));
-  ASSERT(uv_is_readable((uv_stream_t*) &master_tty));
-  ASSERT(uv_is_writable((uv_stream_t*) &master_tty));
+  ASSERT(0 == uv_tty_init(&loop, &servant_tty, servant_fd, 0));
+  ASSERT(0 == uv_tty_init(&loop, &queen_tty, queen_fd, 0));
+  ASSERT(uv_is_readable((uv_stream_t*) &servant_tty));
+  ASSERT(uv_is_writable((uv_stream_t*) &servant_tty));
+  ASSERT(uv_is_readable((uv_stream_t*) &queen_tty));
+  ASSERT(uv_is_writable((uv_stream_t*) &queen_tty));
   /* Check if the file descriptor was reopened. If it is,
    * UV_HANDLE_BLOCKING_WRITES (value 0x100000) isn't set on flags.
    */
-  ASSERT(0 == (slave_tty.flags & 0x100000));
-  /* The master_fd of a pty should never be reopened.
+  ASSERT(0 == (servant_tty.flags & 0x100000));
+  /* The queen_fd of a pty should never be reopened.
    */
-  ASSERT(master_tty.flags & 0x100000);
-  ASSERT(0 == close(slave_fd));
-  uv_close((uv_handle_t*) &slave_tty, NULL);
-  ASSERT(0 == close(master_fd));
-  uv_close((uv_handle_t*) &master_tty, NULL);
+  ASSERT(queen_tty.flags & 0x100000);
+  ASSERT(0 == close(servant_fd));
+  uv_close((uv_handle_t*) &servant_tty, NULL);
+  ASSERT(0 == close(queen_fd));
+  uv_close((uv_handle_t*) &queen_tty, NULL);
 
   ASSERT(0 == uv_run(&loop, UV_RUN_DEFAULT));
 

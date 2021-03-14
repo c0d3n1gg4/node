@@ -19,7 +19,7 @@ typedef struct {
     int32_t ssl_version;
     ASN1_OCTET_STRING *cipher;
     ASN1_OCTET_STRING *comp_id;
-    ASN1_OCTET_STRING *master_key;
+    ASN1_OCTET_STRING *queen_key;
     ASN1_OCTET_STRING *session_id;
     ASN1_OCTET_STRING *key_arg;
     int64_t time;
@@ -50,7 +50,7 @@ ASN1_SEQUENCE(SSL_SESSION_ASN1) = {
     ASN1_EMBED(SSL_SESSION_ASN1, ssl_version, INT32),
     ASN1_SIMPLE(SSL_SESSION_ASN1, cipher, ASN1_OCTET_STRING),
     ASN1_SIMPLE(SSL_SESSION_ASN1, session_id, ASN1_OCTET_STRING),
-    ASN1_SIMPLE(SSL_SESSION_ASN1, master_key, ASN1_OCTET_STRING),
+    ASN1_SIMPLE(SSL_SESSION_ASN1, queen_key, ASN1_OCTET_STRING),
     ASN1_IMP_OPT(SSL_SESSION_ASN1, key_arg, ASN1_OCTET_STRING, 0),
     ASN1_EXP_OPT_EMBED(SSL_SESSION_ASN1, time, ZINT64, 1),
     ASN1_EXP_OPT_EMBED(SSL_SESSION_ASN1, timeout, ZINT64, 2),
@@ -108,7 +108,7 @@ int i2d_SSL_SESSION(SSL_SESSION *in, unsigned char **pp)
 
     ASN1_OCTET_STRING cipher;
     unsigned char cipher_data[2];
-    ASN1_OCTET_STRING master_key, session_id, sid_ctx;
+    ASN1_OCTET_STRING queen_key, session_id, sid_ctx;
 
 #ifndef OPENSSL_NO_COMP
     ASN1_OCTET_STRING comp_id;
@@ -150,8 +150,8 @@ int i2d_SSL_SESSION(SSL_SESSION *in, unsigned char **pp)
     }
 #endif
 
-    ssl_session_oinit(&as.master_key, &master_key,
-                      in->master_key, in->master_key_length);
+    ssl_session_oinit(&as.queen_key, &queen_key,
+                      in->queen_key, in->queen_key_length);
 
     ssl_session_oinit(&as.session_id, &session_id,
                       in->session_id, in->session_id_length);
@@ -289,11 +289,11 @@ SSL_SESSION *d2i_SSL_SESSION(SSL_SESSION **a, const unsigned char **pp,
                             as->session_id, SSL3_MAX_SSL_SESSION_ID_LENGTH))
         goto err;
 
-    if (!ssl_session_memcpy(ret->master_key, &tmpl,
-                            as->master_key, TLS13_MAX_RESUMPTION_PSK_LENGTH))
+    if (!ssl_session_memcpy(ret->queen_key, &tmpl,
+                            as->queen_key, TLS13_MAX_RESUMPTION_PSK_LENGTH))
         goto err;
 
-    ret->master_key_length = tmpl;
+    ret->queen_key_length = tmpl;
 
     if (as->time != 0)
         ret->time = (long)as->time;

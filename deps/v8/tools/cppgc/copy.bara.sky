@@ -26,7 +26,7 @@ core.workflow(
     name='default',
     origin=git.origin(
         url=origin_url,
-        ref='master',
+        ref='queen',
     ),
     destination=git.destination(url=destination_url, ),
     origin_files=glob(INTERESTING_PATHS,

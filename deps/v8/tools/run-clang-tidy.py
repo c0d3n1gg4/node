@@ -170,7 +170,7 @@ def ClangTidyRunDiff(build_folder, diff_branch, auto_fix):
   """
   if diff_branch is None:
     diff_branch = subprocess.check_output(['git', 'merge-base',
-                                           'HEAD', 'origin/master']).strip()
+                                           'HEAD', 'origin/queen']).strip()
 
   git_ps = subprocess.Popen(
     ['git', 'diff', '-U0', diff_branch], stdout=subprocess.PIPE)
@@ -349,7 +349,7 @@ def GetOptions():
   diff_run_g = optparse.OptionGroup(result, 'Clang-tidy diff', '')
   diff_run_g.add_option('--branch', help='Run clang-tidy on the diff '\
              'between HEAD and the merge-base between HEAD '\
-             'and DIFF_BRANCH (origin/master by default).',
+             'and DIFF_BRANCH (origin/queen by default).',
              default=None, dest='diff_branch')
   result.add_option_group(diff_run_g)
 

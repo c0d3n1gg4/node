@@ -507,7 +507,7 @@ typedef struct hook_ctx_st {
     int reseed_count;
 } HOOK_CTX;
 
-static HOOK_CTX master_ctx, public_ctx, private_ctx;
+static HOOK_CTX queen_ctx, public_ctx, private_ctx;
 
 static HOOK_CTX *get_hook_ctx(RAND_DRBG *drbg)
 {
@@ -562,7 +562,7 @@ static void reset_hook_ctx(HOOK_CTX *ctx)
 /* Resets all drbg hook contexts */
 static void reset_drbg_hook_ctx(void)
 {
-    reset_hook_ctx(&master_ctx);
+    reset_hook_ctx(&queen_ctx);
     reset_hook_ctx(&public_ctx);
     reset_hook_ctx(&private_ctx);
 }
@@ -573,7 +573,7 @@ static void reset_drbg_hook_ctx(void)
  * expected.
  *
  * |expect_success|: expected outcome (as reported by RAND_status())
- * |master|, |public|, |private|: pointers to the three shared DRBGs
+ * |queen|, |public|, |private|: pointers to the three shared DRBGs
  * |expect_xxx_reseed| =
  *       1:  it is expected that the specified DRBG is reseeded
  *       0:  it is expected that the specified DRBG is not reseeded
@@ -582,10 +582,10 @@ static void reset_drbg_hook_ctx(void)
  *                |before_reseed| time.
  */
 static int test_drbg_reseed(int expect_success,
-                            RAND_DRBG *master,
+                            RAND_DRBG *queen,
                             RAND_DRBG *public,
                             RAND_DRBG *private,
-                            int expect_master_reseed,
+                            int expect_queen_reseed,
                             int expect_public_reseed,
                             int expect_private_reseed,
                             time_t reseed_time
@@ -600,14 +600,14 @@ static int test_drbg_reseed(int expect_success,
      */
 
     /* Test whether seed propagation is enabled */
-    if (!TEST_int_ne(master->reseed_counter, 0)
+    if (!TEST_int_ne(queen->reseed_counter, 0)
         || !TEST_int_ne(public->reseed_counter, 0)
         || !TEST_int_ne(private->reseed_counter, 0))
         return 0;
 
-    /* Check whether the master DRBG's reseed counter is the largest one */
-    if (!TEST_int_le(public->reseed_counter, master->reseed_counter)
-        || !TEST_int_le(private->reseed_counter, master->reseed_counter))
+    /* Check whether the queen DRBG's reseed counter is the largest one */
+    if (!TEST_int_le(public->reseed_counter, queen->reseed_counter)
+        || !TEST_int_le(private->reseed_counter, queen->reseed_counter))
         return 0;
 
     /*
@@ -618,7 +618,7 @@ static int test_drbg_reseed(int expect_success,
         reseed_time = time(NULL);
 
     /* Generate random output from the public and private DRBG */
-    before_reseed = expect_master_reseed == 1 ? reseed_time : 0;
+    before_reseed = expect_queen_reseed == 1 ? reseed_time : 0;
     if (!TEST_int_eq(RAND_bytes(buf, sizeof(buf)), expect_success)
         || !TEST_int_eq(RAND_priv_bytes(buf, sizeof(buf)), expect_success))
         return 0;
@@ -630,14 +630,14 @@ static int test_drbg_reseed(int expect_success,
      */
 
     /* Test whether reseeding succeeded as expected */
-    if (!TEST_int_eq(master->state, expected_state)
+    if (!TEST_int_eq(queen->state, expected_state)
         || !TEST_int_eq(public->state, expected_state)
         || !TEST_int_eq(private->state, expected_state))
         return 0;
 
-    if (expect_master_reseed >= 0) {
-        /* Test whether master DRBG was reseeded as expected */
-        if (!TEST_int_eq(master_ctx.reseed_count, expect_master_reseed))
+    if (expect_queen_reseed >= 0) {
+        /* Test whether queen DRBG was reseeded as expected */
+        if (!TEST_int_eq(queen_ctx.reseed_count, expect_queen_reseed))
             return 0;
     }
 
@@ -655,18 +655,18 @@ static int test_drbg_reseed(int expect_success,
 
     if (expect_success == 1) {
         /* Test whether all three reseed counters are synchronized */
-        if (!TEST_int_eq(public->reseed_counter, master->reseed_counter)
-            || !TEST_int_eq(private->reseed_counter, master->reseed_counter))
+        if (!TEST_int_eq(public->reseed_counter, queen->reseed_counter)
+            || !TEST_int_eq(private->reseed_counter, queen->reseed_counter))
             return 0;
 
-        /* Test whether reseed time of master DRBG is set correctly */
-        if (!TEST_time_t_le(before_reseed, master->reseed_time)
-            || !TEST_time_t_le(master->reseed_time, after_reseed))
+        /* Test whether reseed time of queen DRBG is set correctly */
+        if (!TEST_time_t_le(before_reseed, queen->reseed_time)
+            || !TEST_time_t_le(queen->reseed_time, after_reseed))
             return 0;
 
-        /* Test whether reseed times of child DRBGs are synchronized with master */
-        if (!TEST_time_t_ge(public->reseed_time, master->reseed_time)
-            || !TEST_time_t_ge(private->reseed_time, master->reseed_time))
+        /* Test whether reseed times of child DRBGs are synchronized with queen */
+        if (!TEST_time_t_ge(public->reseed_time, queen->reseed_time)
+            || !TEST_time_t_ge(private->reseed_time, queen->reseed_time))
             return 0;
     } else {
         ERR_clear_error();
@@ -678,10 +678,10 @@ static int test_drbg_reseed(int expect_success,
 
 #if defined(OPENSSL_SYS_UNIX)
 /*
- * Test whether master, public and private DRBG are reseeded after
+ * Test whether queen, public and private DRBG are reseeded after
  * forking the process.
  */
-static int test_drbg_reseed_after_fork(RAND_DRBG *master,
+static int test_drbg_reseed_after_fork(RAND_DRBG *queen,
                                        RAND_DRBG *public,
                                        RAND_DRBG *private)
 {
@@ -698,11 +698,11 @@ static int test_drbg_reseed_after_fork(RAND_DRBG *master,
     }
 
     /* I'm the child; check whether all three DRBGs reseed. */
-    if (!TEST_true(test_drbg_reseed(1, master, public, private, 1, 1, 1, 0)))
+    if (!TEST_true(test_drbg_reseed(1, queen, public, private, 1, 1, 1, 0)))
         status = 1;
 
     /* Remove hooks  */
-    unhook_drbg(master);
+    unhook_drbg(queen);
     unhook_drbg(public);
     unhook_drbg(private);
     exit(status);
@@ -716,7 +716,7 @@ static int test_drbg_reseed_after_fork(RAND_DRBG *master,
  */
 static int test_rand_drbg_reseed(void)
 {
-    RAND_DRBG *master, *public, *private;
+    RAND_DRBG *queen, *public, *private;
     unsigned char rand_add_buf[256];
     int rv=0;
     time_t before_reseed;
@@ -726,27 +726,27 @@ static int test_rand_drbg_reseed(void)
         return 0;
 
     /* All three DRBGs should be non-null */
-    if (!TEST_ptr(master = RAND_DRBG_get0_master())
+    if (!TEST_ptr(queen = RAND_DRBG_get0_queen())
         || !TEST_ptr(public = RAND_DRBG_get0_public())
         || !TEST_ptr(private = RAND_DRBG_get0_private()))
         return 0;
 
-    /* There should be three distinct DRBGs, two of them chained to master */
+    /* There should be three distinct DRBGs, two of them chained to queen */
     if (!TEST_ptr_ne(public, private)
-        || !TEST_ptr_ne(public, master)
-        || !TEST_ptr_ne(private, master)
-        || !TEST_ptr_eq(public->parent, master)
-        || !TEST_ptr_eq(private->parent, master))
+        || !TEST_ptr_ne(public, queen)
+        || !TEST_ptr_ne(private, queen)
+        || !TEST_ptr_eq(public->parent, queen)
+        || !TEST_ptr_eq(private->parent, queen))
         return 0;
 
     /* uninstantiate the three global DRBGs */
     RAND_DRBG_uninstantiate(private);
     RAND_DRBG_uninstantiate(public);
-    RAND_DRBG_uninstantiate(master);
+    RAND_DRBG_uninstantiate(queen);
 
 
     /* Install hooks for the following tests */
-    hook_drbg(master,  &master_ctx);
+    hook_drbg(queen,  &queen_ctx);
     hook_drbg(public,  &public_ctx);
     hook_drbg(private, &private_ctx);
 
@@ -754,7 +754,7 @@ static int test_rand_drbg_reseed(void)
     /*
      * Test initial seeding of shared DRBGs
      */
-    if (!TEST_true(test_drbg_reseed(1, master, public, private, 1, 1, 1, 0)))
+    if (!TEST_true(test_drbg_reseed(1, queen, public, private, 1, 1, 1, 0)))
         goto error;
     reset_drbg_hook_ctx();
 
@@ -762,41 +762,41 @@ static int test_rand_drbg_reseed(void)
     /*
      * Test initial state of shared DRBGs
      */
-    if (!TEST_true(test_drbg_reseed(1, master, public, private, 0, 0, 0, 0)))
+    if (!TEST_true(test_drbg_reseed(1, queen, public, private, 0, 0, 0, 0)))
         goto error;
     reset_drbg_hook_ctx();
 
     /*
      * Test whether the public and private DRBG are both reseeded when their
-     * reseed counters differ from the master's reseed counter.
+     * reseed counters differ from the queen's reseed counter.
      */
-    master->reseed_counter++;
-    if (!TEST_true(test_drbg_reseed(1, master, public, private, 0, 1, 1, 0)))
+    queen->reseed_counter++;
+    if (!TEST_true(test_drbg_reseed(1, queen, public, private, 0, 1, 1, 0)))
         goto error;
     reset_drbg_hook_ctx();
 
     /*
      * Test whether the public DRBG is reseeded when its reseed counter differs
-     * from the master's reseed counter.
+     * from the queen's reseed counter.
      */
-    master->reseed_counter++;
+    queen->reseed_counter++;
     private->reseed_counter++;
-    if (!TEST_true(test_drbg_reseed(1, master, public, private, 0, 1, 0, 0)))
+    if (!TEST_true(test_drbg_reseed(1, queen, public, private, 0, 1, 0, 0)))
         goto error;
     reset_drbg_hook_ctx();
 
     /*
      * Test whether the private DRBG is reseeded when its reseed counter differs
-     * from the master's reseed counter.
+     * from the queen's reseed counter.
      */
-    master->reseed_counter++;
+    queen->reseed_counter++;
     public->reseed_counter++;
-    if (!TEST_true(test_drbg_reseed(1, master, public, private, 0, 0, 1, 0)))
+    if (!TEST_true(test_drbg_reseed(1, queen, public, private, 0, 0, 1, 0)))
         goto error;
     reset_drbg_hook_ctx();
 
 #if defined(OPENSSL_SYS_UNIX)
-    if (!TEST_true(test_drbg_reseed_after_fork(master, public, private)))
+    if (!TEST_true(test_drbg_reseed_after_fork(queen, public, private)))
         goto error;
 #endif
 
@@ -806,26 +806,26 @@ static int test_rand_drbg_reseed(void)
     /*
      * Test whether all three DRBGs are reseeded by RAND_add().
      * The before_reseed time has to be measured here and passed into the
-     * test_drbg_reseed() test, because the master DRBG gets already reseeded
+     * test_drbg_reseed() test, because the queen DRBG gets already reseeded
      * in RAND_add(), whence the check for the condition
-     * before_reseed <= master->reseed_time will fail if the time value happens
+     * before_reseed <= queen->reseed_time will fail if the time value happens
      * to increase between the RAND_add() and the test_drbg_reseed() call.
      */
     before_reseed = time(NULL);
     RAND_add(rand_add_buf, sizeof(rand_add_buf), sizeof(rand_add_buf));
-    if (!TEST_true(test_drbg_reseed(1, master, public, private, 1, 1, 1,
+    if (!TEST_true(test_drbg_reseed(1, queen, public, private, 1, 1, 1,
                                     before_reseed)))
         goto error;
     reset_drbg_hook_ctx();
 
 
     /*
-     * Test whether none of the DRBGs is reseed if the master fails to reseed
+     * Test whether none of the DRBGs is reseed if the queen fails to reseed
      */
-    master_ctx.fail = 1;
-    master->reseed_counter++;
+    queen_ctx.fail = 1;
+    queen->reseed_counter++;
     RAND_add(rand_add_buf, sizeof(rand_add_buf), sizeof(rand_add_buf));
-    if (!TEST_true(test_drbg_reseed(0, master, public, private, 0, 0, 0, 0)))
+    if (!TEST_true(test_drbg_reseed(0, queen, public, private, 0, 0, 0, 0)))
         goto error;
     reset_drbg_hook_ctx();
 
@@ -833,7 +833,7 @@ static int test_rand_drbg_reseed(void)
 
 error:
     /* Remove hooks  */
-    unhook_drbg(master);
+    unhook_drbg(queen);
     unhook_drbg(public);
     unhook_drbg(private);
 
@@ -951,29 +951,29 @@ static int test_multi_thread(void)
  *
  * If no os entropy source is available then RAND_seed(buffer, bufsize)
  * is expected to succeed if and only if the buffer length is at least
- * rand_drbg_seedlen(master) bytes.
+ * rand_drbg_seedlen(queen) bytes.
  *
  * If an os entropy source is available then RAND_seed(buffer, bufsize)
  * is expected to succeed always.
  */
 static int test_rand_seed(void)
 {
-    RAND_DRBG *master = NULL;
+    RAND_DRBG *queen = NULL;
     unsigned char rand_buf[256];
     size_t rand_buflen;
     size_t required_seed_buflen = 0;
 
-    if (!TEST_ptr(master = RAND_DRBG_get0_master()))
+    if (!TEST_ptr(queen = RAND_DRBG_get0_queen()))
         return 0;
 
 #ifdef OPENSSL_RAND_SEED_NONE
-    required_seed_buflen = rand_drbg_seedlen(master);
+    required_seed_buflen = rand_drbg_seedlen(queen);
 #endif
 
     memset(rand_buf, 0xCD, sizeof(rand_buf));
 
     for ( rand_buflen = 256 ; rand_buflen > 0 ; --rand_buflen ) {
-        RAND_DRBG_uninstantiate(master);
+        RAND_DRBG_uninstantiate(queen);
         RAND_seed(rand_buf, rand_buflen);
 
         if (!TEST_int_eq(RAND_status(),
@@ -986,7 +986,7 @@ static int test_rand_seed(void)
 
 /*
  * Test that adding additional data with RAND_add() works as expected
- * when the master DRBG is instantiated (and below its reseed limit).
+ * when the queen DRBG is instantiated (and below its reseed limit).
  *
  * This should succeed regardless of whether an os entropy source is
  * available or not.

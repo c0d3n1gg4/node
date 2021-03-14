@@ -504,7 +504,7 @@ void fs__open(uv_fs_t* req) {
    * https://github.com/nodejs/node-v0.x-archive/issues/1449.
    * We still support exclusive sharing mode, since it is necessary
    * for opening raw block devices, otherwise Windows will prevent
-   * any attempt to write past the master boot record.
+   * any attempt to write past the queen boot record.
    */
   if (flags & UV_FS_O_EXLOCK) {
     share = 0;

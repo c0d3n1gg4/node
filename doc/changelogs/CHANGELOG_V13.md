@@ -2097,7 +2097,7 @@ https://blog.npmjs.org/post/189618601100/binary-planting-with-the-npm-cli
 * [[`0d9ae1b8f6`](https://github.com/nodejs/node/commit/0d9ae1b8f6)] - **deps**: V8: cherry-pick ed40ab1 (Michaël Zasso) [#30064](https://github.com/nodejs/node/pull/30064)
 * [[`a63f7e73c4`](https://github.com/nodejs/node/commit/a63f7e73c4)] - **(SEMVER-MINOR)** **dgram**: add source-specific multicast support (Lucas Pardue) [#15735](https://github.com/nodejs/node/pull/15735)
 * [[`fc407bb555`](https://github.com/nodejs/node/commit/fc407bb555)] - **doc**: add missing hash for header link (Nick Schonning) [#30188](https://github.com/nodejs/node/pull/30188)
-* [[`201a60e6ba`](https://github.com/nodejs/node/commit/201a60e6ba)] - **doc**: linkify `.setupMaster()` in cluster doc (Trivikram Kamat) [#30204](https://github.com/nodejs/node/pull/30204)
+* [[`201a60e6ba`](https://github.com/nodejs/node/commit/201a60e6ba)] - **doc**: linkify `.setupQueen()` in cluster doc (Trivikram Kamat) [#30204](https://github.com/nodejs/node/pull/30204)
 * [[`b7070f315f`](https://github.com/nodejs/node/commit/b7070f315f)] - **doc**: explain http2 aborted event callback (dev-313) [#30179](https://github.com/nodejs/node/pull/30179)
 * [[`f8fb2c06c5`](https://github.com/nodejs/node/commit/f8fb2c06c5)] - **doc**: linkify `.fork()` in cluster documentation (Anna Henningsen) [#30163](https://github.com/nodejs/node/pull/30163)
 * [[`ae81360214`](https://github.com/nodejs/node/commit/ae81360214)] - **doc**: update AUTHORS list (Michaël Zasso) [#30142](https://github.com/nodejs/node/pull/30142)

@@ -82,13 +82,13 @@ int RAND_DRBG_set_reseed_interval(RAND_DRBG *drbg, unsigned int interval);
 int RAND_DRBG_set_reseed_time_interval(RAND_DRBG *drbg, time_t interval);
 
 int RAND_DRBG_set_reseed_defaults(
-                                  unsigned int master_reseed_interval,
-                                  unsigned int slave_reseed_interval,
-                                  time_t master_reseed_time_interval,
-                                  time_t slave_reseed_time_interval
+                                  unsigned int queen_reseed_interval,
+                                  unsigned int servant_reseed_interval,
+                                  time_t queen_reseed_time_interval,
+                                  time_t servant_reseed_time_interval
                                   );
 
-RAND_DRBG *RAND_DRBG_get0_master(void);
+RAND_DRBG *RAND_DRBG_get0_queen(void);
 RAND_DRBG *RAND_DRBG_get0_public(void);
 RAND_DRBG *RAND_DRBG_get0_private(void);
 

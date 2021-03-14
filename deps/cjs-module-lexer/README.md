@@ -439,4 +439,4 @@ Optimization passes are run with [Binaryen](https://github.com/WebAssembly/binar
 MIT
 
 [travis-url]: https://travis-ci.org/guybedford/es-module-lexer
-[travis-image]: https://travis-ci.org/guybedford/es-module-lexer.svg?branch=master
+[travis-image]: https://travis-ci.org/guybedford/es-module-lexer.svg?branch=queen
